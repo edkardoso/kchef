@@ -8,5 +8,7 @@ namespace edk.Kchef.Domain.Ordes
         public ItemMenu Item { get; set; }
         public int Amount { get; set; }
         public Decimal Price { get; set; }
+
+        public bool Free { get; set; }
     }
 }
