@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using edk.Kchef.Domain.Common.Base;
 
 namespace edk.Kchef.Domain.Ordes
 {
-    public enum OrderCardStatusType
-    {
-        Open,
-        Close,
-        Pay,
-        Cancel
-    }
-
     public class OrderCard : EntityBase
     {
         private readonly OrderSetting _orderSetting;
@@ -88,11 +79,5 @@ namespace edk.Kchef.Domain.Ordes
         {
 
         }
-    }
-
-    public class OrderSetting
-    {
-        public decimal ServiceTaxPercent { get; internal set; }
-        public decimal OtherTaxes { get; internal set; }
     }
 }
