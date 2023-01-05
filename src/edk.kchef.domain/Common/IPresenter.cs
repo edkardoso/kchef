@@ -3,6 +3,7 @@ using FluentValidation.Results;
 
 namespace edk.Kchef.Domain.Common
 {
+
     public interface IPresenter<TInput, TOutput>
     {
         public abstract void OnError(TInput input, ValidationResult validationResult);

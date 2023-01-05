@@ -17,10 +17,10 @@ namespace edk.Kchef.Domain.Common
 
         public TOutput Result { get; private set; }
 
-        protected UseCase(IPresenter<TInput, TOutput> presenter, AbstractValidator<TInput> validator = default)
+        protected UseCase(IPresenter<TInput, TOutput> presenter = default, AbstractValidator<TInput> validator = default)
         {
-            _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
-            _validator = validator;
+            _presenter = presenter ?? new PresenterNull<TInput, TOutput>();
+            _validator = validator ?? new ValidadorNull<TInput>();
             _observers = new List<IUseCase>();
         }
 
@@ -28,11 +28,8 @@ namespace edk.Kchef.Domain.Common
         {
             try
             {
-                if (_validator != null)
-                {
-                    _validationResult = _validator.Validate(input);
-                    _isValid = _validationResult.IsValid;
-                }
+                _validationResult = _validator.Validate(input);
+                _isValid = _validationResult.IsValid;
 
                 if (_isValid)
                 {
@@ -78,7 +75,7 @@ namespace edk.Kchef.Domain.Common
 
         protected void Notify()
         {
-          _observers.ForEach(o => ((IUseCase<TInput, TOutput>)o).Handler(this));
+            _observers.ForEach(o => ((IUseCase<TInput, TOutput>)o).Handler(this));
         }
 
         public void Subscribe(IUseCase observer)
@@ -87,7 +84,7 @@ namespace edk.Kchef.Domain.Common
                 _observers.Add(observer);
         }
 
-      
+
         public virtual void Handler(IUseCase<TInput, TOutput> other)
         {
 
