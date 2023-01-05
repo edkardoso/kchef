@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Kchef.Domain", "edk.kchef.domain\edk.Kchef.Domain.csproj", "{EE83E332-FAB0-4C54-A10D-4879E4289220}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.kchef.application", "edk.kchef.application\edk.kchef.application.csproj", "{2794179C-D6D2-4DA6-9CC3-E3D1F7D205E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Kchef.Application", "edk.kchef.application\edk.Kchef.Application.csproj", "{2794179C-D6D2-4DA6-9CC3-E3D1F7D205E5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.kchef.infrastructure", "edk.kchef.infrastructure\edk.kchef.infrastructure.csproj", "{F88DFF7A-3786-430A-A341-62646177CA80}"
 EndProject

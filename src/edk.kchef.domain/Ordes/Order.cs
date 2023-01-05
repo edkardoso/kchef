@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using edk.Kchef.Domain.Common.Base;
 using edk.Kchef.Domain.Users;
 
@@ -9,10 +10,9 @@ namespace edk.Kchef.Domain.Ordes
     public class Order : EntityBase
     {
 
-        public Order(Waiter waiter, OrderCard card)
+        public Order(Waiter waiter)
         {
             Waiter = waiter;
-            Card = card;
             Status = OrderStatusType.Start;
         }
         public Waiter Waiter { get; protected set; }
@@ -25,6 +25,11 @@ namespace edk.Kchef.Domain.Ordes
         public OrderStatusType Status { get; protected set; }
 
         public bool Canceled { get; protected set; }
+
+        public void AddRange(IEnumerable<ItemOrder> items)
+        {
+            Items.ToList().AddRange(items);
+        }
 
         public void Add(ItemOrder item)
         {

@@ -1,22 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentValidation;
 using FluentValidation.Results;
 
 namespace edk.Kchef.Domain.Common
 {
-    public abstract class UseCase<TInput, TOutput>
+
+    public abstract class UseCase<TInput, TOutput> : IUseCase<TInput, TOutput>
     {
         private readonly AbstractValidator<TInput> _validator;
         private readonly IPresenter<TInput, TOutput> _presenter;
         private bool _isValid = true;
         private bool _complete;
         private ValidationResult _validationResult;
+        private readonly List<IUseCase> _observers;
 
-    
-        public UseCase(AbstractValidator<TInput> validator = default, IPresenter<TInput, TOutput> presenter = null)
+        public TOutput Result { get; private set; }
+
+        protected UseCase(IPresenter<TInput, TOutput> presenter, AbstractValidator<TInput> validator = default)
         {
+            _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
             _validator = validator;
-            _presenter = presenter;
+            _observers = new List<IUseCase>();
         }
 
         public IPresenter<TInput, TOutput> Execute(TInput input)
@@ -31,9 +36,12 @@ namespace edk.Kchef.Domain.Common
 
                 if (_isValid)
                 {
-                    var result = OnExecute(input, _validationResult);
+                    Result = OnExecute(input);
                     _complete = true;
-                    _presenter.OnSuccess(result);
+                    _presenter.OnSuccess(Result);
+
+                    Notify();
+
                 }
                 else
                 {
@@ -53,18 +61,36 @@ namespace edk.Kchef.Domain.Common
             finally
             {
                 OnComplete(_complete);
+
             }
 
             return _presenter;
 
         }
 
-        public abstract TOutput OnExecute(TInput input, ValidationResult validationResult);
+        public abstract TOutput OnExecute(TInput input);
 
 
-        public virtual void OnComplete(bool completed)
+        protected virtual void OnComplete(bool completed)
         {
             return;
+        }
+
+        protected void Notify()
+        {
+          _observers.ForEach(o => ((IUseCase<TInput, TOutput>)o).Handler(this));
+        }
+
+        public void Subscribe(IUseCase observer)
+        {
+            if (!_observers.Contains(observer))
+                _observers.Add(observer);
+        }
+
+      
+        public virtual void Handler(IUseCase<TInput, TOutput> other)
+        {
+
         }
     }
 }

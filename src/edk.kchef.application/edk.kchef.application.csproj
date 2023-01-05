@@ -4,4 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\edk.kchef.domain\edk.Kchef.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

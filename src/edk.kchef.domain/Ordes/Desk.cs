@@ -5,7 +5,11 @@ namespace edk.Kchef.Domain.Ordes
 {
     public class Desk: EntityBase
     {
-        public string Code { get; set; }
+        public Desk(string internalCode)
+        {
+            InternalCode = internalCode;
+        }
+        public string InternalCode { get; protected set; }
         public ICollection<OrderCard> Cards { get; protected set; }
     }
 }

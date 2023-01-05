@@ -20,6 +20,11 @@ namespace edk.Kchef.Domain.Ordes
         private bool _chargeServiceTax;
 
 
+        public OrderCard(Desk desk)
+        {
+            Desk = desk;
+        }
+
         public virtual Desk Desk { get; protected set; }
 
         public ICollection<Order> Orders { get; protected set; }
