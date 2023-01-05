@@ -14,6 +14,8 @@ namespace edk.Kchef.Domain.Common
 
         public TOutput Result { get; }
 
+        public bool Success { get;  }
+
         public dynamic ViewResult { get; }
     }
 }

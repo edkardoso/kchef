@@ -28,7 +28,7 @@ namespace edk.Kchef.Domain.Ordes
 
         public void AddRange(IEnumerable<ItemOrder> items)
         {
-            Items.ToList().AddRange(items);
+            items.ToList().ForEach(item => Items.Add(item));
         }
 
         public void Add(ItemOrder item)

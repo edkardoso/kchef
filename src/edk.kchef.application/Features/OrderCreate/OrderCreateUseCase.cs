@@ -7,12 +7,12 @@ using FluentValidation;
 
 namespace edk.Kchef.Application.Features.OrderCreate
 {
-    internal class OrderCreateUseCase : UseCase<OrderCreateRequest, OrderCard>
+    public class OrderCreateUseCase : UseCase<OrderCreateRequest, OrderCard>
     {
         private readonly OrderCardCreateUseCase _orderCardCreateUseCase;
 
         public OrderCreateUseCase(OrderCardCreateUseCase orderCardCreateUseCase
-            , IPresenter<OrderCreateRequest, OrderCard> presenter
+            , IPresenter<OrderCreateRequest, OrderCard> presenter = null
             , AbstractValidator<OrderCreateRequest> validator = null)
             : base(presenter, validator)
         {

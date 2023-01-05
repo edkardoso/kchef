@@ -20,14 +20,14 @@ namespace edk.Kchef.Domain.Ordes
         private bool _chargeServiceTax;
 
 
-        public OrderCard(Desk desk)
+        public OrderCard(Desk desk):base()
         {
             Desk = desk;
         }
 
         public virtual Desk Desk { get; protected set; }
 
-        public ICollection<Order> Orders { get; protected set; }
+        public ICollection<Order> Orders { get; protected set; } = new List<Order>();
 
         public OrderCardStatusType Status { get; protected set; }
 
@@ -81,7 +81,7 @@ namespace edk.Kchef.Domain.Ordes
 
         public void AddOrder(Order order)
         {
-            // service and repository
+           Orders.Add(order);
         }
 
         public void RemoveOrder(Order order)

@@ -5,7 +5,6 @@ using FluentValidation.Results;
 
 namespace edk.Kchef.Domain.Common
 {
-
     public abstract class UseCase<TInput, TOutput> : IUseCase<TInput, TOutput>
     {
         private readonly AbstractValidator<TInput> _validator;
@@ -37,12 +36,18 @@ namespace edk.Kchef.Domain.Common
                     _complete = true;
                     _presenter.OnSuccess(Result);
 
-                    Notify();
+                    if (!_presenter.Success)
+                        throw new InvalidOperationException("The success property must equal TRUE.");
 
+                    Notify();
                 }
                 else
                 {
                     _presenter.OnError(input, _validationResult);
+                    
+                    if (_presenter.Success)
+                        throw new InvalidOperationException("The success property must equal FALSE.");
+
                 }
 
             }
@@ -51,14 +56,12 @@ namespace edk.Kchef.Domain.Common
                 // Pode ser necessário adicionar um novo evento virtual de Exceção
                 // para cenários onde há a necessidade de se desfazer alguma ação anterior
                 // em caso de exceção. Embora o OnComplete(false) talvez já permita isso.
-
                 _presenter.OnException(input, ex);
 
             }
             finally
             {
                 OnComplete(_complete);
-
             }
 
             return _presenter;
@@ -66,7 +69,6 @@ namespace edk.Kchef.Domain.Common
         }
 
         public abstract TOutput OnExecute(TInput input);
-
 
         protected virtual void OnComplete(bool completed)
         {
@@ -83,7 +85,6 @@ namespace edk.Kchef.Domain.Common
             if (!_observers.Contains(observer))
                 _observers.Add(observer);
         }
-
 
         public virtual void Handler(IUseCase<TInput, TOutput> other)
         {

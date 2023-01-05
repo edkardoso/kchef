@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.kchef.api", "edk.kchef.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B5C5ECE0-A43B-47F8-9AC0-8AED37F5FB94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "edk.Kchef.ApplicationTests", "edk.Kchef.ApplicationTests\edk.Kchef.ApplicationTests.csproj", "{86A27DC9-37ED-4765-B0F1-929B44646B56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,9 +37,16 @@ Global
 		{D7060195-26CD-4F05-8CB5-41FEF246175A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7060195-26CD-4F05-8CB5-41FEF246175A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7060195-26CD-4F05-8CB5-41FEF246175A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86A27DC9-37ED-4765-B0F1-929B44646B56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86A27DC9-37ED-4765-B0F1-929B44646B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86A27DC9-37ED-4765-B0F1-929B44646B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86A27DC9-37ED-4765-B0F1-929B44646B56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{86A27DC9-37ED-4765-B0F1-929B44646B56} = {B5C5ECE0-A43B-47F8-9AC0-8AED37F5FB94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3C56944-0BFD-4204-96AE-0EE50E12FB4D}

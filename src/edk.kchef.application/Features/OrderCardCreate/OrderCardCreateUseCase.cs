@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace edk.Kchef.Application.Features.OrderCardCreate
 {
-    internal class OrderCardCreateUseCase : UseCase<OrderCardCreateRequest, OrderCard>
+    public class OrderCardCreateUseCase : UseCase<OrderCardCreateRequest, OrderCard>
     {
-        public OrderCardCreateUseCase(IPresenter<OrderCardCreateRequest, OrderCard> presenter, AbstractValidator<OrderCardCreateRequest> validator = null) : base(presenter, validator)
+        public OrderCardCreateUseCase(IPresenter<OrderCardCreateRequest, OrderCard> presenter, AbstractValidator<OrderCardCreateRequest> validator) : base(presenter, validator)
         {
         }
 

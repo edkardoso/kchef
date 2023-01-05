@@ -11,6 +11,8 @@ namespace edk.Kchef.Domain.Common
 
         public dynamic ViewResult => Result;
 
+        public bool Success { get; private set; }
+
         public void OnError(TInput input, ValidationResult validationResult)
         {
             return;
@@ -24,6 +26,7 @@ namespace edk.Kchef.Domain.Common
         public void OnSuccess(TOutput output)
         {
             Result = output;
+            Success = true;
         }
     }
 }
