@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using edk.Kchef.Application.Features.OrderCreate;
-using edk.Kchef.Domain.Common;
+using edk.Kchef.Domain.Common.Fusc;
 using FluentValidation;
 
 namespace edk.Kchef.Application.Features.Inventory.UpdateInventory

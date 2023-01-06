@@ -1,6 +1,6 @@
 ﻿using System;
 using edk.Kchef.Application.Features.OrderCardCreate;
-using edk.Kchef.Domain.Common;
+using edk.Kchef.Domain.Common.Fusc;
 using edk.Kchef.Domain.Ordes;
 using edk.Kchef.Domain.Users;
 using FluentValidation;

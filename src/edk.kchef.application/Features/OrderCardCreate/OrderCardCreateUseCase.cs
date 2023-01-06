@@ -1,4 +1,4 @@
-﻿using edk.Kchef.Domain.Common;
+﻿using edk.Kchef.Domain.Common.Fusc;
 using edk.Kchef.Domain.Ordes;
 using FluentValidation;
 

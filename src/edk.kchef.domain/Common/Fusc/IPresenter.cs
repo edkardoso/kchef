@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentValidation.Results;
 
-namespace edk.Kchef.Domain.Common
+namespace edk.Kchef.Domain.Common.Fusc
 {
 
     public interface IPresenter<TInput, TOutput>
@@ -14,7 +14,7 @@ namespace edk.Kchef.Domain.Common
 
         public TOutput Result { get; }
 
-        public bool Success { get;  }
+        public bool Success { get; }
 
         public dynamic ViewResult { get; }
     }

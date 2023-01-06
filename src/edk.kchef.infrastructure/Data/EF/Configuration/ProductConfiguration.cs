@@ -1,6 +1,5 @@
-﻿using edk.Kchef.Domain.Ordes;
-using edk.Kchef.Infrastructure.Data.Common;
-using Microsoft.EntityFrameworkCore;
+﻿using edk.Kchef.Domain.Common;
+using edk.Kchef.Domain.Ordes;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace edk.Kchef.Infrastructure.Data.EF.Configuration
@@ -13,11 +12,11 @@ namespace edk.Kchef.Infrastructure.Data.EF.Configuration
             base.Configure("Products", builder);
 
             builder.Property(e => e.Name)
-                .HasMaxLength(SizeConstants.LARGE)
+                .HasMaxLength(SizeFields.LARGE)
                 .IsRequired();
 
             builder.Property(e => e.Description)
-                .HasMaxLength(SizeConstants.EXTRA_LARGE);
+                .HasMaxLength(SizeFields.EXTRA_LARGE);
 
             builder.Property(e => e.Unity)
                 .IsRequired();

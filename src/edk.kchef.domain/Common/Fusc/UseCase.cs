@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace edk.Kchef.Domain.Common
+namespace edk.Kchef.Domain.Common.Fusc
 {
     public abstract class UseCase<TInput, TOutput> : IUseCase<TInput, TOutput>
     {
@@ -44,7 +44,7 @@ namespace edk.Kchef.Domain.Common
                 else
                 {
                     _presenter.OnError(input, _validationResult);
-                    
+
                     if (_presenter.Success)
                         throw new InvalidOperationException("The success property must equal FALSE.");
 

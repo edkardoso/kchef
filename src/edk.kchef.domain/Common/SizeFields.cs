@@ -1,6 +1,6 @@
-﻿namespace edk.Kchef.Infrastructure.Data.Common
+﻿namespace edk.Kchef.Domain.Common
 {
-    public static class SizeConstants
+    public static class SizeFields
     {
         public static int SMALL = 10;
         public static int MEDIUM = 25;
