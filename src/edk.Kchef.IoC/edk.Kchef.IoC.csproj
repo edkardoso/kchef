@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\edk.kchef.application\edk.Kchef.Application.csproj" />
+    <ProjectReference Include="..\edk.kchef.domain\edk.Kchef.Domain.csproj" />
+    <ProjectReference Include="..\edk.kchef.infrastructure\edk.Kchef.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

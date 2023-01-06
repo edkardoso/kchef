@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using edk.Kchef.Domain.Common.Base;
 
 namespace edk.Kchef.Domain.Ordes
 {
-    public class ItemMenu {
-        public ItemMenu(string code, string description, decimal price)
+    public class ItemMenu: EntityBase {
+        public ItemMenu(string code, string description, decimal price):base()
         {
             Code = code;
             Description = description;
@@ -12,7 +14,7 @@ namespace edk.Kchef.Domain.Ordes
 
         public string Code { get; set; }
         public string Description { get; set; }
-
         public Decimal Price { get; set; }
+        public List<Product>  Products { get; set; }
     }
 }
