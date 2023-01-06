@@ -7,13 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Kchef.Domain", "edk.kch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Kchef.Application", "edk.kchef.application\edk.Kchef.Application.csproj", "{2794179C-D6D2-4DA6-9CC3-E3D1F7D205E5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.kchef.infrastructure", "edk.kchef.infrastructure\edk.kchef.infrastructure.csproj", "{F88DFF7A-3786-430A-A341-62646177CA80}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.kchef.api", "edk.kchef.api\edk.kchef.api.csproj", "{D7060195-26CD-4F05-8CB5-41FEF246175A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Kchef.Infrastructure", "edk.kchef.infrastructure\edk.Kchef.Infrastructure.csproj", "{F88DFF7A-3786-430A-A341-62646177CA80}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B5C5ECE0-A43B-47F8-9AC0-8AED37F5FB94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "edk.Kchef.ApplicationTests", "edk.Kchef.ApplicationTests\edk.Kchef.ApplicationTests.csproj", "{86A27DC9-37ED-4765-B0F1-929B44646B56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Kchef.ApplicationTests", "edk.Kchef.ApplicationTests\edk.Kchef.ApplicationTests.csproj", "{86A27DC9-37ED-4765-B0F1-929B44646B56}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Kchef.IoC", "edk.Kchef.IoC\edk.Kchef.IoC.csproj", "{1C205CB7-B4A1-4B37-ACDE-3C40850534E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Kchef.Api", "edk.Kchef.Api\edk.Kchef.Api.csproj", "{DA24EC79-C80A-464A-924D-1E49BB7ABB2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,14 +35,18 @@ Global
 		{F88DFF7A-3786-430A-A341-62646177CA80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F88DFF7A-3786-430A-A341-62646177CA80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F88DFF7A-3786-430A-A341-62646177CA80}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7060195-26CD-4F05-8CB5-41FEF246175A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7060195-26CD-4F05-8CB5-41FEF246175A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7060195-26CD-4F05-8CB5-41FEF246175A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7060195-26CD-4F05-8CB5-41FEF246175A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{86A27DC9-37ED-4765-B0F1-929B44646B56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{86A27DC9-37ED-4765-B0F1-929B44646B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86A27DC9-37ED-4765-B0F1-929B44646B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86A27DC9-37ED-4765-B0F1-929B44646B56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C205CB7-B4A1-4B37-ACDE-3C40850534E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C205CB7-B4A1-4B37-ACDE-3C40850534E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C205CB7-B4A1-4B37-ACDE-3C40850534E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C205CB7-B4A1-4B37-ACDE-3C40850534E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA24EC79-C80A-464A-924D-1E49BB7ABB2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA24EC79-C80A-464A-924D-1E49BB7ABB2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA24EC79-C80A-464A-924D-1E49BB7ABB2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA24EC79-C80A-464A-924D-1E49BB7ABB2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
