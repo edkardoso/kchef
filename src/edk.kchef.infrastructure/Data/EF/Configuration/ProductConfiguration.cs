@@ -19,9 +19,10 @@ namespace edk.Kchef.Infrastructure.Data.EF.Configuration
             builder.Property(e => e.Description)
                 .HasMaxLength(SizeConstants.EXTRA_LARGE);
 
-            builder.Property(e => e.Unidade)
-                .HasColumnType("byte")
+            builder.Property(e => e.Unity)
                 .IsRequired();
+
+
 
         }
     }

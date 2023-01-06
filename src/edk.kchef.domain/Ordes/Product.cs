@@ -6,10 +6,11 @@ namespace edk.Kchef.Domain.Ordes
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public UnitType Unidade { get; private set; }
-        public decimal AmountMin { get; private set; }
-        public decimal AmountMax { get; private set; }
-        public decimal Balance { get; private set; }
+        public UnitType Unity { get; private set; }
+        public float AmountMin { get; private set; }
+        public float AmountMax { get; private set; }
+        public float Balance { get; private set; }
+        public decimal Price { get; set; }
 
     }
 }
