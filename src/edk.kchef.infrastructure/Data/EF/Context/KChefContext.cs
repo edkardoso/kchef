@@ -1,4 +1,4 @@
-﻿using edk.Kchef.Domain.Ordes;
+﻿using edk.Kchef.Domain.Products;
 using edk.Kchef.Infrastructure.Data.EF.Configuration;
 using Microsoft.EntityFrameworkCore;
 

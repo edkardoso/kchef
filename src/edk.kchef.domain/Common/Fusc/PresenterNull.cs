@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentValidation.Results;
 
 namespace edk.Kchef.Domain.Common.Fusc
@@ -11,7 +12,7 @@ namespace edk.Kchef.Domain.Common.Fusc
 
         public bool Success { get; private set; }
 
-        public void OnError(TInput input, ValidationResult validationResult)
+        public void OnError(TInput input, List<ValidationFailure> errors)
         {
             return;
         }

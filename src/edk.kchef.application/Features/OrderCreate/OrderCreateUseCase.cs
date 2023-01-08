@@ -27,7 +27,7 @@ namespace edk.Kchef.Application.Features.OrderCreate
             {
                 var presenter = _orderCardCreateUseCase.Execute(new OrderCardCreateRequest()
                 {
-                    InternalCodeDesk = input.DeskInternalCode
+                    InternalDeskCode = input.DeskInternalCode
                 });
 
                 orderCard = presenter.Result;

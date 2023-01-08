@@ -2,7 +2,7 @@
 {
     public class OrderCardCreateRequest
     {
-        public string InternalCodeDesk { get; set; }
+        public string InternalDeskCode { get; set; }
     }
 
    

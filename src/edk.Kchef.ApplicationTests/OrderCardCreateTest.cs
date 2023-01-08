@@ -9,7 +9,7 @@ namespace edk.Kchef.ApplicationTests
         public void MustCreateNewOrderCardForDesk()
         {
             //arrange
-            var request = new OrderCardCreateRequest() { InternalCodeDesk= "1234" };
+            var request = new OrderCardCreateRequest() { InternalDeskCode= "1234" };
             var validator = new OrderCardCreateValidator();
             var useCase = new OrderCardCreateUseCase(null, validator);
 
@@ -19,7 +19,7 @@ namespace edk.Kchef.ApplicationTests
             //assert
             Assert.True(presenter.Success);
             Assert.NotEqual(Guid.Empty, presenter.Result.Id);
-            Assert.Equal(presenter.Result.Desk.InternalCode, request.InternalCodeDesk);
+            Assert.Equal(presenter.Result.Desk.InternalCode, request.InternalDeskCode);
         }
     }
 }

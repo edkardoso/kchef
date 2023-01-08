@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
+using Guards;
 
 namespace edk.Kchef.Domain.Common.Fusc
 {
@@ -29,24 +31,22 @@ namespace edk.Kchef.Domain.Common.Fusc
             {
                 _validationResult = _validator.Validate(input);
                 _isValid = _validationResult.IsValid;
-
+          
                 if (_isValid)
                 {
                     Result = OnExecute(input);
                     _complete = true;
                     _presenter.OnSuccess(Result);
 
-                    if (!_presenter.Success)
-                        throw new InvalidOperationException("The success property must equal TRUE.");
+                    Guard.ArgumentIsFalse(_presenter.Success, nameof(_presenter.Success));
 
                     Notify();
                 }
                 else
                 {
-                    _presenter.OnError(input, _validationResult);
+                    _presenter.OnError(input, _validationResult.Errors);
 
-                    if (_presenter.Success)
-                        throw new InvalidOperationException("The success property must equal FALSE.");
+                    Guard.ArgumentIsTrue(_presenter.Success, nameof(_presenter.Success));
 
                 }
 

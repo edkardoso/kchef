@@ -3,7 +3,7 @@ using edk.Kchef.Domain.Common.Base;
 
 namespace edk.Kchef.Domain.Ordes
 {
-    public class ItemOrder : EntityBase
+    public class ItemOrder : EntityBase<ItemOrder>
     {
         public ItemMenu Item { get; private set; }
         public int Amount { get; private set; }

@@ -12,7 +12,7 @@ namespace edk.Kchef.Application.Features.OrderCardCreate
 
         public override OrderCard OnExecute(OrderCardCreateRequest input)
         {
-            var desk = new Desk(input.InternalCodeDesk);
+            var desk = new Desk(input.InternalDeskCode);
 
             return new OrderCard(desk);
         }
