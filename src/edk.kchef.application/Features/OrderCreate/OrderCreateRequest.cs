@@ -10,5 +10,9 @@ namespace edk.Kchef.Application.Features.OrderCreate
         public string DeskInternalCode { get; set; }
         public string WaiterInternalCode { get; set; }
         public List<ItemOrder> Items { get; set; } = new List<ItemOrder>();
+
+
+        public bool NoCard()
+            => OrderCard == Guid.Empty;
     }
 }

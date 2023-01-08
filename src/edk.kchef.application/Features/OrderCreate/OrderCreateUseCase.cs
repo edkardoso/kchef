@@ -1,5 +1,4 @@
-﻿using System;
-using edk.Kchef.Application.Features.OrderCardCreate;
+﻿using edk.Kchef.Application.Features.OrderCardCreate;
 using edk.Kchef.Domain.Common.Fusc;
 using edk.Kchef.Domain.Ordes;
 using edk.Kchef.Domain.Users;
@@ -23,14 +22,14 @@ namespace edk.Kchef.Application.Features.OrderCreate
         {
             OrderCard orderCard;
 
-            if (input.OrderCard == Guid.Empty)
+            if (input.NoCard())
             {
-                var presenter = _orderCardCreateUseCase.Execute(new OrderCardCreateRequest()
+                orderCard = _orderCardCreateUseCase.Execute(new OrderCardCreateRequest()
                 {
                     InternalDeskCode = input.DeskInternalCode
-                });
-
-                orderCard = presenter.Result;
+                })
+                    .Presenter
+                    .Result;
             }
             else
             {

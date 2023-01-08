@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using edk.Kchef.Domain.Common.Base;
 using FluentValidation.Results;
 
 namespace edk.Kchef.Domain.Common.Fusc
@@ -12,7 +13,7 @@ namespace edk.Kchef.Domain.Common.Fusc
 
         public bool Success { get; private set; }
 
-        public void OnError(TInput input, List<ValidationFailure> errors)
+        public void OnError(TInput input, List<Notification> notifications)
         {
             return;
         }
@@ -22,7 +23,7 @@ namespace edk.Kchef.Domain.Common.Fusc
             return;
         }
 
-        public void OnSuccess(TOutput output)
+        public void OnSuccess(TOutput output, List<Notification> notifications)
         {
             Result = output;
             Success = true;

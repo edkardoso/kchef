@@ -5,7 +5,8 @@ namespace edk.Kchef.Domain.Common.Exceptions
 {
     public class InvalidEntityException : KChefException
     {
-        public InvalidEntityException(IReadOnlyList<Notification> notifications) : base(notifications)
+        public InvalidEntityException(IReadOnlyList<Notification> notifications) 
+            : base(notifications)
         {
         }
     }
