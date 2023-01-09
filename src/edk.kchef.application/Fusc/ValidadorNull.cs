@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace edk.Kchef.Domain.Common.Fusc
+namespace edk.Kchef.Application.Fusc
 {
     public class ValidadorNull<TInput> : AbstractValidator<TInput>
     {

@@ -1,5 +1,7 @@
-﻿using edk.Kchef.Application.Features.OrderCardCreate;
-using edk.Kchef.Domain.Common.Fusc;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using edk.Kchef.Application.Features.OrderCardCreate;
+using edk.Kchef.Application.Fusc;
 using edk.Kchef.Domain.Ordes;
 using edk.Kchef.Domain.Users;
 using FluentValidation;
@@ -18,32 +20,36 @@ namespace edk.Kchef.Application.Features.OrderCreate
             _orderCardCreateUseCase = orderCardCreateUseCase;
         }
 
-        public override OrderCard OnExecute(OrderCreateRequest input)
+        protected override string NameUseCase => "OrderCreateUseCase";
+
+        public override async Task<OrderCard> Handle(OrderCreateRequest request, CancellationToken cancellationToken)
         {
             OrderCard orderCard;
 
-            if (input.NoCard())
+            if (request.NoCard())
             {
-                orderCard = _orderCardCreateUseCase.Execute(new OrderCardCreateRequest()
+                var useCase = await _orderCardCreateUseCase.HandleAsync(new OrderCardCreateRequest()
                 {
-                    InternalDeskCode = input.DeskInternalCode
-                })
-                    .Presenter
-                    .Result;
+                    InternalDeskCode = request.DeskInternalCode
+                });
+
+                orderCard = useCase.Presenter.Response;
             }
             else
             {
                 // buscar a comanda no repositório
-                var desk = new Desk(input.DeskInternalCode);
+                var desk = new Desk(request.DeskInternalCode);
                 orderCard = new OrderCard(desk);
             }
 
             var order = new Order(new Waiter());
-            order.AddRange(input.Items);
+            order.AddRange(request.Items);
 
             orderCard.AddOrder(order);
 
             return orderCard;
         }
+
+       
     }
 }

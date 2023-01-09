@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using edk.Kchef.Domain.Common.Base;
 using FluentValidation.Results;
 
-namespace edk.Kchef.Domain.Common.Fusc
+namespace edk.Kchef.Application.Fusc
 {
     public class PresenterNull<TInput, TOutput> : IPresenter<TInput, TOutput>
     {
-        public TOutput Result { get; private set; }
+        public TOutput Response { get; private set; }
 
-        public dynamic ViewResult => Result;
+        public dynamic ViewResponse => Response;
 
         public bool Success { get; private set; }
 
@@ -23,9 +24,9 @@ namespace edk.Kchef.Domain.Common.Fusc
             return;
         }
 
-        public void OnSuccess(TOutput output, List<Notification> notifications)
+        public void OnSuccess(TOutput output, List<Notification> notifications, CancellationToken cancellationToken)
         {
-            Result = output;
+            Response = output;
             Success = true;
         }
     }

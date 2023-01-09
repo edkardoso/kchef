@@ -29,16 +29,16 @@ namespace edk.Kchef.ApplicationTests
             };
 
             // action
-            useCase.Execute(request);
+            _ = useCase.HandleAsync(request);
 
             // assert
-            Assert.Equal(request.DeskInternalCode, useCase.Presenter.Result.Desk.InternalCode);
-            Assert.Equal(1, useCase.Presenter.Result.Orders.Count);
-            Assert.NotEqual(Guid.Empty, useCase.Presenter.Result.Orders.FirstOrDefault()?.Id);
-            Assert.NotEqual(Guid.Empty, useCase.Presenter.Result.Orders.FirstOrDefault()?.Id);
-            Assert.Equal(2, useCase.Presenter.Result.Orders.FirstOrDefault()?.Items.Count);
-            Assert.Equal(produto1, useCase.Presenter.Result.Orders.FirstOrDefault()?.Items.FirstOrDefault()?.Item);
-            Assert.Equal(produto2, useCase.Presenter.Result.Orders.LastOrDefault()?.Items.LastOrDefault()?.Item);
+            Assert.Equal(request.DeskInternalCode, useCase.Presenter.Response.Desk.InternalCode);
+            Assert.Equal(1, useCase.Presenter.Response.Orders.Count);
+            Assert.NotEqual(Guid.Empty, useCase.Presenter.Response.Orders.FirstOrDefault()?.Id);
+            Assert.NotEqual(Guid.Empty, useCase.Presenter.Response.Orders.FirstOrDefault()?.Id);
+            Assert.Equal(2, useCase.Presenter.Response.Orders.FirstOrDefault()?.Items.Count);
+            Assert.Equal(produto1, useCase.Presenter.Response.Orders.FirstOrDefault()?.Items.FirstOrDefault()?.Item);
+            Assert.Equal(produto2, useCase.Presenter.Response.Orders.LastOrDefault()?.Items.LastOrDefault()?.Item);
         }
     }
 }

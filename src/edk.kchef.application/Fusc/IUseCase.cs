@@ -1,10 +1,10 @@
-﻿namespace edk.Kchef.Domain.Common.Fusc
+﻿namespace edk.Kchef.Application.Fusc
 {
     public interface IUseCase
     {
     }
     public interface IUseCase<TInput, TOutput> : IUseCase
     {
-        void Handler(IUseCase<TInput, TOutput> other);
+        void Handle(IUseCase<TInput, TOutput> other);
     }
 }

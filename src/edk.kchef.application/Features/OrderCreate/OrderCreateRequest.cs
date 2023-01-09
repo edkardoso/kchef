@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using edk.Kchef.Domain.Ordes;
+using MediatR;
 
 namespace edk.Kchef.Application.Features.OrderCreate
 {
-    public class OrderCreateRequest
+    public class OrderCreateRequest: IRequest<OrderCard>
     {
         public Guid OrderCard { get; set; }
         public string DeskInternalCode { get; set; }

@@ -11,7 +11,7 @@ namespace edk.Kchef.Domain.Ordes
         private bool _chargeServiceTax;
 
 
-        public OrderCard(Desk desk):base()
+        public OrderCard(Desk desk)
         {
             Desk = desk;
         }

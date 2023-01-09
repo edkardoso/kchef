@@ -68,7 +68,7 @@ public abstract class EntityBase<TEntity> where TEntity : class
         if (_validator != null)
         {
             _validationResult = _validator.Validate(_entity);
-            _notifications.AddRange(Notification.ConvertFrom(_validationResult.Errors));
+            _notifications.AddRange(_validationResult.Errors);
         }
     }
 

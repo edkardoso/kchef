@@ -14,12 +14,12 @@ namespace edk.Kchef.ApplicationTests
             var useCase = new OrderCardCreateUseCase(null, validator);
 
             //action 
-            useCase.Execute(request);
+            useCase.HandleAsync(request);
 
             //assert
             Assert.True(useCase.Presenter.Success);
-            Assert.NotEqual(Guid.Empty, useCase.Presenter.Result.Id);
-            Assert.Equal(useCase.Presenter.Result.Desk.InternalCode, request.InternalDeskCode);
+            Assert.NotEqual(Guid.Empty, useCase.Presenter.Response.Id);
+            Assert.Equal(useCase.Presenter.Response.Desk.InternalCode, request.InternalDeskCode);
         }
     }
 }

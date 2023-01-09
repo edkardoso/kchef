@@ -10,7 +10,7 @@ public class ProductsController : ControllerBase
     [HttpGet(Name = "GetProducts")]
     public IEnumerable<ProductsResponse> Get([FromServices] GetProductsUseCase useCase, ProductsRequest request)
     {
-        return useCase.Execute(request).Presenter.Result;
+        return useCase.HandleAsync(request).Result.Presenter.Response;
 
     }
 }
