@@ -45,7 +45,7 @@ public abstract class UseCase<TRequest, TResponse> :
             {
                 _presenter.OnError(input, Notifications);
 
-                Guard.ArgumentIsTrue(_presenter.Success, nameof(_presenter.Success));
+               // Guard.ArgumentIsTrue(_presenter.Success, nameof(_presenter.Success));
 
                 return this;
             }
@@ -55,7 +55,7 @@ public abstract class UseCase<TRequest, TResponse> :
 
             _presenter.OnSuccess(result, Notifications, cancelationToken);
 
-            Guard.ArgumentIsFalse(_presenter.Success, nameof(_presenter.Success));
+           // Guard.ArgumentIsFalse(_presenter.Success, nameof(_presenter.Success));
 
             _complete = true;
 

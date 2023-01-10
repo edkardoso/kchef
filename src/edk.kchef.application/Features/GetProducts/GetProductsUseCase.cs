@@ -1,26 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using edk.Kchef.Application.Fusc;
-using FluentValidation;
+using edk.Kchef.Domain.Ordes;
+using edk.Kchef.Domain.Products;
 using MediatR;
 
 namespace edk.Kchef.Application.Features.GetProducts
 {
-    public class ProductsRequest : IRequest<IEnumerable<ProductsResponse>> { }
-    public class ProductsResponse { }
-    public class GetProductsUseCase : UseCase<ProductsRequest, IEnumerable<ProductsResponse>>
+    public class GetProductsUseCase : UseCase<GetProductsRequest, GetProductsResponse>
     {
         protected override string NameUseCase => "GetProductsUseCase";
 
-        public override Task<IEnumerable<ProductsResponse>> Handle(ProductsRequest request, CancellationToken cancellationToken)
+        public GetProductsUseCase(GetProductsPresenter presenter) : base(presenter)
         {
-            throw new NotImplementedException();
+
+        }
+
+        public override Task<GetProductsResponse> Handle(GetProductsRequest request, CancellationToken cancellationToken)
+        {
+            var products = new List<Product>()
+            {
+                new Product("Product 1", UnitType.Kg, 1),
+                new Product("Product 2", UnitType.Litro, 10),
+                new Product("Product 3", UnitType.Peca, 111)
+            };
+
+            return Task.FromResult(new GetProductsResponse(products, Notifications));
         }
     }
-
-
 }

@@ -19,9 +19,6 @@ public abstract class EntityBase<TEntity> where TEntity : class
     public virtual Guid? AuditUserId { get; private set; }
     public virtual DateTime? AuditDate { get; private set; }
     public List<Notification> Notifications => _notifications;
-    public bool HasErrors => _notifications.Any(n => n.Severity == SeverityType.Error);
-    public bool HasWarnings => _notifications.Any(n => n.Severity == SeverityType.Warning);
-    public bool HasInfos => _notifications.Any(n => n.Severity == SeverityType.Info);
 
     protected EntityBase(AbstractValidator<TEntity> validator, TEntity entity)
         : this()
@@ -51,9 +48,9 @@ public abstract class EntityBase<TEntity> where TEntity : class
 
         RunValidatorCustom();
 
-        if (HasErrors)
+        if (Notifications.HasError())
         {
-            throw new InvalidEntityException(_notifications);
+            throw new InvalidEntityException(Notifications);
         }
 
     }

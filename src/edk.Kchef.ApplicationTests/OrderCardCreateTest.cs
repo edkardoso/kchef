@@ -14,7 +14,7 @@ namespace edk.Kchef.ApplicationTests
             var useCase = new OrderCardCreateUseCase(null, validator);
 
             //action 
-            useCase.HandleAsync(request);
+            _ = useCase.HandleAsync(request);
 
             //assert
             Assert.True(useCase.Presenter.Success);

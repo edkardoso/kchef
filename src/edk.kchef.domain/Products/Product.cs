@@ -6,6 +6,13 @@ namespace edk.Kchef.Domain.Products;
 
 public class Product : EntityBase<Product>
 {
+    public Product(string name, UnitType unity, float balance)
+    {
+        Name = name;
+        Unity = unity;
+        Balance = balance;
+    }
+
     public string Name { get; private set; }
     public string Description { get; private set; }
     public UnitType Unity { get; private set; }

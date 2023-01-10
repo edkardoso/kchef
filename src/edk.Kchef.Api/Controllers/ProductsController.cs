@@ -7,10 +7,23 @@ namespace edk.Kchef.Api.Controllers;
 [ApiController]
 public class ProductsController : ControllerBase
 {
-    [HttpGet(Name = "GetProducts")]
-    public IEnumerable<ProductsResponse> Get([FromServices] GetProductsUseCase useCase, ProductsRequest request)
+
+    private readonly GetProductsUseCase _useCase;
+    public ProductsController()
     {
-        return useCase.HandleAsync(request).Result.Presenter.Response;
+        _useCase = new GetProductsUseCase(new GetProductsPresenter());
+    }
+
+    [HttpGet(Name = "GetProducts")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> GetAsync([FromQuery] GetProductsRequest request)
+    {
+        var result = await _useCase.HandleAsync(request);
+
+        var response = result.Presenter.ViewResponse;
+
+        return response;
 
     }
 }
