@@ -5,17 +5,18 @@ using System.Threading.Tasks;
 using edk.Kchef.Application.Fusc;
 using edk.Kchef.Domain.Ordes;
 using edk.Kchef.Domain.Products;
-using MediatR;
 
 namespace edk.Kchef.Application.Features.GetProducts
 {
     public class GetProductsUseCase : UseCase<GetProductsRequest, GetProductsResponse>
     {
+        private readonly IMediatorUseCase _mediatorUseCase;
+
         protected override string NameUseCase => "GetProductsUseCase";
 
-        public GetProductsUseCase(GetProductsPresenter presenter) : base(presenter)
+        public GetProductsUseCase(IMediatorUseCase mediatorUseCase, GetProductsPresenter presenter) : base(presenter)
         {
-
+            _mediatorUseCase = mediatorUseCase;
         }
 
         public override Task<GetProductsResponse> Handle(GetProductsRequest request, CancellationToken cancellationToken)

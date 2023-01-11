@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="11.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\edk.kchef.application\edk.Kchef.Application.csproj" />
     <ProjectReference Include="..\edk.kchef.domain\edk.Kchef.Domain.csproj" />
     <ProjectReference Include="..\edk.kchef.infrastructure\edk.Kchef.Infrastructure.csproj" />

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using edk.Kchef.Application.Fusc;
 using edk.Kchef.Domain.Common.Base;
-using edk.Kchef.Domain.Ordes;
 using edk.Kchef.Domain.Products;
 
 namespace edk.Kchef.Application.Features.GetProducts

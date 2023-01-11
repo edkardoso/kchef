@@ -28,12 +28,12 @@ namespace edk.Kchef.Application.Features.OrderCreate
 
             if (request.NoCard())
             {
-                var useCase = await _orderCardCreateUseCase.HandleAsync(new OrderCardCreateRequest()
+                var presenter = await _orderCardCreateUseCase.HandleAsync(new OrderCardCreateRequest()
                 {
                     InternalDeskCode = request.DeskInternalCode
                 });
 
-                orderCard = useCase.Presenter.Response;
+                orderCard = presenter.Response;
             }
             else
             {

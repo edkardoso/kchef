@@ -5,21 +5,24 @@ using System.Threading.Tasks;
 using edk.Kchef.Domain.Common.Base;
 using FluentValidation;
 using FluentValidation.Results;
-using Guards;
 using MediatR;
 
 namespace edk.Kchef.Application.Fusc;
+
+
+
 public abstract class UseCase<TRequest, TResponse> :
     IUseCase<TRequest, TResponse>,
     IRequestHandler<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
-{
+{ 
     private readonly AbstractValidator<TRequest> _validator;
     private readonly IPresenter<TRequest, TResponse> _presenter;
     private bool _complete;
     private ValidationResult _validationResult;
     private readonly List<IUseCase> _observers;
     private List<Notification> _notifications = new List<Notification>();
+
 
     public IPresenter<TRequest, TResponse> Presenter => _presenter;
     public List<Notification> Notifications => _notifications;
@@ -33,7 +36,7 @@ public abstract class UseCase<TRequest, TResponse> :
         _observers = new List<IUseCase>();
     }
 
-    public async Task<UseCase<TRequest, TResponse>> HandleAsync(TRequest input)
+    public async Task<IPresenter<TRequest, TResponse>> HandleAsync(TRequest input)
     {
         try
         {
@@ -47,7 +50,7 @@ public abstract class UseCase<TRequest, TResponse> :
 
                // Guard.ArgumentIsTrue(_presenter.Success, nameof(_presenter.Success));
 
-                return this;
+                return _presenter;
             }
 
             var cancelationToken = new CancellationToken();
@@ -76,7 +79,7 @@ public abstract class UseCase<TRequest, TResponse> :
             OnComplete(_complete, _notifications);
         }
 
-        return this;
+        return _presenter;
 
     }
     /// <summary>
