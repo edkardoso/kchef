@@ -9,7 +9,7 @@ namespace edk.Kchef.Application.Features.OrderCreate
 {
     public class OrderCreateUseCase : UseCase<OrderCreateRequest, OrderCard>
     {
-      protected override string NameUseCase => "OrderCreateUseCase";
+        protected override string NameUseCase => "OrderCreateUseCase";
 
         public override async Task<OrderCard> ExecuteAsync(OrderCreateRequest request, CancellationToken cancellationToken)
         {

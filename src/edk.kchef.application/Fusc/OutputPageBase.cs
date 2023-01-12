@@ -3,9 +3,9 @@ using edk.Kchef.Domain.Common.Base;
 
 namespace edk.Kchef.Application.Fusc
 {
-    public abstract class OutputPage : IOutput
+    public abstract class OutputPageBase : IOutput
     {
-        protected OutputPage(List<Notification> messages, int totalItems, int totalPage, int currentPage = 1)
+        protected OutputPageBase(List<Notification> messages, int totalItems, int totalPage, int currentPage = 1)
         {
             Messages = messages ?? new List<Notification>();
             TotalItems = totalItems;

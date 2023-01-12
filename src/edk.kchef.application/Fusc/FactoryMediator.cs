@@ -6,15 +6,21 @@ namespace edk.Kchef.Application.Fusc;
 public class FactoryMediator
 {
     private readonly IServiceProvider _provider;
+    
+    // To Unit Tests
+    protected FactoryMediator()
+    {
+
+    }
 
     public FactoryMediator(IServiceProvider Provider)
     {
         _provider = Provider;
     }
 
-    public object Get<T>()
+    public virtual object Get<T>()
         => _provider.GetRequiredService(typeof(T));
 
-    public object Get(Type type)
+    public virtual object Get(Type type)
        => _provider.GetRequiredService(type);
 }

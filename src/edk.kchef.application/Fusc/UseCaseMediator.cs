@@ -8,14 +8,21 @@ namespace edk.Kchef.Application.Fusc;
 
 public class UseCaseMediator : IMediatorUseCase
 {
-    
+
     private readonly Dictionary<string, Type> _translateDictionary = new();
 
-    public FactoryMediator Factory { get; private set; }
+    public virtual FactoryMediator Factory { get; private set; }
     public UseCaseServices Services { get; private set; }
+
+    public UseCaseMediator(UseCaseServices services = null, FactoryMediator factory = null)
+    {
+        Services = services;
+        Factory = factory;
+    }
+
     public UseCaseMediator(IServiceCollection services)
     {
-        Services =  new UseCaseServices(services);
+        Services = new UseCaseServices(services);
     }
 
     public void Builder()

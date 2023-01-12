@@ -22,13 +22,13 @@ namespace edk.Kchef.ApplicationTests
                     new(produto2)
                 }
             };
-            var mediatorMock = new Mock<IMediatorUseCase>();
-            var presenterFake = new PresenterDefault<OrderCardCreateRequest, OrderCard>(new OrderCard(new Desk(request.DeskInternalCode)));
-            mediatorMock.Setup(s => s.HandleAsync<OrderCardCreateUseCase>(It.IsAny<object>())).ReturnsAsync(presenterFake);
+            var factoryMock = new Mock<FactoryMediator>();
+            factoryMock.Setup(s => s.Get<OrderCardCreateUseCase>()).Returns(new OrderCardCreateUseCase());
+            var mediatorFake = new UseCaseMediator(factory: factoryMock.Object);
             var useCase = new OrderCreateUseCase();
-            useCase.SetMediator(mediatorMock.Object);
-           
-        
+            useCase.SetMediator(mediatorFake);
+
+
 
             // action
             _ = useCase.HandleAsync(request);

@@ -6,26 +6,25 @@ using edk.Kchef.Application.Fusc;
 using edk.Kchef.Domain.Common.Base;
 using Microsoft.AspNetCore.Mvc;
 
-namespace edk.Kchef.Application.Features.GetProducts
+namespace edk.Kchef.Application.Features.GetProducts;
+
+public class GetProductsPresenter : PresenterBase<GetProductsRequest, GetProductsResponse>
 {
-    public class GetProductsPresenter : PresenterBase<GetProductsRequest, GetProductsResponse>
+    public override void OnSuccess(GetProductsResponse output, List<Notification> notifications, CancellationToken cancellationToken)
     {
-        public override void OnSuccess(GetProductsResponse output, List<Notification> notifications, CancellationToken cancellationToken)
+        Success = true;
+        Response = output;
+
+        if (output == null || !output.Products.Any())
         {
-            Success = true;
-            Response = output;
-
-            if (output == null || !output.Products.Any())
-            {
-                ViewResponse = new NotFoundResult();
-            }
-            else
-            {
-
-                ViewResponse = new OkObjectResult(output);
-            }
-
-
+            ViewResponse = new NotFoundResult();
         }
+        else
+        {
+
+            ViewResponse = new OkObjectResult(output);
+        }
+
+
     }
 }
