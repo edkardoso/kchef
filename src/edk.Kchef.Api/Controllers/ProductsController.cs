@@ -20,7 +20,7 @@ public class ProductsController : BaseController
 {
 
 
-    public ProductsController(IMediatorUseCase mediator) 
+    public ProductsController(IMediatorUseCase mediator)
         : base(mediator)
     {
     }
@@ -28,9 +28,9 @@ public class ProductsController : BaseController
     [HttpGet(Name = "GetProducts")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> GetAsync([FromServices] GetProductsUseCase useCase,[FromQuery] GetProductsRequest request)
+    public async Task<ActionResult> GetAsync([FromQuery] GetProductsRequest request)
     {
-        var presenter = await useCase.HandleAsync(request);
+        var presenter = await _mediator.HandleAsync<GetProductsUseCase>(request);
 
         return presenter.ViewResponse;
 

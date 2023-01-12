@@ -6,6 +6,7 @@ namespace edk.Kchef.Application.Fusc
 {
     public interface IUseCase
     {
+        Task<IPresenter> HandleAsync(dynamic input);
     }
     public interface IUseCase<TInput, TOutput> : IUseCase
     {

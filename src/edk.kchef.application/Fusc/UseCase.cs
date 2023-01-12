@@ -9,13 +9,9 @@ using MediatR;
 
 namespace edk.Kchef.Application.Fusc;
 
-
-
 public abstract class UseCase<TRequest, TResponse> :
-    IUseCase<TRequest, TResponse>,
-    IRequestHandler<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
-{ 
+    IUseCase<TRequest, TResponse>
+{
     private readonly AbstractValidator<TRequest> _validator;
     private readonly IPresenter<TRequest, TResponse> _presenter;
     private bool _complete;
@@ -35,6 +31,7 @@ public abstract class UseCase<TRequest, TResponse> :
         _validator = validator ?? new ValidadorNull<TRequest>();
         _observers = new List<IUseCase>();
     }
+    public async Task<IPresenter> HandleAsync(dynamic input) => await HandleAsync(input);
 
     public async Task<IPresenter<TRequest, TResponse>> HandleAsync(TRequest input)
     {
@@ -48,7 +45,7 @@ public abstract class UseCase<TRequest, TResponse> :
             {
                 _presenter.OnError(input, Notifications);
 
-               // Guard.ArgumentIsTrue(_presenter.Success, nameof(_presenter.Success));
+                // Guard.ArgumentIsTrue(_presenter.Success, nameof(_presenter.Success));
 
                 return _presenter;
             }
@@ -58,7 +55,7 @@ public abstract class UseCase<TRequest, TResponse> :
 
             _presenter.OnSuccess(result, Notifications, cancelationToken);
 
-           // Guard.ArgumentIsFalse(_presenter.Success, nameof(_presenter.Success));
+            // Guard.ArgumentIsFalse(_presenter.Success, nameof(_presenter.Success));
 
             _complete = true;
 

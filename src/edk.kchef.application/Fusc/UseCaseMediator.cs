@@ -67,26 +67,28 @@ public class UseCaseMediator : IMediatorUseCase
     /// <param name="obj"></param>
     /// <param name="sender"></param>
     /// <returns></returns>
-    public async Task<IPresenter<TInput, TOutput>> SendAsync<TReceiver, TInput, TOutput>(dynamic obj, IUseCase<TInput, TOutput> sender)
-        where TReceiver : IUseCase<TInput, TOutput>
+    public async Task<IPresenter> SendAsync<TReceiver>(dynamic obj, IUseCase sender)
+        where TReceiver : IUseCase
     {
 
         var translater = GetTranslater(sender.GetType(), typeof(TReceiver), obj);
 
         var inputReceiver = translater.Convert(obj);
 
-        var useCaseReceiver = (IUseCase<TInput, TOutput>)Provider.GetRequiredService(typeof(TReceiver));
+        var useCaseReceiver = (IUseCase)Provider.GetRequiredService(typeof(TReceiver));
 
         return await useCaseReceiver.HandleAsync(inputReceiver);
 
     }
 
-    public async Task<IPresenter<TInput, TOutput>> HandleAsync<TUseCase, TInput, TOutput>(TInput input)
-        where TUseCase : IUseCase<TInput, TOutput>
+    public async Task<IPresenter> HandleAsync<TUseCase>(dynamic input)
+        where TUseCase : IUseCase
     {
         var useCase = (TUseCase)Provider.GetRequiredService(typeof(TUseCase));
 
-        return await useCase.HandleAsync(input);
+        var presenter = await useCase.HandleAsync(input);
+
+        return presenter;
     }
 
     private ITranlaste GetTranslater(Type sender, Type receiver, dynamic obj)

@@ -9,9 +9,9 @@ public interface IMediatorUseCase
 
     void AddTranslate<TTranlaste>(TTranlaste tranlaste, dynamic obj) where TTranlaste : ITranlaste;
 
-    Task<IPresenter<TInput, TOutput>> SendAsync<TReceiver, TInput, TOutput>(dynamic obj, IUseCase<TInput, TOutput> sender)
-        where TReceiver : IUseCase<TInput, TOutput>;
-    Task<IPresenter<TInput, TOutput>> HandleAsync<TUseCase, TInput, TOutput>(TInput input) where TUseCase : IUseCase<TInput, TOutput>;
+    Task<IPresenter> SendAsync<TReceiver>(dynamic obj, IUseCase sender)
+        where TReceiver : IUseCase;
+    Task<IPresenter> HandleAsync<TUseCase>(dynamic input) where TUseCase : IUseCase;
     void AddUseCase<TService, TValidator, TInput, TOutput>()
         where TService : IUseCase<TInput, TOutput>
         where TValidator : IValidator<TInput>;
