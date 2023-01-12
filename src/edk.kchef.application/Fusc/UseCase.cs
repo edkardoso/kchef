@@ -20,6 +20,7 @@ public abstract class UseCase<TRequest, TResponse> :
     private List<Notification> _notifications = new List<Notification>();
 
 
+    protected IMediatorUseCase Mediator { get; private set; }
     public IPresenter<TRequest, TResponse> Presenter => _presenter;
     public List<Notification> Notifications => _notifications;
 
@@ -113,5 +114,8 @@ public abstract class UseCase<TRequest, TResponse> :
     protected void SetNotification(string message, SeverityType severity)
         => _notifications.Add(new() { Message = message, Severity = severity });
 
-
+    /// <summary>
+    /// Configura o mediator no UseCase
+    /// </summary>
+    public void SetMediator(IMediatorUseCase mediator) => Mediator = mediator;
 }

@@ -5,9 +5,17 @@ namespace edk.Kchef.Application.Fusc;
 
 public static class UseCaseMediatorExtension
 {
-    public static IServiceCollection CreateMediatorUseCase(this IServiceCollection services, Action<UseCaseMediator> mediator)
+    public static IServiceCollection AddMediatorUseCase(this IServiceCollection services, Action<UseCaseMediator> mediator)
     {
-        mediator.Invoke(new UseCaseMediator(services));
+        var instance = new UseCaseMediator(services);
+
+        services.AddScoped<IMediatorUseCase>(x =>
+        {
+            return instance;
+        });
+
+        mediator.Invoke(instance);
+
         return services;
     }
 

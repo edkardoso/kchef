@@ -10,13 +10,10 @@ namespace edk.Kchef.Application.Features.GetProducts
 {
     public class GetProductsUseCase : UseCase<GetProductsRequest, GetProductsResponse>
     {
-        private readonly IMediatorUseCase _mediatorUseCase;
-
         protected override string NameUseCase => "GetProductsUseCase";
 
-        public GetProductsUseCase(IMediatorUseCase mediatorUseCase, GetProductsPresenter presenter) : base(presenter)
+        public GetProductsUseCase(GetProductsPresenter presenter) : base(presenter)
         {
-            _mediatorUseCase = mediatorUseCase;
         }
 
         public override Task<GetProductsResponse> Handle(GetProductsRequest request, CancellationToken cancellationToken)
