@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using edk.Kchef.Domain.Common.Base;
 
-namespace edk.Kchef.Application.Fusc
+namespace edk.Kchef.Application.Fusc.Outputs
 {
     public abstract class OutputPageBase : IOutput
     {

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using edk.Kchef.Application.Fusc.Presenters;
 using edk.Kchef.Domain.Common.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace edk.Kchef.Application.Fusc;
+namespace edk.Kchef.Application.Fusc.Mediator;
 
 public class UseCaseMediator : IMediatorUseCase
 {

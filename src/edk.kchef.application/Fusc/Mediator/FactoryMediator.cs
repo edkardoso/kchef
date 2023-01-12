@@ -1,12 +1,12 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace edk.Kchef.Application.Fusc;
+namespace edk.Kchef.Application.Fusc.Mediator;
 
 public class FactoryMediator
 {
     private readonly IServiceProvider _provider;
-    
+
     // To Unit Tests
     protected FactoryMediator()
     {

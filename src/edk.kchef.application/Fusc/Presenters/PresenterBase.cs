@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using edk.Kchef.Domain.Common.Base;
 
-namespace edk.Kchef.Application.Fusc
+namespace edk.Kchef.Application.Fusc.Presenters
 {
     public abstract class PresenterBase<TInput, TOutput> : IPresenter<TInput, TOutput>
     {
@@ -25,6 +25,6 @@ namespace edk.Kchef.Application.Fusc
         }
 
         public abstract void OnSuccess(TOutput output, List<Notification> notifications, CancellationToken cancellationToken);
-       
+
     }
 }

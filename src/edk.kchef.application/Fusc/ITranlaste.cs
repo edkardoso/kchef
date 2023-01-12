@@ -1,4 +1,5 @@
 ﻿using System;
+using edk.Kchef.Application.Fusc.Mediator;
 
 namespace edk.Kchef.Application.Fusc;
 

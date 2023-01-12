@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using edk.Kchef.Application.Fusc;
+using edk.Kchef.Application.Fusc.Outputs;
 using edk.Kchef.Domain.Common.Base;
 using edk.Kchef.Domain.Products;
 

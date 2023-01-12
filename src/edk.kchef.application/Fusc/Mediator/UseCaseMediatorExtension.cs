@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace edk.Kchef.Application.Fusc;
+namespace edk.Kchef.Application.Fusc.Mediator;
 
 public static class UseCaseMediatorExtension
 {

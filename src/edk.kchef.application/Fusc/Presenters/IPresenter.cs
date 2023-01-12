@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Threading;
 using edk.Kchef.Domain.Common.Base;
 
-namespace edk.Kchef.Application.Fusc
+namespace edk.Kchef.Application.Fusc.Presenters
 {
-    public interface IPresenter {
+    public interface IPresenter
+    {
         bool Success { get; }
         dynamic ViewResponse { get; }
         dynamic Response { get; }
@@ -20,6 +21,6 @@ namespace edk.Kchef.Application.Fusc
 
         new TOutput Response { get; }
 
-      
+
     }
 }

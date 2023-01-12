@@ -36,6 +36,8 @@ namespace edk.Kchef.Application.Features.OrderCreate
 
             orderCard.AddOrder(order);
 
+            Emit(new CreateNewOrderEvent(order, this.GetType()));
+
             return orderCard;
         }
 
