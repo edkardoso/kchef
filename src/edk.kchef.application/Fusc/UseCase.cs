@@ -26,9 +26,10 @@ public abstract class UseCase<TRequest, TResponse> :
 
     protected abstract string NameUseCase { get; }
 
+   
     protected UseCase(IPresenter<TRequest, TResponse> presenter = default, AbstractValidator<TRequest> validator = default)
     {
-        _presenter = presenter ?? new PresenterNull<TRequest, TResponse>();
+        _presenter = presenter ?? new PresenterDefault<TRequest, TResponse>();
         _validator = validator ?? new ValidadorNull<TRequest>();
         _observers = new List<IUseCase>();
     }
@@ -52,7 +53,7 @@ public abstract class UseCase<TRequest, TResponse> :
             }
 
             var cancelationToken = new CancellationToken();
-            var result = await Handle(input, cancelationToken);
+            var result = await ExecuteAsync(input, cancelationToken);
 
             _presenter.OnSuccess(result, Notifications, cancelationToken);
 
@@ -83,7 +84,7 @@ public abstract class UseCase<TRequest, TResponse> :
     /// <summary>
     /// Ação a ser executada quando os dados de entrada forem validados com sucesso
     /// </summary>
-    public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
+    public abstract Task<TResponse> ExecuteAsync(TRequest request, CancellationToken cancellationToken);
 
     /// <summary>
     /// Ação posterior ao OnExecute

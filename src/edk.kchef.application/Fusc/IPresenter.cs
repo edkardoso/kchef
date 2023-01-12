@@ -8,6 +8,7 @@ namespace edk.Kchef.Application.Fusc
     public interface IPresenter {
         bool Success { get; }
         dynamic ViewResponse { get; }
+        dynamic Response { get; }
     }
     public interface IPresenter<TInput, TOutput> : IPresenter
     {
@@ -17,7 +18,7 @@ namespace edk.Kchef.Application.Fusc
 
         void OnSuccess(TOutput output, List<Notification> notifications, CancellationToken cancellationToken);
 
-        TOutput Response { get; }
+        new TOutput Response { get; }
 
       
     }

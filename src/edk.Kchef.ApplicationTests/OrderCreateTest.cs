@@ -1,6 +1,8 @@
 ﻿using edk.Kchef.Application.Features.OrderCardCreate;
 using edk.Kchef.Application.Features.OrderCreate;
+using edk.Kchef.Application.Fusc;
 using edk.Kchef.Domain.Ordes;
+using Moq;
 
 namespace edk.Kchef.ApplicationTests
 {
@@ -10,15 +12,8 @@ namespace edk.Kchef.ApplicationTests
         public void MustCreateNewOrderAndBeforeAnOrderCard()
         {
             // arrange
-            var validatorOrderCard = new OrderCardCreateValidator();
-            var useCaseOrderCard = new OrderCardCreateUseCase(null, validatorOrderCard);
-            var validator = new OrderCreateValidator();
-            var useCase = new OrderCreateUseCase(useCaseOrderCard, validator: validator);
-
             var produto1 = new ItemMenu("P1", "Produto 1", 10);
             var produto2 = new ItemMenu("P2", "Produto 2", 10);
-
-
             var request = new OrderCreateRequest()
             {
                 DeskInternalCode = "Mesa12",
@@ -27,6 +22,13 @@ namespace edk.Kchef.ApplicationTests
                     new(produto2)
                 }
             };
+            var mediatorMock = new Mock<IMediatorUseCase>();
+            var presenterFake = new PresenterDefault<OrderCardCreateRequest, OrderCard>(new OrderCard(new Desk(request.DeskInternalCode)));
+            mediatorMock.Setup(s => s.HandleAsync<OrderCardCreateUseCase>(It.IsAny<object>())).ReturnsAsync(presenterFake);
+            var useCase = new OrderCreateUseCase();
+            useCase.SetMediator(mediatorMock.Object);
+           
+        
 
             // action
             _ = useCase.HandleAsync(request);

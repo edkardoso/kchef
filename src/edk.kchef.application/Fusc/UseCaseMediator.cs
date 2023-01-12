@@ -2,41 +2,24 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using edk.Kchef.Domain.Common.Extensions;
-using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace edk.Kchef.Application.Fusc;
 
 public class UseCaseMediator : IMediatorUseCase
 {
-    private readonly IServiceCollection _services;
-    private readonly Dictionary<string, Type> _translateDictionary = new Dictionary<string, Type>();
+    
+    private readonly Dictionary<string, Type> _translateDictionary = new();
 
-    protected FactoryMediator Factory { get; private set; }
+    public FactoryMediator Factory { get; private set; }
+    public UseCaseServices Services { get; private set; }
     public UseCaseMediator(IServiceCollection services)
     {
-        _services = services;
+        Services =  new UseCaseServices(services);
     }
 
-    public UseCaseMediator AddScoped<TService>() where TService : IUseCase
-        => AddScoped(typeof(TService));
-
-    public UseCaseMediator AddScoped<TService, TValidator, TInput, TOutput>()
-        where TService : IUseCase<TInput, TOutput>
-        where TValidator : IValidator<TInput>
-        => AddScoped(typeof(TService))
-            .AddScoped(typeof(TValidator));
-
-    public UseCaseMediator AddScoped<TService, TValidator, TPresenter>()
-       where TService : IUseCase
-       where TValidator : IValidator
-       where TPresenter : IPresenter
-        => AddScoped(typeof(TService))
-        .AddScoped(typeof(TValidator))
-        .AddScoped(typeof(TPresenter));
-
     public void Builder()
-        => Factory = new FactoryMediator(_services.BuildServiceProvider());
+        => Factory = new FactoryMediator(Services.BuildServiceProvider());
 
     /// <summary>
     /// Obtém uma instância do UseCase e o executa
@@ -78,18 +61,12 @@ public class UseCaseMediator : IMediatorUseCase
     public void RegisterTranslate<TTranslaste>(TTranslaste translaste, dynamic obj)
        where TTranslaste : ITranlaste
     {
-        AddScoped(typeof(TTranslaste));
+        Services.AddScoped(typeof(TTranslaste));
 
         string key = UseCaseMediatorExtension.GetNameTranslate(translaste.Sender, translaste.Receiver, obj);
 
         _translateDictionary.AddIfNotContains(key, translaste.GetType());
 
-    }
-
-    private UseCaseMediator AddScoped(Type type)
-    {
-        _services.AddScoped(type);
-        return this;
     }
 
     private ITranlaste GetTranslater(Type sender, Type receiver, dynamic obj)

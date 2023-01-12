@@ -8,12 +8,12 @@ namespace edk.Kchef.Application.Features.OrderCardCreate
 {
     public class OrderCardCreateUseCase : UseCase<OrderCardCreateRequest, OrderCard>
     {
-        public OrderCardCreateUseCase(IPresenter<OrderCardCreateRequest, OrderCard> presenter, AbstractValidator<OrderCardCreateRequest> validator) : base(presenter, validator)
+        public OrderCardCreateUseCase() : base(null, null)
         {
         }
         protected override string NameUseCase => "OrderCardCreateUseCase";
 
-        public override Task<OrderCard> Handle(OrderCardCreateRequest request, CancellationToken cancellationToken)
+        public override Task<OrderCard> ExecuteAsync(OrderCardCreateRequest request, CancellationToken cancellationToken)
         {
             var desk = new Desk(request.InternalDeskCode);
 

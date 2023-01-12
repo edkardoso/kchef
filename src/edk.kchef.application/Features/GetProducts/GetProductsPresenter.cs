@@ -8,25 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace edk.Kchef.Application.Features.GetProducts
 {
-    public class GetProductsPresenter : IPresenter<GetProductsRequest, GetProductsResponse>
+    public class GetProductsPresenter : PresenterBase<GetProductsRequest, GetProductsResponse>
     {
-        public GetProductsResponse Response { get; private set; }
-
-        public bool Success { get; private set; }
-
-        public dynamic ViewResponse { get; private set; }
-
-        public void OnError(GetProductsRequest input, List<Notification> notifications)
-        {
-
-        }
-
-        public void OnException(GetProductsRequest input, Exception exception)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnSuccess(GetProductsResponse output, List<Notification> notifications, CancellationToken cancellationToken)
+        public override void OnSuccess(GetProductsResponse output, List<Notification> notifications, CancellationToken cancellationToken)
         {
             Success = true;
             Response = output;

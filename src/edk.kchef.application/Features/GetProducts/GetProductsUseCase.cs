@@ -16,7 +16,7 @@ namespace edk.Kchef.Application.Features.GetProducts
         {
         }
 
-        public override Task<GetProductsResponse> Handle(GetProductsRequest request, CancellationToken cancellationToken)
+        public override Task<GetProductsResponse> ExecuteAsync(GetProductsRequest request, CancellationToken cancellationToken)
         {
             var products = new List<Product>()
             {

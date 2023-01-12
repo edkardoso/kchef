@@ -11,7 +11,7 @@ namespace edk.Kchef.ApplicationTests
             //arrange
             var request = new OrderCardCreateRequest() { InternalDeskCode= "1234" };
             var validator = new OrderCardCreateValidator();
-            var useCase = new OrderCardCreateUseCase(null, validator);
+            var useCase = new OrderCardCreateUseCase();
 
             //action 
             _ = useCase.HandleAsync(request);

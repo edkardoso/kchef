@@ -10,7 +10,7 @@ builder.Services.AddContext(builder.Configuration.GetConnectionString("DefaultCo
 
 builder.Services.AddMediatorUseCase((mediator) =>
 {
-    mediator.AddScoped<GetProductsUseCase, GetProductsValidator, GetProductsPresenter>();
+    mediator.Services.AddScoped<GetProductsUseCase, GetProductsValidator, GetProductsPresenter>();
     mediator.Builder();
 
 });
