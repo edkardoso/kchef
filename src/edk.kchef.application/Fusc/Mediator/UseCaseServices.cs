@@ -1,8 +1,9 @@
 ﻿using System;
+using edk.Kchef.Application.Fusc.Presenters;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace edk.Kchef.Application.Fusc;
+namespace edk.Kchef.Application.Fusc.Mediator;
 
 public class UseCaseServices
 {

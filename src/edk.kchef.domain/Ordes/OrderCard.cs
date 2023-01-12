@@ -10,7 +10,6 @@ namespace edk.Kchef.Domain.Ordes
         private readonly OrderSetting _orderSetting;
         private bool _chargeServiceTax;
 
-
         public OrderCard(Desk desk)
         {
             Desk = desk;

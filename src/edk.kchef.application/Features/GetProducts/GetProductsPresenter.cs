@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using edk.Kchef.Application.Fusc;
+using edk.Kchef.Application.Fusc.Presenters;
 using edk.Kchef.Domain.Common.Base;
 using Microsoft.AspNetCore.Mvc;
 

@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using edk.Kchef.Application.Fusc.Events;
+using edk.Kchef.Application.Fusc.Mediator;
+using edk.Kchef.Application.Fusc.Presenters;
+using edk.Kchef.Application.Fusc.Validators;
 using edk.Kchef.Domain.Common.Base;
 using FluentValidation;
 using FluentValidation.Results;
-using MediatR;
 
 namespace edk.Kchef.Application.Fusc;
 
@@ -16,8 +19,9 @@ public abstract class UseCase<TRequest, TResponse> :
     private readonly IPresenter<TRequest, TResponse> _presenter;
     private bool _complete;
     private ValidationResult _validationResult;
-    private readonly List<IUseCase> _observers;
-    private List<Notification> _notifications = new List<Notification>();
+    private readonly Dictionary<string, IUseCase> _observers;
+    private readonly List<IUseCaseEvent> _useCaseEvents = new();
+    private List<Notification> _notifications = new();
 
 
     protected IMediatorUseCase Mediator { get; private set; }
@@ -26,12 +30,12 @@ public abstract class UseCase<TRequest, TResponse> :
 
     protected abstract string NameUseCase { get; }
 
-   
+
     protected UseCase(IPresenter<TRequest, TResponse> presenter = default, AbstractValidator<TRequest> validator = default)
     {
         _presenter = presenter ?? new PresenterDefault<TRequest, TResponse>();
         _validator = validator ?? new ValidadorNull<TRequest>();
-        _observers = new List<IUseCase>();
+        _observers = new();
     }
     public async Task<IPresenter> HandleAsync(dynamic input) => await HandleAsync(input);
 
@@ -39,12 +43,15 @@ public abstract class UseCase<TRequest, TResponse> :
     {
         try
         {
+            _useCaseEvents.Add(new UseCaseStartEvent(this));
+
             _validationResult = _validator.Validate(input);
 
             _notifications.AddRange(_validationResult.Errors);
 
             if (_notifications.HasError())
             {
+                _useCaseEvents.Add(new UseCaseErrorEvent(this));
                 _presenter.OnError(input, Notifications);
 
                 // Guard.ArgumentIsTrue(_presenter.Success, nameof(_presenter.Success));
@@ -55,27 +62,33 @@ public abstract class UseCase<TRequest, TResponse> :
             var cancelationToken = new CancellationToken();
             var result = await ExecuteAsync(input, cancelationToken);
 
+            _useCaseEvents.Add(new UseCaseSuccessEvent(this));
             _presenter.OnSuccess(result, Notifications, cancelationToken);
 
             // Guard.ArgumentIsFalse(_presenter.Success, nameof(_presenter.Success));
 
             _complete = true;
+            _useCaseEvents.Add(new UseCaseCompleteEvent(this));
 
-            Notify();
 
 
         }
         catch (Exception ex)
         {
+            _useCaseEvents.Add(new UseCaseExceptionEvent(this));
+
             // Pode ser necessário adicionar um novo evento virtual de Exceção
             // para cenários onde há a necessidade de se desfazer alguma ação anterior
             // em caso de exceção. Embora o OnComplete(false) talvez já permita isso.
             _presenter.OnException(input, ex);
+            
 
         }
         finally
         {
             OnComplete(_complete, _notifications);
+            Notify();
+
         }
 
         return _presenter;
@@ -95,19 +108,47 @@ public abstract class UseCase<TRequest, TResponse> :
         return;
     }
 
-    private void Notify()
-        => _observers.ForEach(o => ((IUseCase<TRequest, TResponse>)o).Handle(this));
-
-    public void Subscribe(IUseCase observer)
+    protected void Emit(IUseCaseEvent useCaseEvent)
     {
-        if (!_observers.Contains(observer))
-            _observers.Add(observer);
+        var typeEvent = useCaseEvent.GetType();
+
+        foreach (var key in _observers.Keys)
+        {
+            var observer = _observers[key];
+            var nameEvent = GetNameEvent(observer, typeEvent);
+
+            if (key.Equals(nameEvent))
+            {
+                observer.OnEventAsync(useCaseEvent);
+            }
+        }
+    }
+
+    private void Notify()
+        => _useCaseEvents.ForEach(@event => Emit(@event));
+
+    public void Subscribe<TEvent>(IUseCase observer) where TEvent : IUseCaseEvent
+    {
+        var key = GetNameEvent(observer, typeof(TEvent));
+
+        if (!_observers.ContainsKey(key))
+            _observers.Add(key, observer);
+    }
+
+    private string GetNameEvent(IUseCase observer, Type typeEvent)
+    {
+
+        return observer.GetType().Name + typeEvent.GetType().Name;
     }
 
     /// <summary>
     /// Método que será invocado pelo método Notify, quando estiver observando outro UseCase
     /// </summary>
-    public virtual void Handle(IUseCase<TRequest, TResponse> other) { }
+    public virtual Task OnEventAsync(IUseCaseEvent useCaseEvent)
+    {
+        return Task.CompletedTask;
+
+    }
 
     /// <summary>
     /// Permite adicionar Notificações

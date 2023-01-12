@@ -1,6 +1,6 @@
 ﻿using edk.Kchef.Application.Features.OrderCardCreate;
 using edk.Kchef.Application.Features.OrderCreate;
-using edk.Kchef.Application.Fusc;
+using edk.Kchef.Application.Fusc.Mediator;
 using edk.Kchef.Domain.Ordes;
 using Moq;
 

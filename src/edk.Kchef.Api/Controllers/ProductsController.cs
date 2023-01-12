@@ -1,5 +1,5 @@
 ﻿using edk.Kchef.Application.Features.GetProducts;
-using edk.Kchef.Application.Fusc;
+using edk.Kchef.Application.Fusc.Mediator;
 using Microsoft.AspNetCore.Mvc;
 
 namespace edk.Kchef.Api.Controllers;

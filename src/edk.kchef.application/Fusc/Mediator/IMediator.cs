@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
-namespace edk.Kchef.Application.Fusc;
+using edk.Kchef.Application.Fusc.Presenters;
+
+namespace edk.Kchef.Application.Fusc.Mediator;
 
 public interface IMediatorUseCase
 {
