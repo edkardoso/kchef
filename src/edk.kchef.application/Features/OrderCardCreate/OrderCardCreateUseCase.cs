@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using edk.Kchef.Application.Fusc;
+using edk.Fusc.Core;
 using edk.Kchef.Domain.Ordes;
 
 namespace edk.Kchef.Application.Features.OrderCardCreate;
@@ -12,7 +12,7 @@ public class OrderCardCreateUseCase : UseCase<OrderCardCreateRequest, OrderCard>
     }
     protected override string NameUseCase => "OrderCardCreateUseCase";
 
-    public override Task<OrderCard> ExecuteAsync(OrderCardCreateRequest request, CancellationToken cancellationToken)
+    public override Task<OrderCard> OnExecuteAsync(OrderCardCreateRequest request, CancellationToken cancellationToken)
     {
         var desk = new Desk(request.InternalDeskCode);
 

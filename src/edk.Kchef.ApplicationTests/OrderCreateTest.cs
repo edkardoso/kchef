@@ -1,6 +1,6 @@
-﻿using edk.Kchef.Application.Features.OrderCardCreate;
+﻿using edk.Fusc.Core.Mediator;
+using edk.Kchef.Application.Features.OrderCardCreate;
 using edk.Kchef.Application.Features.OrderCreate;
-using edk.Kchef.Application.Fusc.Mediator;
 using edk.Kchef.Domain.Ordes;
 using Moq;
 
@@ -34,13 +34,13 @@ namespace edk.Kchef.ApplicationTests
             _ = useCase.HandleAsync(request);
 
             // assert
-            Assert.Equal(request.DeskInternalCode, useCase.Presenter.Response.Desk.InternalCode);
-            Assert.Equal(1, useCase.Presenter.Response.Orders.Count);
-            Assert.NotEqual(Guid.Empty, useCase.Presenter.Response.Orders.FirstOrDefault()?.Id);
-            Assert.NotEqual(Guid.Empty, useCase.Presenter.Response.Orders.FirstOrDefault()?.Id);
-            Assert.Equal(2, useCase.Presenter.Response.Orders.FirstOrDefault()?.Items.Count);
-            Assert.Equal(produto1, useCase.Presenter.Response.Orders.FirstOrDefault()?.Items.FirstOrDefault()?.Item);
-            Assert.Equal(produto2, useCase.Presenter.Response.Orders.LastOrDefault()?.Items.LastOrDefault()?.Item);
+            Assert.Equal(request.DeskInternalCode, useCase.Presenter.Output.Desk.InternalCode);
+            Assert.Equal(1, useCase.Presenter.Output.Orders.Count);
+            Assert.NotEqual(Guid.Empty, useCase.Presenter.Output.Orders.FirstOrDefault()?.Id);
+            Assert.NotEqual(Guid.Empty, useCase.Presenter.Output.Orders.FirstOrDefault()?.Id);
+            Assert.Equal(2, useCase.Presenter.Output.Orders.FirstOrDefault()?.Items.Count);
+            Assert.Equal(produto1, useCase.Presenter.Output.Orders.FirstOrDefault()?.Items.FirstOrDefault()?.Item);
+            Assert.Equal(produto2, useCase.Presenter.Output.Orders.LastOrDefault()?.Items.LastOrDefault()?.Item);
         }
     }
 }

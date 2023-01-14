@@ -18,8 +18,8 @@ namespace edk.Kchef.ApplicationTests
 
             //assert
             Assert.True(useCase.Presenter.Success);
-            Assert.NotEqual(Guid.Empty, useCase.Presenter.Response.Id);
-            Assert.Equal(useCase.Presenter.Response.Desk.InternalCode, request.InternalDeskCode);
+            Assert.NotEqual(Guid.Empty, useCase.Presenter.Output.Id);
+            Assert.Equal(useCase.Presenter.Output.Desk.InternalCode, request.InternalDeskCode);
         }
     }
 }

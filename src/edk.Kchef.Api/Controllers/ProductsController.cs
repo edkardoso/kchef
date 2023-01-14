@@ -1,5 +1,5 @@
-﻿using edk.Kchef.Application.Features.GetProducts;
-using edk.Kchef.Application.Fusc.Mediator;
+﻿using edk.Fusc.Core.Mediator;
+using edk.Kchef.Application.Features.GetProducts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace edk.Kchef.Api.Controllers;
@@ -32,7 +32,7 @@ public class ProductsController : BaseController
     {
         var presenter = await _mediator.HandleAsync<GetProductsUseCase>(request);
 
-        return presenter.ViewResponse;
+        return presenter.ViewOutput;
 
     }
 }

@@ -1,9 +1,6 @@
-﻿using edk.Kchef.Domain.Ordes;
-using MediatR;
-
-namespace edk.Kchef.Application.Features.OrderCardCreate
+﻿namespace edk.Kchef.Application.Features.OrderCardCreate
 {
-    public class OrderCardCreateRequest:IRequest<OrderCard>
+    public class OrderCardCreateRequest
     {
         public string InternalDeskCode { get; set; }
     }

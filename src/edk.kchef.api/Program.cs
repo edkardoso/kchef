@@ -1,5 +1,5 @@
+using edk.Fusc.Core.Mediator;
 using edk.Kchef.Application.Features.GetProducts;
-using edk.Kchef.Application.Fusc.Mediator;
 using edk.Kchef.IoC.Extensions;
 
 
@@ -7,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddContext(builder.Configuration.GetConnectionString("DefaultConnection"));
-
 builder.Services.AddMediatorUseCase((mediator) =>
 {
     mediator.Services.AddScoped<GetProductsUseCase, GetProductsValidator, GetProductsPresenter>();

@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using edk.Fusc.Core;
 using edk.Kchef.Application.Features.OrderCardCreate;
-using edk.Kchef.Application.Fusc;
 using edk.Kchef.Domain.Ordes;
 using edk.Kchef.Domain.Users;
 
@@ -11,7 +11,7 @@ namespace edk.Kchef.Application.Features.OrderCreate
     {
         protected override string NameUseCase => "OrderCreateUseCase";
 
-        public override async Task<OrderCard> ExecuteAsync(OrderCreateRequest request, CancellationToken cancellationToken)
+        public override async Task<OrderCard> OnExecuteAsync(OrderCreateRequest request, CancellationToken cancellationToken)
         {
             OrderCard orderCard;
 
@@ -22,7 +22,7 @@ namespace edk.Kchef.Application.Features.OrderCreate
                     InternalDeskCode = request.DeskInternalCode
                 });
 
-                orderCard = presenter.Response;
+                orderCard = presenter.Output;
             }
             else
             {
@@ -36,7 +36,7 @@ namespace edk.Kchef.Application.Features.OrderCreate
 
             orderCard.AddOrder(order);
 
-            Emit(new CreateNewOrderEvent(order, this.GetType()));
+            Emit(new CreateNewOrderEvent(order, this));
 
             return orderCard;
         }

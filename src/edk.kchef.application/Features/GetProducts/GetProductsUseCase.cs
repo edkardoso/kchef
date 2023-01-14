@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using edk.Kchef.Application.Fusc;
+using edk.Fusc.Core;
 using edk.Kchef.Domain.Ordes;
 using edk.Kchef.Domain.Products;
 
@@ -16,15 +15,16 @@ public class GetProductsUseCase : UseCase<GetProductsRequest, GetProductsRespons
     {
     }
 
-    public override Task<GetProductsResponse> ExecuteAsync(GetProductsRequest request, CancellationToken cancellationToken)
+    public override Task<GetProductsResponse> OnExecuteAsync(GetProductsRequest request, CancellationToken cancellationToken)
     {
         var products = new List<Product>()
         {
             new Product("Product 1", UnitType.Kg, 1),
-            new Product("Product 2", UnitType.Litro, 10),
-            new Product("Product 3", UnitType.Peca, 111)
+            new Product("Product 2", UnitType.Litro, 10), new Product("Product 3", UnitType.Peca, 111)
         };
 
-        return Task.FromResult(new GetProductsResponse(products, Notifications));
+        return Task.FromResult(new GetProductsResponse(products, new List<Fusc.Core.Validators.Notification>()));
     }
+
+   
 }

@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\edk.Fusc\edk.Fusc.csproj" />
     <ProjectReference Include="..\edk.kchef.domain\edk.Kchef.Domain.csproj" />
   </ItemGroup>
 
