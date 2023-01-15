@@ -6,7 +6,7 @@ namespace edk.Fusc.Core.Presenters
     {
         bool Success { get; }
         dynamic ViewOutput { get; }
-        dynamic Output { get; }
+        Option<dynamic> Output { get; }
 
         void SetSuccess(bool value);
     }
@@ -18,7 +18,8 @@ namespace edk.Fusc.Core.Presenters
 
         void OnSuccess(TOutput output, List<Notification> notifications, CancellationToken cancellationToken);
 
-        new TOutput Output { get; }
+        new Option<TOutput> Output { get; }
+        void SetOutput(TOutput output);
 
 
     }

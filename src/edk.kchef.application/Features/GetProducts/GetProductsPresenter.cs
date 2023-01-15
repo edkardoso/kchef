@@ -10,7 +10,6 @@ public class GetProductsPresenter : PresenterBase<GetProductsRequest, GetProduct
 {
     public override void OnSuccess(GetProductsResponse output, List<Fusc.Core.Validators.Notification> notifications, CancellationToken cancellationToken)
     {
-        Output = output;
 
         if (output == null || !output.Products.Any())
         {

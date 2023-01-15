@@ -9,7 +9,7 @@ namespace edk.Kchef.ApplicationTests
     public class OrderCreateTest
     {
         [Fact]
-        public void MustCreateNewOrderAndBeforeAnOrderCard()
+        public async Task MustCreateNewOrderAndBeforeAnOrderCardAsync()
         {
             // arrange
             var produto1 = new ItemMenu("P1", "Produto 1", 10);
@@ -28,19 +28,18 @@ namespace edk.Kchef.ApplicationTests
             var useCase = new OrderCreateUseCase();
             useCase.SetMediator(mediatorFake);
 
-
-
             // action
-            _ = useCase.HandleAsync(request);
+            var presenter = await useCase.HandleAsync(request);
+            var orders = presenter.Output.GetValue().Orders;
 
             // assert
-            Assert.Equal(request.DeskInternalCode, useCase.Presenter.Output.Desk.InternalCode);
-            Assert.Equal(1, useCase.Presenter.Output.Orders.Count);
-            Assert.NotEqual(Guid.Empty, useCase.Presenter.Output.Orders.FirstOrDefault()?.Id);
-            Assert.NotEqual(Guid.Empty, useCase.Presenter.Output.Orders.FirstOrDefault()?.Id);
-            Assert.Equal(2, useCase.Presenter.Output.Orders.FirstOrDefault()?.Items.Count);
-            Assert.Equal(produto1, useCase.Presenter.Output.Orders.FirstOrDefault()?.Items.FirstOrDefault()?.Item);
-            Assert.Equal(produto2, useCase.Presenter.Output.Orders.LastOrDefault()?.Items.LastOrDefault()?.Item);
+            Assert.Equal(request.DeskInternalCode, presenter.Output.GetValue().Desk.InternalCode);
+            Assert.Equal(1, orders.Count);
+            Assert.NotEqual(Guid.Empty, orders.FirstOrDefault()?.Id);
+            Assert.NotEqual(Guid.Empty, orders.FirstOrDefault()?.Id);
+            Assert.Equal(2, orders.FirstOrDefault()?.Items.Count);
+            Assert.Equal(produto1, orders.FirstOrDefault()?.Items.FirstOrDefault()?.Item);
+            Assert.Equal(produto2, orders.LastOrDefault()?.Items.LastOrDefault()?.Item);
         }
     }
 }

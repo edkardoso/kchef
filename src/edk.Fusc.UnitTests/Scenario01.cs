@@ -16,7 +16,7 @@ namespace edk.Fusc.UnitTests
             var presenter = await useCase.HandleAsync(10);
 
             // assert
-            Assert.Equal(100, presenter.Output);
+            Assert.Equal(100, presenter.Output.GetValue());
         }
 
         // Caso de uso sem Input
@@ -30,7 +30,7 @@ namespace edk.Fusc.UnitTests
             var presenter = await useCase.HandleAsync(NoValue.Create);
 
             // assert
-            Assert.Equal(0, presenter.Output);
+            Assert.Equal(0, presenter.Output.GetValue());
         }
 
         // Caso de uso sem retorno
@@ -44,7 +44,7 @@ namespace edk.Fusc.UnitTests
             var presenter = await useCase.HandleAsync(0);
 
             // assert
-            Assert.Equal(NoValue.Create, presenter.Output);
+            Assert.Equal(NoValue.Create, presenter.Output.GetValue());
         }
 
         // Caso de Uso sem Input e sem retorno
@@ -58,7 +58,7 @@ namespace edk.Fusc.UnitTests
             var presenter = await useCase.HandleAsync(NoValue.Create);
 
             // assert
-            Assert.Equal(NoValue.Create, presenter.Output);
+            Assert.Equal(NoValue.Create, presenter.Output.GetValue());
         }
     }
 }

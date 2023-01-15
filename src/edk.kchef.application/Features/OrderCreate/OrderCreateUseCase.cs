@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using edk.Fusc.Core;
 using edk.Kchef.Application.Features.OrderCardCreate;
@@ -22,7 +23,10 @@ namespace edk.Kchef.Application.Features.OrderCreate
                     InternalDeskCode = request.DeskInternalCode
                 });
 
-                orderCard = presenter.Output;
+                if (presenter.Output.IsNull)
+                    throw new Exception("Comanda não gerada.");
+
+                orderCard = presenter.Output.GetValue();
             }
             else
             {

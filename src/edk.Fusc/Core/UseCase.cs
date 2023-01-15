@@ -57,9 +57,10 @@ public abstract class UseCase<TInput, TOutput> :
             var result = await OnExecuteAsync(input, cancelationToken);
 
             _useCaseEvents.Add(new UseCaseSuccessEvent(this));
+            _presenter.SetOutput(result);
+            _presenter.SetSuccess(true);
             _presenter.OnSuccess(result, Notifications, cancelationToken);
 
-            _presenter.SetSuccess(true);
 
             _complete = true;
             _useCaseEvents.Add(new UseCaseCompleteEvent(this));
@@ -71,9 +72,9 @@ public abstract class UseCase<TInput, TOutput> :
 
 
             if (OnActionException(ex, input))
-                throw;
-
-            _presenter.OnException(ex, input);
+            {
+                _presenter.OnException(ex, input);
+            }
         }
         finally
         {
@@ -107,7 +108,7 @@ public abstract class UseCase<TInput, TOutput> :
 
     protected virtual bool OnActionException(Exception exception, TInput input)
     {
-        return false;
+        return true;
     }
 
     protected void Emit(IUseCaseEvent useCaseEvent)
@@ -156,3 +157,4 @@ public abstract class UseCase<TInput, TOutput> :
     /// </summary>
     public void SetMediator(IMediatorUseCase mediator) => Mediator = mediator;
 }
+

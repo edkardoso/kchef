@@ -6,7 +6,7 @@ namespace edk.Kchef.ApplicationTests
     public class OrderCardCreateTest
     {
         [Fact]
-        public void MustCreateNewOrderCardForDesk()
+        public async Task MustCreateNewOrderCardForDeskAsync()
         {
             //arrange
             var request = new OrderCardCreateRequest() { InternalDeskCode= "1234" };
@@ -14,12 +14,12 @@ namespace edk.Kchef.ApplicationTests
             var useCase = new OrderCardCreateUseCase();
 
             //action 
-            _ = useCase.HandleAsync(request);
+            var presenter = await useCase.HandleAsync(request);
 
             //assert
-            Assert.True(useCase.Presenter.Success);
-            Assert.NotEqual(Guid.Empty, useCase.Presenter.Output.Id);
-            Assert.Equal(useCase.Presenter.Output.Desk.InternalCode, request.InternalDeskCode);
+            Assert.True(presenter.Success);
+            Assert.NotEqual(Guid.Empty, presenter.Output.GetValue().Id);
+            Assert.Equal(presenter.Output.GetValue().Desk.InternalCode, request.InternalDeskCode);
         }
     }
 }

@@ -8,13 +8,10 @@
         }
         public PresenterDefault(TOutput output)
         {
-            Output = output;
+            Output = Option<TOutput>.New(output);
         }
 
         public override void OnSuccess(TOutput output, List<Validators.Notification> notifications, CancellationToken cancellationToken)
-        {
-            Output = output;
-            Success = true;
-        }
+        {}
     }
 }
