@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace edk.Fusc.UnitTests.Help.Scenario01;
+namespace edk.Fusc.UnitTests.Helper.Passwords;
 
 public static class Password
 {
@@ -13,7 +13,7 @@ public static class Password
 
             const string chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-            StringBuilder container = new StringBuilder();
+            StringBuilder container = new();
             Random rnd = new();
 
             for (int i = 0; i < lenght; i++)

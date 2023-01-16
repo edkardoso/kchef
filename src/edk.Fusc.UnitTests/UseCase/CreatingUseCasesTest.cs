@@ -1,11 +1,9 @@
-using System.Drawing;
 using edk.Fusc.Core;
-using edk.Fusc.Core.Outputs;
-using edk.Fusc.UnitTests.Help.Scenario01;
+using edk.Fusc.UnitTests.Helper.Passwords;
 
 namespace edk.Fusc.UnitTests.UseCase;
 
-public class OnExecuteAsyncTest
+public class CreatingUseCasesTest
 {
     // UseCase com Input e Output definidos
 
@@ -14,7 +12,7 @@ public class OnExecuteAsyncTest
     {
         // arrange
         var passwordSize = 10;
-        var useCase = new GeneratorPassword();
+        var useCase = new GeneratorPassoword();
 
         // action
         var presenter = await useCase.HandleAsync(passwordSize);
@@ -42,7 +40,6 @@ public class OnExecuteAsyncTest
     {
         // arrange
         var useCase = new GeneratorPasswordVoid();
-        var initialValue = useCase.Value;
         var passwordSize = 10;
 
 
@@ -60,7 +57,7 @@ public class OnExecuteAsyncTest
     public async Task ShouldReturnNoValue_Version()
     {
         // arrange
-        var useCase = new GeneratorPassowordVoidOtherVersion();
+        var useCase = new GeneratorPasswordVoidOtherVersion();
         var initialValue = useCase.Value;
 
         // action

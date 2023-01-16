@@ -1,6 +1,6 @@
 ﻿using edk.Fusc.Core;
 
-namespace edk.Fusc.UnitTests.Help.Scenario01;
+namespace edk.Fusc.UnitTests.Helper.Passwords;
 
 internal class GeneratorPasswordVoid : UseCase<int, NoValue>
 {
@@ -15,6 +15,6 @@ internal class GeneratorPasswordVoid : UseCase<int, NoValue>
         return await NoValueTask();
     }
 
-   
+
 }
 
