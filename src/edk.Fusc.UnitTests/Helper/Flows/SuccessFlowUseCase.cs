@@ -15,8 +15,11 @@ internal class SuccessFlowUseCase : UseCase<NoValue, List<string>>
         Methods = new();
     }
 
-    protected override void OnActionBeforeStart(NoValue input, IUser user) 
-        => Methods.Add(ActionMethodsName.OnActionBeforeStart);
+    protected override bool OnActionBeforeStart(NoValue input, IUser user)
+    {
+        Methods.Add(ActionMethodsName.OnActionBeforeStart);
+        return base.OnActionBeforeStart(input, user);
+    }
 
     public override Task<List<string>> OnExecuteAsync(NoValue input, CancellationToken cancellationToken)
     {
@@ -25,6 +28,9 @@ internal class SuccessFlowUseCase : UseCase<NoValue, List<string>>
         return Task.FromResult(Methods);
     }
 
-    protected override void OnActionComplete(bool completed, List<Notification> notifications) 
-        => Methods.Add(ActionMethodsName.OnActionComplete);
+    protected override bool OnActionComplete(bool completed, List<Notification> notifications)
+    {
+        Methods.Add(ActionMethodsName.OnActionComplete);
+        return base.OnActionComplete(completed, notifications); 
+    }
 }

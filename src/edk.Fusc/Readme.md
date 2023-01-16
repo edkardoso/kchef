@@ -82,17 +82,22 @@ o seu escopo a cada ação correspondente.
 > O retorno deste método deverá ser o mesmo tipado no _UseCase_ e ficará disponível na propriedade Output do _Presenter_ associado. O FUSC garantirá que todo _UseCase_ sempre tenha
 um _Presenter_ por padrão. Saiba mais detalhes no tópico Presenter.
 
-### _**OnActionException**_
+#### _**OnActionException**_
 > **Opcional**. Se durante a execução de do código implementado no _UseCase_ ocorrer uma exceção o método correspondente a esta ação será disparado.
 > Parâmetros do método:
 > - **_exception_**: Exceção ocorrida
 > - **_input_**: dados de entrada
 >- **_user_** : Dados do usuário (é **obrigatório** o uso do componente _Mediator_ para ter essa informação)
 
+> Caso deseje interromper o fluxo do caso de uso retorne _False_. O padrão é _True_.
+
 
 #### _**OnActionComplete**_ 
 
 
+Com exceção ao método _OnExecuteAsync_, todos os demais exigem um retorno boleano.
+Para **continuar** o fluxo normal retorne **_True_** ou o método pai que tem esse comportamento como padrão.
+Se desejar **interromper** o fluxo do _UseCase_ retorne **_False_**.
 
 builder.Services.AddMediatorUseCase((mediator) =>
 {

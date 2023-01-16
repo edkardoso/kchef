@@ -28,10 +28,13 @@ internal class ErrorFlowUseCase : UseCase<int, List<string>>
 
     protected override string NameUseCase => "ErrorFlowUseCase";
 
-   
 
-    protected override void OnActionBeforeStart(int input, IUser user)
-        => Methods.Add(ActionMethodsName.OnActionBeforeStart);
+
+    protected override bool OnActionBeforeStart(int input, IUser user)
+    {
+        Methods.Add(ActionMethodsName.OnActionBeforeStart);
+        return base.OnActionBeforeStart(input, user);
+    }
 
     public override Task<List<string>> OnExecuteAsync(int input, CancellationToken cancellationToken)
     {
@@ -40,6 +43,9 @@ internal class ErrorFlowUseCase : UseCase<int, List<string>>
         return Task.FromResult(Methods);
     }
 
-    protected override void OnActionComplete(bool completed, List<Notification> notifications)
-        => Methods.Add(ActionMethodsName.OnActionComplete);
+    protected override bool OnActionComplete(bool completed, List<Notification> notifications)
+    {
+        Methods.Add(ActionMethodsName.OnActionComplete);
+        return base.OnActionComplete(completed, notifications);
+    }
 }

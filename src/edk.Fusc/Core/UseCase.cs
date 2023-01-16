@@ -96,10 +96,7 @@ public abstract class UseCase<TInput, TOutput> :
         IUser GetUserOrDefault() => Mediator is null ? new UserNull() : ((UseCaseMediator)Mediator).User;
     }
 
-    protected virtual void OnActionBeforeStart(TInput input, IUser user)
-    {
-
-    }
+    protected virtual bool OnActionBeforeStart(TInput input, IUser user) => true;
 
 
     /// <summary>
@@ -111,15 +108,9 @@ public abstract class UseCase<TInput, TOutput> :
     /// Ação posterior ao OnExecute
     /// </summary>
     /// <param name="completed">Será true se OnExecute tiver sido executado completamente.</param>
-    protected virtual void OnActionComplete(bool completed, List<Notification> notifications)
-    {
-        return;
-    }
+    protected virtual bool OnActionComplete(bool completed, List<Notification> notifications) => true;
 
-    protected virtual bool OnActionException(Exception exception, TInput input, IUser user)
-    {
-        return true;
-    }
+    protected virtual bool OnActionException(Exception exception, TInput input, IUser user) => true;
 
     protected void Emit(IUseCaseEvent useCaseEvent)
     {
