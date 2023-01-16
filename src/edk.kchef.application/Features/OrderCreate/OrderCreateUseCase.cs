@@ -6,45 +6,46 @@ using edk.Kchef.Application.Features.OrderCardCreate;
 using edk.Kchef.Domain.Ordes;
 using edk.Kchef.Domain.Users;
 
-namespace edk.Kchef.Application.Features.OrderCreate
+namespace edk.Kchef.Application.Features.OrderCreate;
+
+public class OrderCreateUseCase : UseCase<OrderCreateRequest, OrderCard>
 {
-    public class OrderCreateUseCase : UseCase<OrderCreateRequest, OrderCard>
+    protected override string NameUseCase => "OrderCreateUseCase";
+
+    public override async Task<OrderCard> OnExecuteAsync(OrderCreateRequest request, CancellationToken cancellationToken)
     {
-        protected override string NameUseCase => "OrderCreateUseCase";
+        OrderCard orderCard = null;
 
-        public override async Task<OrderCard> OnExecuteAsync(OrderCreateRequest request, CancellationToken cancellationToken)
+        if (request.NoCard())
         {
-            OrderCard orderCard;
-
-            if (request.NoCard())
+            var presenter = await Mediator.HandleAsync<OrderCardCreateUseCase>(new OrderCardCreateRequest()
             {
-                var presenter = await Mediator.HandleAsync<OrderCardCreateUseCase>(new OrderCardCreateRequest()
-                {
-                    InternalDeskCode = request.DeskInternalCode
-                });
+                InternalDeskCode = request.DeskInternalCode
+            });
 
-                if (presenter.Output.IsNull)
-                    throw new Exception("Comanda não gerada.");
 
-                orderCard = presenter.Output.GetValue();
-            }
-            else
-            {
-                // buscar a comanda no repositório
-                var desk = new Desk(request.DeskInternalCode);
-                orderCard = new OrderCard(desk);
-            }
+            presenter.Output.Match(
+                (o) => orderCard = o,
+                () => throw new Exception("Comanda não gerada.")
+            );
 
-            var order = new Order(new Waiter());
-            order.AddRange(request.Items);
-
-            orderCard.AddOrder(order);
-
-            Emit(new CreateNewOrderEvent(order, this));
-
-            return orderCard;
+        }
+        else
+        {
+            // buscar a comanda no repositório
+            var desk = new Desk(request.DeskInternalCode);
+            orderCard = new OrderCard(desk);
         }
 
+        var order = new Order(new Waiter());
+        order.AddRange(request.Items);
 
+        orderCard.AddOrder(order);
+
+        Emit(new CreateNewOrderEvent(order, this));
+
+        return orderCard;
     }
+
+
 }

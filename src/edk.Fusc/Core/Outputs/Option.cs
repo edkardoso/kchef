@@ -1,4 +1,6 @@
-﻿public struct Option<T> : IOption<T>
+﻿namespace edk.Fusc.Core.Outputs;
+
+public struct Option<T> : IOption<T>
 {
     internal Option(T value)
     {
@@ -18,11 +20,11 @@
     public static Option<T> New(T value)
        => new(value);
 
-    public T GetValue()
+    public T GetValueOrDefault(T valueDefault)
     {
-        if (IsNull)
-            throw new ArgumentNullException(nameof(Value));
+        if (valueDefault == null)
+            throw new ArgumentNullException(nameof(valueDefault));
 
-        return Value;
+        return Value ?? valueDefault;
     }
 }

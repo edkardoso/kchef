@@ -1,8 +1,9 @@
-﻿public interface IOption<T>
+﻿namespace edk.Fusc.Core.Outputs;
+public interface IOption<T>
 {
     bool IsNull { get; }
     bool NotIsNull { get; }
 
-    T GetValue();
+    T GetValueOrDefault(T valueDefault);
     TR Match<TR>(Func<T, TR> some, Func<TR> none);
 }

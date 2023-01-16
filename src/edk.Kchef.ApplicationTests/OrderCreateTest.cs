@@ -30,16 +30,16 @@ namespace edk.Kchef.ApplicationTests
 
             // action
             var presenter = await useCase.HandleAsync(request);
-            var orders = presenter.Output.GetValue().Orders;
+            var orderCard = presenter.Output.GetValueOrDefault(new OrderCard(new Desk(string.Empty)));
 
             // assert
-            Assert.Equal(request.DeskInternalCode, presenter.Output.GetValue().Desk.InternalCode);
-            Assert.Equal(1, orders.Count);
-            Assert.NotEqual(Guid.Empty, orders.FirstOrDefault()?.Id);
-            Assert.NotEqual(Guid.Empty, orders.FirstOrDefault()?.Id);
-            Assert.Equal(2, orders.FirstOrDefault()?.Items.Count);
-            Assert.Equal(produto1, orders.FirstOrDefault()?.Items.FirstOrDefault()?.Item);
-            Assert.Equal(produto2, orders.LastOrDefault()?.Items.LastOrDefault()?.Item);
+            Assert.Equal(request.DeskInternalCode, orderCard.Desk.InternalCode);
+            Assert.Equal(1, orderCard.Orders.Count);
+            Assert.NotEqual(Guid.Empty, orderCard.Orders.FirstOrDefault()?.Id);
+            Assert.NotEqual(Guid.Empty, orderCard.Orders.FirstOrDefault()?.Id);
+            Assert.Equal(2, orderCard.Orders.FirstOrDefault()?.Items.Count);
+            Assert.Equal(produto1, orderCard.Orders.FirstOrDefault()?.Items.FirstOrDefault()?.Item);
+            Assert.Equal(produto2, orderCard.Orders.LastOrDefault()?.Items.LastOrDefault()?.Item);
         }
     }
 }

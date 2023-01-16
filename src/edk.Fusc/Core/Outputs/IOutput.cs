@@ -1,9 +1,8 @@
 ﻿using edk.Fusc.Core.Validators;
 
-namespace edk.Fusc.Core.Outputs
+namespace edk.Fusc.Core.Outputs;
+
+public interface IOutput
 {
-    public interface IOutput
-    {
-        List<Notification> Messages { get; set; }
-    }
+    List<Notification> Messages { get; set; }
 }
