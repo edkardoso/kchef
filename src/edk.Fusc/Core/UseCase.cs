@@ -35,7 +35,9 @@ public abstract class UseCase<TInput, TOutput> :
     {
         try
         {
-            OnActionBeforeStart(input, NameUseCase);
+            var user = Mediator is null ? new UserNull() : ((UseCaseMediator)Mediator).User;
+
+            OnActionBeforeStart(input, NameUseCase, user);
 
             _useCaseEvents.Add(new UseCaseStartEvent(this));
 
@@ -86,7 +88,7 @@ public abstract class UseCase<TInput, TOutput> :
 
     }
 
-    protected virtual void OnActionBeforeStart(TInput input, string name)
+    protected virtual void OnActionBeforeStart(TInput input, string nameUseCase, IUser user)
     {
 
     }

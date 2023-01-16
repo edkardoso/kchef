@@ -70,13 +70,12 @@ Desta maneira já estamos aptos a criar os nossos _UseCases_.
 ### Métodos de Ação
 
 #### _**OnExecuteAsync**_
-> **É obrigatório**. Deve conter a principal lógica da funcionalidade. No seu desenvolvimento deve-se tomar o cuidado de não ferir as fronteiras dos outros métodos de ação.
-> Por exemplo, vamos considerar o cenário da execução de um log que deve ser registrado no inicio das funcionalidades. Uma boa estratégia seria aplicá-lo no método _OnActionBeforeStart_. 
-> Isso, inclusive, me daria a oportunidade de criar um _UseCase_ base do qual todos meus outros _UseCases_ herdariam.
+> **Obrigatório**. Deve conter a principal lógica da funcionalidade. No seu desenvolvimento deve-se tomar o cuidado de não ferir as fronteiras dos outros métodos de ação.
+
 #### _**OnActionBeforeStart**_ 
-> **Opcional**. Um outro bom uso deste método é realizar a validação do dado de entrada (input).
-> Isso no caso de você não optar por usar o _Validator_ que é alternativa especializada para essa ação. Veja mais sobre ele no tópico correspondente.
-> Como parâmetros desse método, além do _Input_ e do _Nome do UseCase_  você poderá receber o Id, Nome e Compania do usuário. Para essas informações complementares será necessário
+> **Opcional**. Qualquer comportamento que anteceda o inicío da lógica principal pode ser desenvolvida nele, como por exemplo um registro de log ou ainda uma validação
+> dos dados de entrada. Embora que para este cenário de validação seria mais apropriado utilizad o componente _Validator_. Veja mais sobre ele no tópico correspondente.
+> Como parâmetros do método OnActionBeforeStart, temos o _Input_, o _Nome do UseCase_ e ainda poderá existir os dados de identificação do usuário. Para essas informações complementares será necessário
 > o uso do componente _UseCaseMediator_. 
 #### _**OnActionComplete**_ 
 - _**OnActionException**_ 

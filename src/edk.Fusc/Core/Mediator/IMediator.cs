@@ -12,4 +12,6 @@ public interface IMediatorUseCase
     UseCaseServices Services { get; }
 
     FactoryMediator Factory { get; }
+
+    void SetUser(IUser user);
 }

@@ -11,6 +11,8 @@ public class UseCaseMediator : IMediatorUseCase
     public virtual FactoryMediator Factory { get; private set; }
     public UseCaseServices Services { get; private set; }
 
+    internal IUser User { get; private set; }
+
     public UseCaseMediator(UseCaseServices services = default, FactoryMediator factory = default)
     {
         Services = services;
@@ -81,4 +83,6 @@ public class UseCaseMediator : IMediatorUseCase
 
         return (ITranlaste)Factory.Get(translateType);
     }
+
+    public void SetUser(IUser user) => User = user;
 }
