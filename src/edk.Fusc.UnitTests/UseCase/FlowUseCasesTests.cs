@@ -38,4 +38,20 @@ public class FlowUseCasesTests
 
 
     }
+
+    [Fact]
+    public async Task WhenErrorFlow()
+    {
+        // arrange
+        var useCase = new ErrorFlowUseCase(new ErrorFlowValidator());
+
+        // action
+        var presenter = await useCase.HandleAsync(-1);
+
+        // assert
+        Assert.Equal(ActionMethodsName.OnActionBeforeStart, useCase.Methods[0]);
+        Assert.Equal(ActionMethodsName.OnActionComplete, useCase.Methods[1]);
+
+
+    }
 }
