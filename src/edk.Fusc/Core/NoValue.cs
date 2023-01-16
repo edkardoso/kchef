@@ -7,5 +7,6 @@ public struct NoValue
     public static NoValue Create => new();
 
     public static NoValue Null => new(true);
+
     public bool IsNull { get; }
 }

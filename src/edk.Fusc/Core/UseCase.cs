@@ -17,6 +17,7 @@ public abstract class UseCase<TInput, TOutput> :
     private readonly Dictionary<string, IUseCase> _observers;
     private readonly List<IUseCaseEvent> _useCaseEvents = new();
     private List<Notification> _notifications = new();
+    private TInput _input;
 
     protected IMediatorUseCase Mediator { get; private set; }
     public IPresenter<TInput, TOutput> Presenter => _presenter;
@@ -33,22 +34,28 @@ public abstract class UseCase<TInput, TOutput> :
 
     public async Task<IPresenter<TInput, TOutput>> HandleAsync(TInput input)
     {
+        _input = input;
+        return await HandleAsync();
+    }
+
+    public async Task<IPresenter<TInput, TOutput>> HandleAsync()
+    {
         try
         {
-            var user = Mediator is null ? new UserNull() : ((UseCaseMediator)Mediator).User;
+            IUser user = GetUserOrDefault();
 
-            OnActionBeforeStart(input, NameUseCase, user);
+            OnActionBeforeStart(_input, user);
 
             _useCaseEvents.Add(new UseCaseStartEvent(this));
 
-            _validationResult = _validator.Validate(input);
+            _validationResult = _validator.Validate(_input);
 
             _notifications.AddRange(_validationResult.Errors);
 
             if (_notifications.HasError())
             {
                 _useCaseEvents.Add(new UseCaseErrorEvent(this));
-                _presenter.OnError(input, Notifications);
+                _presenter.OnError(_input, Notifications);
 
                 _presenter.SetSuccess(false);
 
@@ -56,7 +63,7 @@ public abstract class UseCase<TInput, TOutput> :
             }
 
             var cancelationToken = new CancellationToken();
-            var result = await OnExecuteAsync(input, cancelationToken);
+            var result = await OnExecuteAsync(_input, cancelationToken);
 
             _useCaseEvents.Add(new UseCaseSuccessEvent(this));
             _presenter.SetOutput(result);
@@ -73,9 +80,9 @@ public abstract class UseCase<TInput, TOutput> :
             _useCaseEvents.Add(new UseCaseExceptionEvent(this));
 
 
-            if (OnActionException(ex, input))
+            if (OnActionException(ex, _input, GetUserOrDefault()))
             {
-                _presenter.OnException(ex, input);
+                _presenter.OnException(ex, _input);
             }
         }
         finally
@@ -86,9 +93,10 @@ public abstract class UseCase<TInput, TOutput> :
 
         return _presenter;
 
+        IUser GetUserOrDefault() => Mediator is null ? new UserNull() : ((UseCaseMediator)Mediator).User;
     }
 
-    protected virtual void OnActionBeforeStart(TInput input, string nameUseCase, IUser user)
+    protected virtual void OnActionBeforeStart(TInput input, IUser user)
     {
 
     }
@@ -108,7 +116,7 @@ public abstract class UseCase<TInput, TOutput> :
         return;
     }
 
-    protected virtual bool OnActionException(Exception exception, TInput input)
+    protected virtual bool OnActionException(Exception exception, TInput input, IUser user)
     {
         return true;
     }
@@ -158,5 +166,7 @@ public abstract class UseCase<TInput, TOutput> :
     /// Configura o mediator no UseCase
     /// </summary>
     public void SetMediator(IMediatorUseCase mediator) => Mediator = mediator;
+
+    protected async Task<NoValue> NoValueTask() => await Task.FromResult(NoValue.Create);
 }
 

@@ -69,16 +69,29 @@ Desta maneira já estamos aptos a criar os nossos _UseCases_.
 
 ### Métodos de Ação
 
-#### _**OnExecuteAsync**_
-> **Obrigatório**. Deve conter a principal lógica da funcionalidade. No seu desenvolvimento deve-se tomar o cuidado de não ferir as fronteiras dos outros métodos de ação.
-
 #### _**OnActionBeforeStart**_ 
-> **Opcional**. Qualquer comportamento que anteceda o inicío da lógica principal pode ser desenvolvida nele, como por exemplo um registro de log ou ainda uma validação
-> dos dados de entrada. Embora que para este cenário de validação seria mais apropriado utilizad o componente _Validator_. Veja mais sobre ele no tópico correspondente.
-> Como parâmetros do método OnActionBeforeStart, temos o _Input_, o _Nome do UseCase_ e ainda poderá existir os dados de identificação do usuário. Para essas informações complementares será necessário
-> o uso do componente _UseCaseMediator_. 
+> **Opcional**. Qualquer comportamento que anteceda o inicío da lógica principal deveria ser neste método, como por exemplo um registro de log ou ainda uma validação
+> dos dados de entrada. Contudo, para um cenário de validação recomendamos a utilização do componente _Validator_. Veja mais sobre ele no tópico correspondente.
+> Parâmetros do método:
+> - **_input_**: dados de entrada
+>- **_user_** : Dados do usuário (é **obrigatório** o uso do componente _Mediator_ para ter essa informação)
+
+#### _**OnExecuteAsync**_
+> **Obrigatório**. Deve conter a principal lógica da funcionalidade. Para uma melhor organização, no seu desenvolvimento, devem-se respeitar as fronteiras de cada método, restrigindo
+o seu escopo a cada ação correspondente. 
+> O retorno deste método deverá ser o mesmo tipado no _UseCase_ e ficará disponível na propriedade Output do _Presenter_ associado. O FUSC garantirá que todo _UseCase_ sempre tenha
+um _Presenter_ por padrão. Saiba mais detalhes no tópico Presenter.
+
+### _**OnActionException**_
+> **Opcional**. Se durante a execução de do código implementado no _UseCase_ ocorrer uma exceção o método correspondente a esta ação será disparado.
+> Parâmetros do método:
+> - **_exception_**: Exceção ocorrida
+> - **_input_**: dados de entrada
+>- **_user_** : Dados do usuário (é **obrigatório** o uso do componente _Mediator_ para ter essa informação)
+
+
 #### _**OnActionComplete**_ 
-- _**OnActionException**_ 
+
 
 
 builder.Services.AddMediatorUseCase((mediator) =>
