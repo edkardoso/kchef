@@ -14,6 +14,7 @@ public abstract class UseCase<TInput, TOutput> :
     private readonly AbstractValidator<TInput> _validator;
     private readonly IPresenter<TInput, TOutput> _presenter;
     private bool _complete;
+    private bool _stop;
     private ValidationResult _validationResult;
     private readonly Dictionary<string, IUseCase> _observers;
     private readonly List<IUseCaseEvent> _useCaseEvents = new();
@@ -22,8 +23,11 @@ public abstract class UseCase<TInput, TOutput> :
 
     protected IMediatorUseCase Mediator { get; private set; }
     public IPresenter<TInput, TOutput> Presenter => _presenter;
-    public IReadOnlyCollection<Notification> Notifications => _notifications ?? new();
+    public virtual IReadOnlyCollection<Notification> Notifications => _notifications ?? new();
     protected abstract string NameUseCase { get; }
+
+    protected UseCase():this(null, null)
+    {}
 
     protected UseCase(IPresenter<TInput, TOutput> presenter = default, AbstractValidator<TInput> validator = default)
     {
@@ -41,14 +45,15 @@ public abstract class UseCase<TInput, TOutput> :
 
     public async Task<IPresenter<TInput, TOutput>> HandleAsync()
     {
-        var stop = false;
-
         try
         {
-            stop = !OnActionBeforeStart(_input, GetUserOrDefault());
+            _stop = !OnActionBeforeStart(_input, GetUserOrDefault());
 
-            if (stop)
+            if (_stop)
+            {
+                _presenter.OnErrorValidation(_input, Notifications);
                 return _presenter;
+            }
 
             _useCaseEvents.Add(new UseCaseStartEvent(this));
 
@@ -56,9 +61,9 @@ public abstract class UseCase<TInput, TOutput> :
 
             _notifications.AddRange(_validationResult.Errors);
 
-            _presenter.SetSuccess(_notifications.NoErrors());
+            _presenter.SetSuccess(Notifications.ToList().NoErrors());
 
-            if (_notifications.HasError())
+            if (Notifications.HasError())
             {
                 _presenter.OnErrorValidation(_input, Notifications);
 
@@ -92,7 +97,7 @@ public abstract class UseCase<TInput, TOutput> :
         }
         finally
         {
-            if (!stop && OnActionComplete(_complete, _notifications))
+            if (!_stop && OnActionComplete(_complete, Notifications))
             {
                 _useCaseEvents.Add(new UseCaseCompleteEvent(this));
 

@@ -76,7 +76,11 @@ Desta maneira já estamos aptos a criar os nossos _UseCases_.
 > - **_input_**: dados de entrada
 >- **_user_** : Dados do usuário (é **obrigatório** o uso do componente _Mediator_ para ter essa informação)
 
-> Este método emite um respectivo evento para todos os _UseCases_ inscritos.
+> Caso deseje interromper o fluxo do caso de uso retorne _False_ neste momento. 
+> Isso acarretará na invocação do método _Presenter.OnErrorValidation_ e a saída do _UseCase_.
+> Saiba mais sobre o _Presenter_ e seus métodos na seção correspondente.
+
+> Caso o _UseCase_ tenha seu fluxo contínuo, logo após a execução do _OnActionBeforeStart_ será emitido o evento _UseCaseStartEvent_ para todos os _UseCases_ observadores.
 
 
 #### _**OnExecuteAsync**_

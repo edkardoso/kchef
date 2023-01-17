@@ -1,6 +1,7 @@
-﻿namespace edk.Fusc.UnitTests.Helper.Flows;
+﻿namespace edk.Fusc.UnitTests.Helper;
 
-public static class ActionMethodsName {
+public static class ActionMethodsName
+{
 
     public static string OnActionBeforeStart = "OnActionBeforeStart";
     public static string OnExecuteAsync = "OnExecuteAsync";

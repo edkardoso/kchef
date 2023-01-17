@@ -1,81 +1,89 @@
-﻿using edk.Fusc.UnitTests.Helper.Flows;
-
+﻿using edk.Fusc.Core;
+using edk.Fusc.Core.Mediator;
+using edk.Fusc.Core.Validators;
+using edk.Fusc.UnitTests.Helper;
+using Moq;
+using Moq.Protected;
 
 namespace edk.Fusc.UnitTests.UseCase;
 
 public class FlowUseCasesTests
 {
-    #region Action methods invoked by Flow
     [Fact]
-    public async Task ShouldReturnThreeMethodsInListWhenSuccessFlow()
+    public async Task ShouldOnlyInvokeMethodsOfNormalFlow()
     {
         // arrange
-        var useCase = new SuccessFlowUseCase();
+        var useCaseMock = new Mock<UseCase<NoValue, bool>>() { CallBase = true }; // callbase=true não substitui o método deixando o comportamento padrão
+        var useCase = useCaseMock.Object;
+
+        // action
+        _ = await useCase.HandleAsync();
+
+        // assert
+        useCaseMock.Protected().Verify(ActionMethodsName.OnActionBeforeStart, Times.Once(), ItExpr.IsAny<NoValue>(), ItExpr.IsAny<IUser>());
+        useCaseMock.Verify(s => s.OnExecuteAsync(It.IsAny<NoValue>(), It.IsAny<CancellationToken>()), Times.Once());
+        useCaseMock.Protected().Verify(ActionMethodsName.OnActionComplete, Times.Once(), ItExpr.IsAny<bool>(), ItExpr.IsAny<IReadOnlyCollection<Notification>>());
+        useCaseMock.Protected().Verify(ActionMethodsName.OnActionException, Times.Never(), ItExpr.IsAny<Exception>(), ItExpr.IsAny<NoValue>(), ItExpr.IsAny<IUser>());
+
+    }
+
+
+    [Fact]
+    public async Task MustStopExecutionAndNotInvokeAnotherMethodWhenOnActionBeforeStartReturFalse()
+    {
+        // arrange
+        var useCaseMock = new Mock<UseCase<NoValue, bool>>();
+        useCaseMock.Protected()
+            .Setup<bool>(ActionMethodsName.OnActionBeforeStart, ItExpr.IsAny<NoValue>(), ItExpr.IsAny<UserNull>())
+            .Returns(false);
+
+        var useCase = useCaseMock.Object;
+
+        // action
+        _ = await useCase.HandleAsync();
+
+        // assert
+        useCaseMock.Verify(s => s.OnExecuteAsync(It.IsAny<NoValue>(), It.IsAny<CancellationToken>()), Times.Never());
+        useCaseMock.Protected().Verify(ActionMethodsName.OnActionComplete, Times.Never(), ItExpr.IsAny<bool>(), ItExpr.IsAny<IReadOnlyCollection<Notification>>());
+        useCaseMock.Protected().Verify(ActionMethodsName.OnActionException, Times.Never(), ItExpr.IsAny<Exception>(), ItExpr.IsAny<NoValue>(), ItExpr.IsAny<IUser>());
+    }
+
+
+
+    [Fact]
+    public async Task MustStopExecutionAndInvokeOnActionCompleteWhenThereAreErrorNotificationsAfterOnActionBeforeStart()
+    {
+        // arrange
+        var useCaseMock = new Mock<UseCase<NoValue, bool>>() { CallBase = true };
+        useCaseMock.Setup(s => s.Notifications).Returns(new List<Notification>() { Notification.Error("error") });
+        var useCase = useCaseMock.Object;
 
         // action
         var presenter = await useCase.HandleAsync();
 
         // assert
-        Assert.Equal(3, useCase.Methods.Count);
-        Assert.Equal(ActionMethodsName.OnActionBeforeStart, useCase.Methods[0]);
-        Assert.Equal(ActionMethodsName.OnExecuteAsync, useCase.Methods[1]);
-        Assert.Equal(ActionMethodsName.OnActionComplete, useCase.Methods[2]);
+        useCaseMock.Protected().Verify(ActionMethodsName.OnActionBeforeStart, Times.Once(), ItExpr.IsAny<NoValue>(), ItExpr.IsAny<IUser>());
+        useCaseMock.Protected().Verify(ActionMethodsName.OnActionComplete, Times.Once(), ItExpr.IsAny<bool>(), ItExpr.IsAny<IReadOnlyCollection<Notification>>());
+        useCaseMock.Verify(s => s.OnExecuteAsync(It.IsAny<NoValue>(), It.IsAny<CancellationToken>()), Times.Never());
+        useCaseMock.Protected().Verify(ActionMethodsName.OnActionException, Times.Never(), ItExpr.IsAny<Exception>(), ItExpr.IsAny<NoValue>(), ItExpr.IsAny<IUser>());
     }
 
+
     [Fact]
-    public async Task ShouldReturnFourMethodsInListWhenExceptionFlow()
+    public async Task ShouldInvokeAllMethodsToExceptionFlowWhenAnExceptionOccursInOnExecuteAsync()
     {
         // arrange
-        var useCase = new ExceptionFlowUseCase();
+        var useCaseMock = new Mock<UseCase<NoValue, string>>() { CallBase = true };
+        useCaseMock.Setup(s => s.OnExecuteAsync(It.IsAny<NoValue>(), It.IsAny<CancellationToken>())).Throws<Exception>();
+        var useCase = useCaseMock.Object;
 
         // action
         var presenter = await useCase.HandleAsync();
 
         // assert
-        Assert.Equal(4, useCase.Methods.Count);
-        Assert.Equal(ActionMethodsName.OnActionBeforeStart, useCase.Methods[0]);
-        Assert.Equal(ActionMethodsName.OnExecuteAsync, useCase.Methods[1]);
-        Assert.Equal(ActionMethodsName.OnActionException, useCase.Methods[2]);
-        Assert.Equal(ActionMethodsName.OnActionComplete, useCase.Methods[3]);
-
-
+        useCaseMock.Protected().Verify(ActionMethodsName.OnActionBeforeStart, Times.Once(), ItExpr.IsAny<NoValue>(), ItExpr.IsAny<IUser>());
+        useCaseMock.Protected().Verify(ActionMethodsName.OnActionException, Times.Once(), ItExpr.IsAny<Exception>(), ItExpr.IsAny<NoValue>(), ItExpr.IsAny<IUser>());
+        useCaseMock.Protected().Verify(ActionMethodsName.OnActionComplete, Times.Once(), ItExpr.IsAny<bool>(), ItExpr.IsAny<IReadOnlyCollection<Notification>>());
     }
 
-    [Fact]
-    public async Task ShouldReturnTwoMethodsInListWhenErrorFlow()
-    {
-        // arrange
-        var useCase = new ErrorFlowUseCase(new ErrorFlowValidator());
-
-        // action
-        var presenter = await useCase.HandleAsync(-1);
-
-        // assert
-        Assert.Equal(2, useCase.Methods.Count);
-        Assert.Equal(ActionMethodsName.OnActionBeforeStart, useCase.Methods[0]);
-        Assert.Equal(ActionMethodsName.OnActionComplete, useCase.Methods[1]);
-
-
-    }
-    #endregion
-
-
-    // Se o retorno de OnActionBeforeStart for igual a falso não deve continuar o processo.
-    // Nem mesmo o método OnComplete deve ser chamado
-    [Fact]
-    public async Task OnActionBeforeStart_MustInterruptExecutionWhenReturningFalseMethod()
-    {
-        // arrange
-        var useCase = new BeforeStartUseCase();
-
-        // action
-        var presenter = await useCase.HandleAsync();
-
-        // assert
-        Assert.Equal(1, useCase.Notifications?.Count);
-        Assert.Contains(ActionMethodsName.OnActionBeforeStart, useCase.Notifications?.Select(n=>n.Message));
-     
-    }
-
-   
 }
