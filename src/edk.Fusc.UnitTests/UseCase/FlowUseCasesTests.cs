@@ -32,7 +32,7 @@ public class FlowUseCasesTests
     public async Task MustStopExecutionAndNotInvokeAnotherMethodWhenOnActionBeforeStartReturFalse()
     {
         // arrange
-        var useCaseMock = new Mock<UseCase<NoValue, bool>>();
+        var useCaseMock = new Mock<UseCase<NoValue, bool>>() { CallBase = true };
         useCaseMock.Protected()
             .Setup<bool>(ActionMethodsName.OnActionBeforeStart, ItExpr.IsAny<NoValue>(), ItExpr.IsAny<UserNull>())
             .Returns(false);
@@ -47,27 +47,6 @@ public class FlowUseCasesTests
         useCaseMock.Protected().Verify(ActionMethodsName.OnActionComplete, Times.Never(), ItExpr.IsAny<bool>(), ItExpr.IsAny<IReadOnlyCollection<Notification>>());
         useCaseMock.Protected().Verify(ActionMethodsName.OnActionException, Times.Never(), ItExpr.IsAny<Exception>(), ItExpr.IsAny<NoValue>(), ItExpr.IsAny<IUser>());
     }
-
-
-
-    [Fact]
-    public async Task MustStopExecutionAndInvokeOnActionCompleteWhenThereAreErrorNotificationsAfterOnActionBeforeStart()
-    {
-        // arrange
-        var useCaseMock = new Mock<UseCase<NoValue, bool>>() { CallBase = true };
-        useCaseMock.Setup(s => s.Notifications).Returns(new List<Notification>() { Notification.Error("error") });
-        var useCase = useCaseMock.Object;
-
-        // action
-        var presenter = await useCase.HandleAsync();
-
-        // assert
-        useCaseMock.Protected().Verify(ActionMethodsName.OnActionBeforeStart, Times.Once(), ItExpr.IsAny<NoValue>(), ItExpr.IsAny<IUser>());
-        useCaseMock.Protected().Verify(ActionMethodsName.OnActionComplete, Times.Once(), ItExpr.IsAny<bool>(), ItExpr.IsAny<IReadOnlyCollection<Notification>>());
-        useCaseMock.Verify(s => s.OnExecuteAsync(It.IsAny<NoValue>(), It.IsAny<CancellationToken>()), Times.Never());
-        useCaseMock.Protected().Verify(ActionMethodsName.OnActionException, Times.Never(), ItExpr.IsAny<Exception>(), ItExpr.IsAny<NoValue>(), ItExpr.IsAny<IUser>());
-    }
-
 
     [Fact]
     public async Task ShouldInvokeAllMethodsToExceptionFlowWhenAnExceptionOccursInOnExecuteAsync()

@@ -1,10 +1,8 @@
-﻿using System.Threading;
-using edk.Fusc.Core.Events;
+﻿using edk.Fusc.Core.Events;
 using edk.Fusc.Core.Mediator;
 using edk.Fusc.Core.Presenters;
 using edk.Fusc.Core.Validators;
 using FluentValidation;
-using FluentValidation.Results;
 
 namespace edk.Fusc.Core;
 
@@ -15,25 +13,29 @@ public abstract class UseCase<TInput, TOutput> :
     private readonly IPresenter<TInput, TOutput> _presenter;
     private bool _complete;
     private bool _stop;
-    private ValidationResult _validationResult;
+
     private readonly Dictionary<string, IUseCase> _observers;
     private readonly List<IUseCaseEvent> _useCaseEvents = new();
     private List<Notification> _notifications = new();
     private TInput _input;
+    private FlowUseCase<TInput, TOutput> _flow;
 
     protected IMediatorUseCase Mediator { get; private set; }
     public IPresenter<TInput, TOutput> Presenter => _presenter;
     public virtual IReadOnlyCollection<Notification> Notifications => _notifications ?? new();
+
+    public AbstractValidator<TInput> Validator => _validator;
     protected abstract string NameUseCase { get; }
 
-    protected UseCase():this(null, null)
-    {}
+    protected UseCase() : this(null, null)
+    { }
 
     protected UseCase(IPresenter<TInput, TOutput> presenter = default, AbstractValidator<TInput> validator = default)
     {
         _presenter = presenter ?? new PresenterDefault<TInput, TOutput>();
         _validator = validator ?? new ValidadorNull<TInput>();
         _observers = new();
+
     }
     public async Task<IPresenter> HandleAsync(dynamic input) => await HandleAsync(input);
 
@@ -45,67 +47,27 @@ public abstract class UseCase<TInput, TOutput> :
 
     public async Task<IPresenter<TInput, TOutput>> HandleAsync()
     {
+        _flow = new(_input, GetUserOrDefault(), this);
+
         try
         {
-            _stop = !OnActionBeforeStart(_input, GetUserOrDefault());
-
-            if (_stop)
-            {
-                _presenter.OnErrorValidation(_input, Notifications);
-                return _presenter;
-            }
-
-            _useCaseEvents.Add(new UseCaseStartEvent(this));
-
-            _validationResult = _validator.Validate(_input);
-
-            _notifications.AddRange(_validationResult.Errors);
-
-            _presenter.SetSuccess(Notifications.ToList().NoErrors());
-
-            if (Notifications.HasError())
-            {
-                _presenter.OnErrorValidation(_input, Notifications);
-
-                return _presenter;
-            }
-
-            var result = await OnExecuteAsync(_input, Task.Factory.CancellationToken);
-
-            _presenter.SetOutput(result);
-
-            _complete = true;
-
-            _presenter.OnResult(result, Notifications, Task.Factory.CancellationToken);
+             _flow.Start(OnActionBeforeStart)
+                .Validate()
+                .Execute(OnExecuteAsync);
 
         }
         catch (Exception ex)
         {
-
-            if (OnActionException(ex, _input, GetUserOrDefault()))
-            {
-                SetNotification(ex.Message, SeverityType.Error);
-
-                _presenter.OnError(ex, _input);
-            }
-            else
-            {
-                SetNotification(ex.Message, SeverityType.Warning);
-            }
-
+            _flow.Error(OnActionException, ex);
 
         }
         finally
         {
-            if (!_stop && OnActionComplete(_complete, Notifications))
-            {
-                _useCaseEvents.Add(new UseCaseCompleteEvent(this));
+            _flow.Complete(OnActionComplete);
 
-                Notify();
-            }
         }
 
-        return _presenter;
+        return  _presenter;
 
         IUser GetUserOrDefault() => Mediator is null ? new UserNull() : ((UseCaseMediator)Mediator).User;
     }
@@ -164,7 +126,7 @@ public abstract class UseCase<TInput, TOutput> :
     /// <summary>
     /// Permite adicionar Notificações
     /// </summary>
-    protected void SetNotification(string message, SeverityType severity)
+    public void SetNotification(string message, SeverityType severity)
     {
         _notifications.Add(new() { Message = message, Severity = severity });
 
