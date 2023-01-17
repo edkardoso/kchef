@@ -52,12 +52,12 @@ public class FlowUseCase<TInput, TOutput>
         return this;
     }
 
-    public void Execute(Func<TInput, CancellationToken, Task<TOutput>> onExecuteAsync)
+    public async Task ExecuteAsync(Func<TInput, CancellationToken, Task<TOutput>> onExecuteAsync)
     {
         if (Stop)
             return;
 
-        var result = onExecuteAsync.Invoke(_input, Task.Factory.CancellationToken).Result;
+        var result = await onExecuteAsync.Invoke(_input, Task.Factory.CancellationToken);
         _useCase.Presenter.SetOutput(result);
         _complete = true;
         _useCase.Presenter.OnResult(result, _useCase.Notifications, Task.Factory.CancellationToken);

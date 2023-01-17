@@ -11,16 +11,13 @@ public abstract class UseCase<TInput, TOutput> :
 {
     private readonly AbstractValidator<TInput> _validator;
     private readonly IPresenter<TInput, TOutput> _presenter;
-    private bool _complete;
-    private bool _stop;
-
     private readonly Dictionary<string, IUseCase> _observers;
     private readonly List<IUseCaseEvent> _useCaseEvents = new();
-    private List<Notification> _notifications = new();
-    private TInput _input;
-    private FlowUseCase<TInput, TOutput> _flow;
+    private readonly List<Notification> _notifications = new();
+    private TInput? _input;
+    private FlowUseCase<TInput, TOutput>? _flow;
 
-    protected IMediatorUseCase Mediator { get; private set; }
+    protected IMediatorUseCase? Mediator { get; private set; }
     public IPresenter<TInput, TOutput> Presenter => _presenter;
     public virtual IReadOnlyCollection<Notification> Notifications => _notifications ?? new();
 
@@ -29,8 +26,7 @@ public abstract class UseCase<TInput, TOutput> :
 
     protected UseCase() : this(null, null)
     { }
-
-    protected UseCase(IPresenter<TInput, TOutput> presenter = default, AbstractValidator<TInput> validator = default)
+    protected UseCase(IPresenter<TInput, TOutput>? presenter = default, AbstractValidator<TInput>? validator = default)
     {
         _presenter = presenter ?? new PresenterDefault<TInput, TOutput>();
         _validator = validator ?? new ValidadorNull<TInput>();
@@ -47,33 +43,32 @@ public abstract class UseCase<TInput, TOutput> :
 
     public async Task<IPresenter<TInput, TOutput>> HandleAsync()
     {
+        if (_input == null)
+            throw new ArgumentNullException(nameof(_input));
+
         _flow = new(_input, GetUserOrDefault(), this);
 
         try
         {
-             _flow.Start(OnActionBeforeStart)
-                .Validate()
-                .Execute(OnExecuteAsync);
-
+            await _flow.Start(OnActionBeforeStart)
+                       .Validate()
+                       .ExecuteAsync(OnExecuteAsync);
         }
         catch (Exception ex)
         {
             _flow.Error(OnActionException, ex);
-
         }
         finally
         {
             _flow.Complete(OnActionComplete);
-
         }
 
-        return  _presenter;
+        return _presenter;
 
         IUser GetUserOrDefault() => Mediator is null ? new UserNull() : ((UseCaseMediator)Mediator).User;
     }
 
     protected virtual bool OnActionBeforeStart(TInput input, IUser user) => true;
-
 
     /// <summary>
     /// Ação a ser executada quando os dados de entrada forem validados com sucesso
