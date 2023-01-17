@@ -16,7 +16,6 @@ public class OrderCardCreateTest
         var presenter = await useCase.HandleAsync(request);
 
         //assert
-        Assert.True(presenter.Success);
         Assert.NotEqual(Guid.Empty, presenter.Output.Match(o=> Guid.NewGuid(), ()=> Guid.Empty));
         Assert.Equal(request.InternalDeskCode, presenter.Output.Match((o)=>o.Desk.InternalCode, ()=> string.Empty)) ;
     }

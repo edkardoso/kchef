@@ -8,7 +8,7 @@ namespace edk.Kchef.Application.Features.GetProducts;
 
 public class GetProductsPresenter : PresenterBase<GetProductsRequest, GetProductsResponse>
 {
-    public override void OnSuccess(GetProductsResponse output, List<Fusc.Core.Validators.Notification> notifications, CancellationToken cancellationToken)
+    public override void OnResult(GetProductsResponse output, IReadOnlyCollection<Fusc.Core.Validators.Notification> notifications, CancellationToken cancellationToken)
     {
 
         if (output == null || !output.Products.Any())

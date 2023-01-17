@@ -14,11 +14,11 @@ namespace edk.Fusc.Core.Presenters
 
         Option<dynamic> IPresenter.Output => Option<dynamic>.New(Output.Value);
 
-        public virtual void OnError(TInput input, List<Notification> notifications) { }
+        public virtual void OnErrorValidation(TInput input, IReadOnlyCollection<Notification> notifications) { }
 
-        public virtual void OnException(Exception exception, TInput input) { }
+        public virtual void OnError(Exception exception, TInput input) { }
 
-        public virtual void OnSuccess(TOutput output, List<Notification> notifications, CancellationToken cancellationToken) { }
+        public virtual void OnResult(TOutput output, IReadOnlyCollection<Notification> notifications, CancellationToken cancellationToken) { }
 
         public void SetSuccess(bool value) => Success = value;
 

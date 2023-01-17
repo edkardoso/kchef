@@ -10,7 +10,7 @@ namespace edk.Fusc.Core.Presenters
             Output = Option<TOutput>.New(output);
         }
 
-        public override void OnSuccess(TOutput output, List<Validators.Notification> notifications, CancellationToken cancellationToken)
+        public override void OnResult(TOutput output, IReadOnlyCollection<Validators.Notification> notifications, CancellationToken cancellationToken)
         {}
     }
 }

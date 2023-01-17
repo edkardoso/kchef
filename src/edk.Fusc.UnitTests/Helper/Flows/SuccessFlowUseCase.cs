@@ -3,7 +3,6 @@ using edk.Fusc.Core.Mediator;
 using edk.Fusc.Core.Validators;
 
 namespace edk.Fusc.UnitTests.Helper.Flows;
-
 internal class SuccessFlowUseCase : UseCase<NoValue, List<string>>
 {
     public List<string> Methods { get; protected set; }

@@ -76,6 +76,9 @@ Desta maneira já estamos aptos a criar os nossos _UseCases_.
 > - **_input_**: dados de entrada
 >- **_user_** : Dados do usuário (é **obrigatório** o uso do componente _Mediator_ para ter essa informação)
 
+> Este método emite um respectivo evento para todos os _UseCases_ inscritos.
+
+
 #### _**OnExecuteAsync**_
 > **Obrigatório**. Deve conter a principal lógica da funcionalidade. Para uma melhor organização, no seu desenvolvimento, devem-se respeitar as fronteiras de cada método, restrigindo
 o seu escopo a cada ação correspondente. 
@@ -93,11 +96,11 @@ um _Presenter_ por padrão. Saiba mais detalhes no tópico Presenter.
 
 
 #### _**OnActionComplete**_ 
-
-
 Com exceção ao método _OnExecuteAsync_, todos os demais exigem um retorno boleano.
 Para **continuar** o fluxo normal retorne **_True_** ou o método pai que tem esse comportamento como padrão.
 Se desejar **interromper** o fluxo do _UseCase_ retorne **_False_**.
+
+> Este método emite um respectivo evento para todos os _UseCases_ inscritos.
 
 builder.Services.AddMediatorUseCase((mediator) =>
 {

@@ -4,6 +4,9 @@ namespace edk.Fusc.Core.Validators;
 
 public static class NotificationCollectionExtension
 {
+    public static bool NoErrors(this List<Notification> notifications)
+        => !notifications.HasError();
+
     public static bool HasError(this List<Notification> notifications)
         => notifications.Any(n => n.Severity.Equals(SeverityType.Error));
 
@@ -19,5 +22,7 @@ public static class NotificationCollectionExtension
             return;
 
         notifications.AddRange(Notification.ConvertFrom(failures));
+
+        
     }
 }

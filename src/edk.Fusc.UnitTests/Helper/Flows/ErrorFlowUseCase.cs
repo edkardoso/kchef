@@ -43,7 +43,7 @@ internal class ErrorFlowUseCase : UseCase<int, List<string>>
         return Task.FromResult(Methods);
     }
 
-    protected override bool OnActionComplete(bool completed, List<Notification> notifications)
+    protected override bool OnActionComplete(bool completed, IReadOnlyCollection<Notification> notifications)
     {
         Methods.Add(ActionMethodsName.OnActionComplete);
         return base.OnActionComplete(completed, notifications);

@@ -1,4 +1,5 @@
-﻿using edk.Fusc.Core.Events;
+﻿using System.Threading;
+using edk.Fusc.Core.Events;
 using edk.Fusc.Core.Mediator;
 using edk.Fusc.Core.Presenters;
 using edk.Fusc.Core.Validators;
@@ -21,7 +22,7 @@ public abstract class UseCase<TInput, TOutput> :
 
     protected IMediatorUseCase Mediator { get; private set; }
     public IPresenter<TInput, TOutput> Presenter => _presenter;
-    public List<Notification> Notifications => _notifications;
+    public IReadOnlyCollection<Notification> Notifications => _notifications ?? new();
     protected abstract string NameUseCase { get; }
 
     protected UseCase(IPresenter<TInput, TOutput> presenter = default, AbstractValidator<TInput> validator = default)
@@ -40,11 +41,14 @@ public abstract class UseCase<TInput, TOutput> :
 
     public async Task<IPresenter<TInput, TOutput>> HandleAsync()
     {
+        var stop = false;
+
         try
         {
-            IUser user = GetUserOrDefault();
+            stop = !OnActionBeforeStart(_input, GetUserOrDefault());
 
-            OnActionBeforeStart(_input, user);
+            if (stop)
+                return _presenter;
 
             _useCaseEvents.Add(new UseCaseStartEvent(this));
 
@@ -52,43 +56,48 @@ public abstract class UseCase<TInput, TOutput> :
 
             _notifications.AddRange(_validationResult.Errors);
 
+            _presenter.SetSuccess(_notifications.NoErrors());
+
             if (_notifications.HasError())
             {
-                _useCaseEvents.Add(new UseCaseErrorEvent(this));
-                _presenter.OnError(_input, Notifications);
-
-                _presenter.SetSuccess(false);
+                _presenter.OnErrorValidation(_input, Notifications);
 
                 return _presenter;
             }
 
-            var cancelationToken = new CancellationToken();
-            var result = await OnExecuteAsync(_input, cancelationToken);
+            var result = await OnExecuteAsync(_input, Task.Factory.CancellationToken);
 
-            _useCaseEvents.Add(new UseCaseSuccessEvent(this));
             _presenter.SetOutput(result);
-            _presenter.SetSuccess(true);
-            _presenter.OnSuccess(result, Notifications, cancelationToken);
-
 
             _complete = true;
-            _useCaseEvents.Add(new UseCaseCompleteEvent(this));
+
+            _presenter.OnResult(result, Notifications, Task.Factory.CancellationToken);
 
         }
         catch (Exception ex)
         {
-            _useCaseEvents.Add(new UseCaseExceptionEvent(this));
-
 
             if (OnActionException(ex, _input, GetUserOrDefault()))
             {
-                _presenter.OnException(ex, _input);
+                SetNotification(ex.Message, SeverityType.Error);
+
+                _presenter.OnError(ex, _input);
             }
+            else
+            {
+                SetNotification(ex.Message, SeverityType.Warning);
+            }
+
+
         }
         finally
         {
-            OnActionComplete(_complete, _notifications);
-            Notify();
+            if (!stop && OnActionComplete(_complete, _notifications))
+            {
+                _useCaseEvents.Add(new UseCaseCompleteEvent(this));
+
+                Notify();
+            }
         }
 
         return _presenter;
@@ -108,7 +117,7 @@ public abstract class UseCase<TInput, TOutput> :
     /// Ação posterior ao OnExecute
     /// </summary>
     /// <param name="completed">Será true se OnExecute tiver sido executado completamente.</param>
-    protected virtual bool OnActionComplete(bool completed, List<Notification> notifications) => true;
+    protected virtual bool OnActionComplete(bool completed, IReadOnlyCollection<Notification> notifications) => true;
 
     protected virtual bool OnActionException(Exception exception, TInput input, IUser user) => true;
 
@@ -151,7 +160,13 @@ public abstract class UseCase<TInput, TOutput> :
     /// Permite adicionar Notificações
     /// </summary>
     protected void SetNotification(string message, SeverityType severity)
-        => _notifications.Add(new() { Message = message, Severity = severity });
+    {
+        _notifications.Add(new() { Message = message, Severity = severity });
+
+        if (_presenter.Success)
+            _presenter.SetSuccess(_notifications.NoErrors());
+
+    }
 
     /// <summary>
     /// Configura o mediator no UseCase
