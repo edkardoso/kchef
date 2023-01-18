@@ -23,7 +23,6 @@ public class OrderCreateUseCase : UseCase<OrderCreateRequest, OrderCard>
                 InternalDeskCode = request.DeskInternalCode
             });
 
-
             presenter.Output.Match(
                 (o) => orderCard = o,
                 () => throw new Exception("Comanda não gerada.")
@@ -42,7 +41,7 @@ public class OrderCreateUseCase : UseCase<OrderCreateRequest, OrderCard>
 
         orderCard.AddOrder(order);
 
-        Emit(new CreateNewOrderEvent(order, this));
+        //Emit(new CreateNewOrderEvent(order, this));
 
         return orderCard;
     }

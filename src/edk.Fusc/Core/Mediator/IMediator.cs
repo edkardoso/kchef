@@ -1,4 +1,5 @@
-﻿using edk.Fusc.Core.Presenters;
+﻿using edk.Fusc.Core.Events;
+using edk.Fusc.Core.Presenters;
 
 namespace edk.Fusc.Core.Mediator;
 
@@ -14,4 +15,6 @@ public interface IMediatorUseCase
     FactoryMediator Factory { get; }
 
     void SetUser(IUser user);
+    void Subscribe<TEvent>(IUseCase useCase) where TEvent : IUseCaseEvent;
+    void Subscribe(IUseCase useCase, IUseCaseEvent @event);
 }

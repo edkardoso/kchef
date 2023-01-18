@@ -1,15 +1,21 @@
-﻿namespace edk.Fusc.Core.Events;
+﻿using edk.Fusc.Core.Mediator;
+
+namespace edk.Fusc.Core.Events;
 
 public abstract class UseCaseEventBase : IUseCaseEvent
 {
-    protected UseCaseEventBase(IUseCase useCase)
+    protected UseCaseEventBase(IUseCase useCaseSender, IMediatorUseCase mediator)
     {
-        Sender = useCase.GetType();
+        Sender = useCaseSender.GetType();
         StartDate = DateTime.Now;
+        Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
-    public Type Sender { get; private set; }
+    public Type Sender { get; }
 
-    public string Name { get; private set; }
+    public string Name { get; protected set; } = String.Empty;
 
-    public DateTime? StartDate { get; private set; }
+    public DateTime? StartDate { get;  }
+    public IMediatorUseCase Mediator { get; }
+
+    public void Subscribe(IUseCase useCaseObserver) => Mediator.Subscribe(useCaseObserver, this);
 }

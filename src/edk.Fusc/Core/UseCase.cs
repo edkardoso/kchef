@@ -9,13 +9,12 @@ namespace edk.Fusc.Core;
 public abstract class UseCase<TInput, TOutput> :
     IUseCase<TInput, TOutput>
 {
-    private readonly AbstractValidator<TInput> _validator;
-    private readonly IPresenter<TInput, TOutput> _presenter;
-    private readonly Dictionary<string, IUseCase> _observers;
-    private readonly List<IUseCaseEvent> _useCaseEvents = new();
-    private readonly List<Notification> _notifications = new();
     private TInput? _input;
     private FlowUseCase<TInput, TOutput>? _flow;
+    private readonly AbstractValidator<TInput> _validator;
+    private readonly IPresenter<TInput, TOutput> _presenter;
+    private readonly List<Notification> _notifications = new();
+    private readonly EventsCollection _useCaseEvents = new();
 
     protected IMediatorUseCase? Mediator { get; private set; }
     public IPresenter<TInput, TOutput> Presenter => _presenter;
@@ -30,8 +29,6 @@ public abstract class UseCase<TInput, TOutput> :
     {
         _presenter = presenter ?? new PresenterDefault<TInput, TOutput>();
         _validator = validator ?? new ValidadorNull<TInput>();
-        _observers = new();
-
     }
     public async Task<IPresenter> HandleAsync(dynamic input) => await HandleAsync(input);
 
@@ -83,35 +80,27 @@ public abstract class UseCase<TInput, TOutput> :
 
     protected virtual bool OnActionException(Exception exception, TInput input, IUser user) => true;
 
+
+
     protected void Emit(IUseCaseEvent useCaseEvent)
     {
-        var typeEvent = useCaseEvent.GetType();
+        //var typeEvent = useCaseEvent.GetType();
 
-        foreach (var key in _observers.Keys)
-        {
-            var observer = _observers[key];
-            var nameEvent = GetNameEvent(observer, typeEvent);
+        //foreach (var key in _observers.Keys)
+        //{
+        //    var observer = _observers[key];
+        //    var nameEvent = GetNameEvent(observer, typeEvent);
 
-            if (key.Equals(nameEvent))
-            {
-                observer.OnEventAsync(useCaseEvent);
-            }
-        }
+        //    if (key.Equals(nameEvent))
+        //    {
+        //        observer.OnEventAsync(useCaseEvent);
+        //    }
+        //}
     }
 
-    private void Notify()
-        => _useCaseEvents.ForEach(@event => Emit(@event));
+    //private void Notify()
+    //    => _useCaseEvents.ForEach(@event => Emit(@event));
 
-    public void Subscribe<TEvent>(IUseCase observer) where TEvent : IUseCaseEvent
-    {
-        var key = GetNameEvent(observer, typeof(TEvent));
-
-        if (!_observers.ContainsKey(key))
-            _observers.Add(key, observer);
-    }
-
-    private static string GetNameEvent(IUseCase observer, Type typeEvent)
-        => observer.GetType().Name + typeEvent.GetType().Name;
 
     /// <summary>
     /// Método que será invocado pelo método Notify, quando estiver observando outro UseCase
@@ -133,8 +122,21 @@ public abstract class UseCase<TInput, TOutput> :
     /// <summary>
     /// Configura o mediator no UseCase
     /// </summary>
-    public void SetMediator(IMediatorUseCase mediator) => Mediator = mediator;
+    public void SetMediator(IMediatorUseCase mediator)
+    {
+        Mediator = mediator;
+        AddEvents(_useCaseEvents, mediator);
+    }
+
+    protected virtual void AddEvents(EventsCollection @events, IMediatorUseCase mediator)
+    {
+        @events.Add(new UseCaseStartEvent(this, mediator));
+        @events.Add(new UseCaseCompleteEvent(this, mediator));
+    }
 
     protected async Task<NoValue> NoValueTask() => await Task.FromResult(NoValue.Create);
+
+   
+
 }
 

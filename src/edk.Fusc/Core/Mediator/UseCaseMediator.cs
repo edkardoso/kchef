@@ -1,15 +1,19 @@
-﻿using edk.Fusc.Core.Presenters;
+﻿using edk.Fusc.Core.Events;
+using edk.Fusc.Core.Presenters;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace edk.Fusc.Core.Mediator;
+
 
 public class UseCaseMediator : IMediatorUseCase
 {
 
     private readonly Dictionary<string, Type> _translateDictionary = new();
+    private ObserverCollection _observers;
 
     public virtual FactoryMediator Factory { get; private set; }
     public UseCaseServices Services { get; private set; }
+
 
     internal IUser User { get; private set; }
 
@@ -85,4 +89,15 @@ public class UseCaseMediator : IMediatorUseCase
     }
 
     public void SetUser(IUser user) => User = user;
+
+    public void Subscribe<TEvent>(IUseCase useCase) where TEvent : IUseCaseEvent
+    {
+        _observers.Add(useCase, typeof(TEvent));
+
+    }
+
+    public void Subscribe(IUseCase useCase, IUseCaseEvent @event)
+    {
+        throw new NotImplementedException();
+    }
 }
