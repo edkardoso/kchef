@@ -21,6 +21,10 @@ public abstract class UseCase<TInput, TOutput> :
     public AbstractValidator<TInput> Validator { get; private set; }
     protected abstract string NameUseCase { get; }
 
+    // Requerid for Test
+    protected UseCase():this(null, null, null)
+    {}
+
     protected UseCase(IMediatorUseCase? mediator = default, IPresenter<TInput, TOutput>? presenter = default, AbstractValidator<TInput>? validator = default)
     {
         Mediator = mediator ?? new MediatorNull();
@@ -40,7 +44,7 @@ public abstract class UseCase<TInput, TOutput> :
         if (_input == null)
             throw new ArgumentNullException(nameof(_input));
 
-        _flow = new(_input, GetUserOrDefault(), this);
+        _flow = new(_input, Mediator.User, this);
 
         try
         {
@@ -58,8 +62,6 @@ public abstract class UseCase<TInput, TOutput> :
         }
 
         return Presenter;
-
-        IUser GetUserOrDefault() => Mediator is null ? new UserNull() : ((UseCaseMediator)Mediator).User;
     }
 
     protected virtual bool OnActionBeforeStart(TInput input, IUser user) => true;

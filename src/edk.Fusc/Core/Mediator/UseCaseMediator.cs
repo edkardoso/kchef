@@ -15,7 +15,7 @@ public class UseCaseMediator : IMediatorUseCase
     public UseCaseServices Services { get; private set; }
 
 
-    internal IUser User { get; private set; }
+    public IUser User { get; private set; }
 
     public UseCaseMediator(UseCaseServices services = default, FactoryMediator factory = default)
     {

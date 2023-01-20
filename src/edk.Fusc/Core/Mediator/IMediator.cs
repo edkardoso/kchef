@@ -13,6 +13,7 @@ public interface IMediatorUseCase
     UseCaseServices Services { get; }
 
     FactoryMediator Factory { get; }
+    IUser User { get; }
 
     void SetUser(IUser user);
     void Subscribe<TEvent>(IUseCase useCase) where TEvent : IUseCaseEvent;
@@ -24,6 +25,8 @@ public class MediatorNull : IMediatorUseCase
     public UseCaseServices Services => throw new NotImplementedException();
 
     public FactoryMediator Factory => throw new NotImplementedException();
+
+    public IUser User => new UserNull();
 
     public Task<IPresenter> HandleAsync<TReceiver>(dynamic obj, IUseCase sender) where TReceiver : IUseCase
     {
