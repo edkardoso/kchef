@@ -9,7 +9,7 @@ namespace edk.Fusc.Core
         Task<IPresenter> HandleAsync(dynamic input);
 
         void SetMediator(IMediatorUseCase mediator);
-        Task OnEventAsync(IUseCaseEvent useCaseEvent);
+        Task OnEventAsync<TEvent>(TEvent useCaseEvent) where TEvent:IUseCaseEvent;
     }
     public interface IUseCase<TInput, TOutput> : IUseCase
     {

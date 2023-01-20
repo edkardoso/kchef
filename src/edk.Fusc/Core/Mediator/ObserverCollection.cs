@@ -1,19 +1,26 @@
-﻿namespace edk.Fusc.Core.Mediator;
+﻿using edk.Fusc.Core.Events;
+
+namespace edk.Fusc.Core.Mediator;
 
 public class ObserverCollection
 {
     private readonly List<ObserverUseCase> _observers = new();
 
-    public void Add(IUseCase useCase, Type typeEvent)
+    public void Add(IUseCase useCaseObserver, Type typeEvent, Type typeUseCaseSender)
     {
-        var observer = new ObserverUseCase(useCase, typeEvent);
+        var observerNew = new ObserverUseCase(useCaseObserver, typeEvent, typeUseCaseSender);
 
-        var notExists = !_observers.Exists(o => o.Key.Equals(observer.Key));
-
+        var notExists = !_observers.Exists(o => o.Sender.Equals(observerNew.Sender) 
+                                            && o.Event.Equals(observerNew.Event)
+                                            && o.Observer.GetType().Equals(observerNew.GetType()));
         if (notExists)
-            _observers.Add(observer);
+            _observers.Add(observerNew);
     }
 
     public void Remove(ObserverUseCase observer)
         => _observers.Remove(observer);
+
+
+    public  IEnumerable<ObserverUseCase> Filter(IUseCaseEvent @event) 
+        => _observers.Where(o => o.Sender.Equals(@event.Sender) && o.Event.Equals(@event.GetType()));
 }

@@ -2,18 +2,16 @@
 
 public struct ObserverUseCase
 {
-    public ObserverUseCase(IUseCase useCase, Type typeEvent)
-        :this(GetNameEvent(useCase, typeEvent), useCase)
-    {}
-
-    public ObserverUseCase(string key, IUseCase useCase)
+    public ObserverUseCase(IUseCase useCaseObserver, Type typeEvent, Type typeSender )
     {
-        Key = key;
-        UseCase = useCase;
+        Sender = typeSender;
+        Event = typeEvent;
+        Observer = useCaseObserver;
     }
 
-    public string Key { get; }
-    public IUseCase UseCase { get; }
+    public Type Sender { get; }
+    public Type Event { get; }
+    public IUseCase Observer { get; }
 
     private static string GetNameEvent(IUseCase observer, Type typeEvent)
       => observer.GetType().Name + typeEvent.GetType().Name;

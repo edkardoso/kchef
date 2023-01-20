@@ -11,24 +11,21 @@ public abstract class UseCase<TInput, TOutput> :
 {
     private TInput? _input;
     private FlowUseCase<TInput, TOutput>? _flow;
-    private readonly AbstractValidator<TInput> _validator;
-    private readonly IPresenter<TInput, TOutput> _presenter;
     private readonly List<Notification> _notifications = new();
     private readonly EventsCollection _useCaseEvents = new();
 
-    protected IMediatorUseCase? Mediator { get; private set; }
-    public IPresenter<TInput, TOutput> Presenter => _presenter;
+    protected IMediatorUseCase Mediator { get; private set; }
+    public IPresenter<TInput, TOutput> Presenter { get; private set; }
     public virtual IReadOnlyCollection<Notification> Notifications => _notifications ?? new();
 
-    public AbstractValidator<TInput> Validator => _validator;
+    public AbstractValidator<TInput> Validator { get; private set; }
     protected abstract string NameUseCase { get; }
 
-    protected UseCase() : this(null, null)
-    { }
-    protected UseCase(IPresenter<TInput, TOutput>? presenter = default, AbstractValidator<TInput>? validator = default)
+    protected UseCase(IMediatorUseCase? mediator = default, IPresenter<TInput, TOutput>? presenter = default, AbstractValidator<TInput>? validator = default)
     {
-        _presenter = presenter ?? new PresenterDefault<TInput, TOutput>();
-        _validator = validator ?? new ValidadorNull<TInput>();
+        Mediator = mediator ?? new MediatorNull();
+        Presenter = presenter ?? new PresenterDefault<TInput, TOutput>();
+        Validator = validator ?? new ValidadorNull<TInput>();
     }
     public async Task<IPresenter> HandleAsync(dynamic input) => await HandleAsync(input);
 
@@ -60,7 +57,7 @@ public abstract class UseCase<TInput, TOutput> :
             _flow.Complete(OnActionComplete);
         }
 
-        return _presenter;
+        return Presenter;
 
         IUser GetUserOrDefault() => Mediator is null ? new UserNull() : ((UseCaseMediator)Mediator).User;
     }
@@ -102,10 +99,7 @@ public abstract class UseCase<TInput, TOutput> :
     //    => _useCaseEvents.ForEach(@event => Emit(@event));
 
 
-    /// <summary>
-    /// Método que será invocado pelo método Notify, quando estiver observando outro UseCase
-    /// </summary>
-    public virtual Task OnEventAsync(IUseCaseEvent useCaseEvent) => Task.CompletedTask;
+
 
     /// <summary>
     /// Permite adicionar Notificações
@@ -114,8 +108,8 @@ public abstract class UseCase<TInput, TOutput> :
     {
         _notifications.Add(new() { Message = message, Severity = severity });
 
-        if (_presenter.Success)
-            _presenter.SetSuccess(_notifications.NoErrors());
+        if (Presenter.Success)
+            Presenter.SetSuccess(_notifications.NoErrors());
 
     }
 
@@ -130,13 +124,12 @@ public abstract class UseCase<TInput, TOutput> :
 
     protected virtual void AddEvents(EventsCollection @events, IMediatorUseCase mediator)
     {
-        @events.Add(new UseCaseStartEvent(this, mediator));
-        @events.Add(new UseCaseCompleteEvent(this, mediator));
+        @events.Add(new UseCaseStartEvent(this));
+        @events.Add(new UseCaseCompleteEvent(this));
     }
 
     protected async Task<NoValue> NoValueTask() => await Task.FromResult(NoValue.Create);
 
-   
-
+    public virtual Task OnEventAsync<TEvent>(TEvent useCaseEvent) where TEvent : IUseCaseEvent => Task.CompletedTask;
 }
 

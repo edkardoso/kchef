@@ -9,7 +9,7 @@ public class UseCaseMediator : IMediatorUseCase
 {
 
     private readonly Dictionary<string, Type> _translateDictionary = new();
-    private ObserverCollection _observers;
+    private ObserverCollection _observers = new();
 
     public virtual FactoryMediator Factory { get; private set; }
     public UseCaseServices Services { get; private set; }
@@ -90,14 +90,28 @@ public class UseCaseMediator : IMediatorUseCase
 
     public void SetUser(IUser user) => User = user;
 
-    public void Subscribe<TEvent>(IUseCase useCase) where TEvent : IUseCaseEvent
+    public void Subscribe<TEvent, TUseCaseSender>(IUseCase useCaseObserver) 
+        where TEvent : IUseCaseEvent
+        where TUseCaseSender: IUseCase
     {
-        _observers.Add(useCase, typeof(TEvent));
+        _observers.Add(useCaseObserver, typeof(TEvent), typeof(TUseCaseSender));
 
     }
 
-    public void Subscribe(IUseCase useCase, IUseCaseEvent @event)
+    public void Publish(IUseCaseEvent @event)
+    {
+        var observerUseCases = _observers.Filter(@event);
+
+        foreach (var observerUseCase in observerUseCases)
+        {
+            observerUseCase.Observer.OnEventAsync(@event);
+        }
+    }
+
+    public void Subscribe<TEvent>(IUseCase useCase) where TEvent : IUseCaseEvent
     {
         throw new NotImplementedException();
     }
+
+ 
 }

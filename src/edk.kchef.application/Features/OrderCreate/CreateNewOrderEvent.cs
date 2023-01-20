@@ -11,7 +11,7 @@ namespace edk.Kchef.Application.Features.OrderCreate
     public class CreateNewOrderEvent : UseCaseEventBase
     {
         public CreateNewOrderEvent(Order order, IUseCase sender, IMediatorUseCase mediator)
-            :base(sender, mediator)
+            :base(sender)
         {
             this.OrderCardId = order.Id;
             this.Items = order.Items.ToList();

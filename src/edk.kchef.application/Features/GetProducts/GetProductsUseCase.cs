@@ -11,7 +11,7 @@ public class GetProductsUseCase : UseCase<GetProductsRequest, GetProductsRespons
 {
     protected override string NameUseCase => "GetProductsUseCase";
 
-    public GetProductsUseCase(GetProductsPresenter presenter) : base(presenter)
+    public GetProductsUseCase(GetProductsPresenter presenter) : base(presenter: presenter)
     {
     }
 
