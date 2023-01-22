@@ -1,5 +1,4 @@
 ﻿using edk.Fusc.Contracts;
-using edk.Fusc.Core.Events;
 using edk.Fusc.Core.Mediator;
 using edk.Fusc.Core.Presenters;
 using edk.Fusc.Core.Validators;
@@ -12,12 +11,10 @@ public abstract class UseCase<TInput, TOutput> :
     private TInput? _input;
     private FlowUseCase<TInput, TOutput>? _flow;
     private readonly List<Notification> _notifications = new();
-    private readonly EventsCollection _useCaseEvents = new();
 
     protected IMediatorUseCase Mediator { get; private set; }
     public IPresenter<TInput, TOutput> Presenter { get; private set; }
     public virtual List<Notification> Notifications => _notifications ?? new();
-
     public IUseCaseValidator<TInput> Validator { get; private set; }
     protected abstract string NameUseCase { get; }
 
@@ -64,20 +61,20 @@ public abstract class UseCase<TInput, TOutput> :
         return Presenter;
     }
 
-    protected virtual bool OnActionBeforeStart(TInput input, IUser user) => true;
 
     /// <summary>
     /// Ação a ser executada quando os dados de entrada forem validados com sucesso
     /// </summary>
     public abstract Task<TOutput> OnExecuteAsync(TInput input, CancellationToken cancellationToken);
+    public virtual Task OnEventAsync<TEvent>(TEvent useCaseEvent) where TEvent : IUseCaseEvent => Task.CompletedTask;
 
     /// <summary>
     /// Ação posterior ao OnExecute
     /// </summary>
     /// <param name="completed">Será true se OnExecute tiver sido executado completamente.</param>
     protected virtual bool OnActionComplete(bool completed, IReadOnlyCollection<Notification> notifications) => true;
-
     protected virtual bool OnActionException(Exception exception, TInput input, IUser user) => true;
+    protected virtual bool OnActionBeforeStart(TInput input, IUser user) => true;
 
     protected void Emit(IUseCaseEvent useCaseEvent) 
         => Mediator.Publish(useCaseEvent);
@@ -102,20 +99,7 @@ public abstract class UseCase<TInput, TOutput> :
     /// <summary>
     /// Configura o mediator no UseCase
     /// </summary>
-    public void SetMediator(IMediatorUseCase mediator)
-    {
-        Mediator = mediator;
-        AddEvents(_useCaseEvents, mediator);
-    }
-
-    protected virtual void AddEvents(EventsCollection @events, IMediatorUseCase mediator)
-    {
-        @events.Add(new UseCaseStartEvent(this));
-        @events.Add(new UseCaseCompleteEvent(this));
-    }
-
+    public void SetMediator(IMediatorUseCase mediator) => Mediator = mediator;
     protected async Task<NoValue> NoValueTask() => await Task.FromResult(NoValue.Create);
 
-    public virtual Task OnEventAsync<TEvent>(TEvent useCaseEvent) where TEvent : IUseCaseEvent => Task.CompletedTask;
 }
-
