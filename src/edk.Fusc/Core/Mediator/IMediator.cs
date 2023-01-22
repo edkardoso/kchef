@@ -18,7 +18,5 @@ public interface IMediatorUseCase
     void Subscribe<TEvent, TUseCaseSender>(IUseCase useCaseObserver)
         where TEvent : IUseCaseEvent
         where TUseCaseSender : IUseCase;
-
-
-
+    void Publish(IUseCaseEvent @event);
 }

@@ -22,8 +22,8 @@ public abstract class UseCase<TInput, TOutput> :
     protected abstract string NameUseCase { get; }
 
     // Requerid for Test
-    protected UseCase():this(null, null, null)
-    {}
+    protected UseCase() : this(null, null, null)
+    { }
 
     protected UseCase(IMediatorUseCase? mediator = default, IPresenter<TInput, TOutput>? presenter = default, AbstractValidator<TInput>? validator = default)
     {
@@ -79,29 +79,13 @@ public abstract class UseCase<TInput, TOutput> :
 
     protected virtual bool OnActionException(Exception exception, TInput input, IUser user) => true;
 
+    protected void Emit(IUseCaseEvent useCaseEvent) 
+        => Mediator.Publish(useCaseEvent);
 
-
-    protected void Emit(IUseCaseEvent useCaseEvent)
-    {
-        //var typeEvent = useCaseEvent.GetType();
-
-        //foreach (var key in _observers.Keys)
-        //{
-        //    var observer = _observers[key];
-        //    var nameEvent = GetNameEvent(observer, typeEvent);
-
-        //    if (key.Equals(nameEvent))
-        //    {
-        //        observer.OnEventAsync(useCaseEvent);
-        //    }
-        //}
-    }
-
-    //private void Notify()
-    //    => _useCaseEvents.ForEach(@event => Emit(@event));
-
-
-
+    protected void Register<TEvent, TUseCaseSender>()
+        where TEvent : IUseCaseEvent
+        where TUseCaseSender : IUseCase
+        => Mediator.Subscribe<TEvent, TUseCaseSender>(this);
 
     /// <summary>
     /// Permite adicionar Notificações

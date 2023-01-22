@@ -1,13 +1,5 @@
 ﻿using edk.Fusc.Core.Mediator;
 using edk.Fusc.Core;
-using edk.Fusc.UnitTests.Helper;
-using Moq.Protected;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using edk.Fusc.Core.Events;
 
 namespace edk.Fusc.UnitTests.Mediador
@@ -16,25 +8,42 @@ namespace edk.Fusc.UnitTests.Mediador
     {
 
         [Fact]
-        public async Task ShouldSubscribeUseCase()
+        public async Task ShouldSubscribePublishUseCase()
         {
             // arrange
             var mediator = new UseCaseMediator();
-            var useCaseSender = new UseCaseSender(mediator);
-            var useCaseObserver = new UseCaseObserver(mediator);
+            var useCaseSender = new UseCase1(mediator);
+            var useCaseObserver = new UseCase2(mediator);
             var eventStart = new UseCaseStartEvent(useCaseSender);
 
             // action
-            mediator.Subscribe<UseCaseStartEvent, UseCaseSender>(useCaseObserver);
+            mediator.Subscribe<UseCaseStartEvent, UseCase1>(useCaseObserver);
 
             // assert
             mediator.Publish(eventStart);
 
         }
 
-        private class UseCaseSender : UseCase<string, string>
+        [Fact]
+        public async Task ShouldSubscribePublishUseCase2()
         {
-            public UseCaseSender(IMediatorUseCase mediator)
+            // arrange
+            var mediator = new UseCaseMediator();
+            var useCase1 = new UseCase1(mediator);
+            var useCase2 = new UseCase2(mediator);
+            var eventStart = new UseCaseStartEvent(useCase1);
+
+            // action
+            useCase1.HandleAsync(string.Empty);
+
+            // assert
+            mediator.Publish(eventStart);
+
+        }
+
+        private class UseCase1 : UseCase<string, string>
+        {
+            public UseCase1(IMediatorUseCase mediator)
                : base(mediator)
             { }
 
@@ -46,11 +55,11 @@ namespace edk.Fusc.UnitTests.Mediador
             }
         }
 
-        private class UseCaseObserver : UseCase<string, string>
+        private class UseCase2 : UseCase<string, string>
         {
             protected override string NameUseCase => throw new NotImplementedException();
 
-            public UseCaseObserver(IMediatorUseCase mediator)
+            public UseCase2(IMediatorUseCase mediator)
                 : base(mediator)
             {}
 

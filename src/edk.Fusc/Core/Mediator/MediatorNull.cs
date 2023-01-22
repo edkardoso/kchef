@@ -5,9 +5,9 @@ namespace edk.Fusc.Core.Mediator;
 
 public class MediatorNull : IMediatorUseCase
 {
-    public IUseCaseServices Services => throw new NotImplementedException();
+    public IUseCaseServices Services => new UseCaseServicesNull();
 
-    public IFactoryMediator Factory => throw new NotImplementedException();
+    public IFactoryMediator Factory => new FactoryMediatorNull();
 
     public IUser User => new UserNull();
 
@@ -21,13 +21,7 @@ public class MediatorNull : IMediatorUseCase
         throw new NotImplementedException();
     }
 
-
-    public void Publish(IUseCase eventSender, IUseCaseEvent @event)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void RegisterTranslate<TTranlaste>(TTranlaste tranlaste, dynamic obj) where TTranlaste : ITranlaste
+    public void Publish(IUseCaseEvent @event)
     {
         throw new NotImplementedException();
     }
