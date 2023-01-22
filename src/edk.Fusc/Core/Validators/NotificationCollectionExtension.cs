@@ -1,6 +1,4 @@
-﻿using FluentValidation.Results;
-
-namespace edk.Fusc.Core.Validators;
+﻿namespace edk.Fusc.Core.Validators;
 
 public static class NotificationCollectionExtension
 {
@@ -16,13 +14,4 @@ public static class NotificationCollectionExtension
     public static bool HasInfo(this IEnumerable<Notification> notifications)
        => notifications.Any(n => n.Severity.Equals(SeverityType.Info));
 
-    public static void AddRange(this IEnumerable<Notification> notifications, List<ValidationFailure> failures)
-    {
-        if (failures == null || failures.Count == 0)
-            return;
-
-        notifications.ToList().AddRange(Notification.ConvertFrom(failures));
-
-        
-    }
 }

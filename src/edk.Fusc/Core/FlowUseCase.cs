@@ -42,8 +42,7 @@ public class FlowUseCase<TInput, TOutput>
         if (Stop)
             return this;
 
-        var validationResult = _useCase.Validator.Validate(_input);
-        _useCase.Notifications.AddRange(validationResult.Errors);
+        _useCase.Notifications.AddRange(_useCase.Validator.Validate(_input));
         _useCase.Presenter.SetSuccess(_useCase.Notifications.NoErrors());
 
         if (_useCase.Notifications.HasError())

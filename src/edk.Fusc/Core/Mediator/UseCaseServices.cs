@@ -1,5 +1,5 @@
 ﻿using edk.Fusc.Core.Presenters;
-using FluentValidation;
+using edk.Fusc.Core.Validators;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace edk.Fusc.Core.Mediator;
@@ -17,13 +17,13 @@ public class UseCaseServices : IUseCaseServices
 
     public UseCaseServices AddScoped<TService, TValidator, TInput, TOutput>()
         where TService : IUseCase<TInput, TOutput>
-        where TValidator : IValidator<TInput>
+        where TValidator : IUseCaseValidator<TInput>
         => AddScoped(typeof(TService))
             .AddScoped(typeof(TValidator));
 
     public UseCaseServices AddScoped<TService, TValidator, TPresenter>()
        where TService : IUseCase
-       where TValidator : IValidator
+       where TValidator : IUseCaseValidator
        where TPresenter : IPresenter
         => AddScoped(typeof(TService))
         .AddScoped(typeof(TValidator))

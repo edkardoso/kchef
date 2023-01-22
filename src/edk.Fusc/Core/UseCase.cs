@@ -2,7 +2,6 @@
 using edk.Fusc.Core.Mediator;
 using edk.Fusc.Core.Presenters;
 using edk.Fusc.Core.Validators;
-using FluentValidation;
 
 namespace edk.Fusc.Core;
 
@@ -16,16 +15,16 @@ public abstract class UseCase<TInput, TOutput> :
 
     protected IMediatorUseCase Mediator { get; private set; }
     public IPresenter<TInput, TOutput> Presenter { get; private set; }
-    public virtual IReadOnlyCollection<Notification> Notifications => _notifications ?? new();
+    public virtual List<Notification> Notifications => _notifications ?? new();
 
-    public AbstractValidator<TInput> Validator { get; private set; }
+    public IUseCaseValidator<TInput> Validator { get; private set; }
     protected abstract string NameUseCase { get; }
 
     // Requerid for Test
     protected UseCase() : this(null, null, null)
     { }
 
-    protected UseCase(IMediatorUseCase? mediator = default, IPresenter<TInput, TOutput>? presenter = default, AbstractValidator<TInput>? validator = default)
+    protected UseCase(IMediatorUseCase? mediator = default, IPresenter<TInput, TOutput>? presenter = default, IUseCaseValidator<TInput>? validator = default)
     {
         Mediator = mediator ?? new MediatorNull();
         Presenter = presenter ?? new PresenterDefault<TInput, TOutput>();

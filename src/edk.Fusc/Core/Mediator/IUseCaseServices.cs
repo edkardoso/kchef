@@ -1,5 +1,5 @@
 ﻿using edk.Fusc.Core.Presenters;
-using FluentValidation;
+using edk.Fusc.Core.Validators;
 
 namespace edk.Fusc.Core.Mediator
 {
@@ -8,10 +8,10 @@ namespace edk.Fusc.Core.Mediator
         UseCaseServices AddScoped(Type type);
         UseCaseServices AddScoped<TService, TValidator, TInput, TOutput>()
             where TService : IUseCase<TInput, TOutput>
-            where TValidator : IValidator<TInput>;
+            where TValidator : IUseCaseValidator<TInput>;
         UseCaseServices AddScoped<TService, TValidator, TPresenter>()
             where TService : IUseCase
-            where TValidator : IValidator
+            where TValidator : IUseCaseValidator
             where TPresenter : IPresenter;
         UseCaseServices AddScoped<TService>() where TService : IUseCase;
         IServiceProvider BuildServiceProvider();
