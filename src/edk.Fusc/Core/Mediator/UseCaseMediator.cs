@@ -3,24 +3,16 @@ using edk.Fusc.Core.Presenters;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace edk.Fusc.Core.Mediator;
-
-
 public class UseCaseMediator : IMediatorUseCase
 {
-
     private readonly Dictionary<string, Type> _translateDictionary = new();
-    private ObserverCollection _observers = new();
-
     public virtual IFactoryMediator Factory { get; private set; }
     public IUseCaseServices Services { get; private set; }
-
-
     public IUser User { get; private set; }
+    internal ObserverMediator Observer { get; private set; } = new();
 
-
-
-    public UseCaseMediator():this(new UseCaseServicesNull(), new FactoryMediatorNull())
-    {}
+    public UseCaseMediator() : this(new UseCaseServicesNull(), new FactoryMediatorNull())
+    { }
 
     public UseCaseMediator(IFactoryMediator factory) : this(new UseCaseServicesNull(), factory)
     { }
@@ -72,28 +64,15 @@ public class UseCaseMediator : IMediatorUseCase
         useCaseReceiver.SetMediator(this);
 
         return await useCaseReceiver.HandleAsync(obj);
-
     }
 
     public void SetUser(IUser user) => User = user;
 
-    public void Subscribe<TEvent, TUseCaseSender>(IUseCase useCaseObserver) 
+    public void Subscribe<TEvent, TUseCaseSender>(IUseCase useCaseObserver)
         where TEvent : IUseCaseEvent
-        where TUseCaseSender: IUseCase
-    {
-        _observers.Add(useCaseObserver, typeof(TEvent), typeof(TUseCaseSender));
-
-    }
+        where TUseCaseSender : IUseCase
+        => Observer.Subscribe<TEvent, TUseCaseSender>(useCaseObserver);
 
     public void Publish(IUseCaseEvent @event)
-    {
-        var observerUseCases = _observers.Filter(@event);
-
-        foreach (var observerUseCase in observerUseCases)
-        {
-            observerUseCase.Observer.OnEventAsync(@event);
-        }
-    }
-
- 
+        => Observer.Publish(@event);
 }

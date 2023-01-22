@@ -32,9 +32,6 @@ namespace edk.Fusc.UnitTests.Mediador
 
         }
 
-
-
-
         private class UseCaseSender : UseCase<string, string>
         {
             public UseCaseSender(IMediatorUseCase mediator)

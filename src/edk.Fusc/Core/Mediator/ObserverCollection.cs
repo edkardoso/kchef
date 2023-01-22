@@ -23,4 +23,7 @@ public class ObserverCollection
 
     public  IEnumerable<ObserverUseCase> Filter(IUseCaseEvent @event) 
         => _observers.Where(o => o.Sender.Equals(@event.Sender) && o.Event.Equals(@event.GetType()));
+
+    public int Count()
+        => _observers.Count();
 }
