@@ -16,6 +16,11 @@ public interface IMediatorUseCase
     IUser User { get; }
 
     void SetUser(IUser user);
-    void Subscribe<TEvent>(IUseCase useCase) where TEvent : IUseCaseEvent;
- 
+
+    void Subscribe<TEvent, TUseCaseSender>(IUseCase useCaseObserver)
+        where TEvent : IUseCaseEvent
+        where TUseCaseSender : IUseCase;
+
+
+
 }

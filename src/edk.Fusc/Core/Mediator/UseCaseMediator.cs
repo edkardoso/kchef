@@ -119,10 +119,5 @@ public class UseCaseMediator : IMediatorUseCase
         }
     }
 
-    public void Subscribe<TEvent>(IUseCase useCase) where TEvent : IUseCaseEvent
-    {
-        throw new NotImplementedException();
-    }
-
  
 }

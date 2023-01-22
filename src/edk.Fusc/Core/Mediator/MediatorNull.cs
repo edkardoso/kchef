@@ -37,10 +37,10 @@ public class MediatorNull : IMediatorUseCase
         throw new NotImplementedException();
     }
 
-    public void Subscribe<TEvent>(IUseCase useCase) where TEvent : IUseCaseEvent
+    public void Subscribe<TEvent, TUseCaseSender>(IUseCase useCaseObserver)
+        where TEvent : IUseCaseEvent
+        where TUseCaseSender : IUseCase
     {
         throw new NotImplementedException();
     }
-
-   
 }
