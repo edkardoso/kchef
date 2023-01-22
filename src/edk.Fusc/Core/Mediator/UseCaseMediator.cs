@@ -67,36 +67,12 @@ public class UseCaseMediator : IMediatorUseCase
     public async Task<IPresenter> HandleAsync<TReceiver>(dynamic obj, IUseCase sender)
         where TReceiver : IUseCase
     {
-        var translater = GetTranslater(sender.GetType(), typeof(TReceiver), obj);
-
-        var inputReceiver = translater.Convert(obj);
-
         var useCaseReceiver = (IUseCase)Factory.Get<TReceiver>();
 
         useCaseReceiver.SetMediator(this);
 
-        return await useCaseReceiver.HandleAsync(inputReceiver);
+        return await useCaseReceiver.HandleAsync(obj);
 
-    }
-
-    public void RegisterTranslate<TTranslaste>(TTranslaste translaste, dynamic obj)
-       where TTranslaste : ITranlaste
-    {
-        Services.AddScoped(typeof(TTranslaste));
-
-        string key = UseCaseMediatorExtension.GetNameTranslate(translaste.Sender, translaste.Receiver, obj);
-
-        //_translateDictionary.AddIfNotContains(key, translaste.GetType());
-
-    }
-
-    private ITranlaste GetTranslater(Type sender, Type receiver, dynamic obj)
-    {
-        string key = UseCaseMediatorExtension.GetNameTranslate(sender, receiver, obj);
-
-        var translateType = _translateDictionary[key];
-
-        return (ITranlaste)Factory.Get(translateType);
     }
 
     public void SetUser(IUser user) => User = user;
