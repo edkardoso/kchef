@@ -3,8 +3,7 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace edk.Fusc.Core.Mediator;
-
-public class UseCaseServices
+public class UseCaseServices : IUseCaseServices
 {
     private readonly IServiceCollection _services;
 

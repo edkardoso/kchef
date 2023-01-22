@@ -11,21 +11,32 @@ public class UseCaseMediator : IMediatorUseCase
     private readonly Dictionary<string, Type> _translateDictionary = new();
     private ObserverCollection _observers = new();
 
-    public virtual FactoryMediator Factory { get; private set; }
-    public UseCaseServices Services { get; private set; }
+    public virtual IFactoryMediator Factory { get; private set; }
+    public IUseCaseServices Services { get; private set; }
 
 
     public IUser User { get; private set; }
 
-    public UseCaseMediator(UseCaseServices services = default, FactoryMediator factory = default)
+
+
+    public UseCaseMediator():this(new UseCaseServicesNull(), new FactoryMediatorNull())
+    {}
+
+    public UseCaseMediator(IFactoryMediator factory) : this(new UseCaseServicesNull(), factory)
+    { }
+
+    public UseCaseMediator(IUseCaseServices services, IFactoryMediator factory)
     {
         Services = services;
         Factory = factory;
+        User = new UserNull();
     }
 
     public UseCaseMediator(IServiceCollection services)
     {
+        Factory = new FactoryMediatorNull();
         Services = new UseCaseServices(services);
+        User = new UserNull();
     }
 
     public void Builder()
