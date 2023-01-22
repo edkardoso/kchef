@@ -19,9 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Kchef.Api", "edk.Kchef.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fluent UseCase", "Fluent UseCase", "{D60CD613-E4ED-471A-9827-74EAA6D553D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "edk.Fusc", "edk.Fusc\edk.Fusc.csproj", "{D31F4BEB-5B7F-4537-9A33-48A3944CC30E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Fusc", "edk.Fusc\edk.Fusc.csproj", "{D31F4BEB-5B7F-4537-9A33-48A3944CC30E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "edk.Fusc.UnitTests", "edk.Fusc.UnitTests\edk.Fusc.UnitTests.csproj", "{7C2DCF67-24CA-42F1-8203-6CF74312B40C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Fusc.UnitTests", "edk.Fusc.UnitTests\edk.Fusc.UnitTests.csproj", "{7C2DCF67-24CA-42F1-8203-6CF74312B40C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "edk.Fusc.Contracts", "edk.Fusc.Contracts\edk.Fusc.Contracts.csproj", "{BB321C69-2B67-4122-9DAE-40372E51A762}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{7C2DCF67-24CA-42F1-8203-6CF74312B40C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C2DCF67-24CA-42F1-8203-6CF74312B40C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C2DCF67-24CA-42F1-8203-6CF74312B40C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB321C69-2B67-4122-9DAE-40372E51A762}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB321C69-2B67-4122-9DAE-40372E51A762}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB321C69-2B67-4122-9DAE-40372E51A762}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB321C69-2B67-4122-9DAE-40372E51A762}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{86A27DC9-37ED-4765-B0F1-929B44646B56} = {B5C5ECE0-A43B-47F8-9AC0-8AED37F5FB94}
 		{D31F4BEB-5B7F-4537-9A33-48A3944CC30E} = {D60CD613-E4ED-471A-9827-74EAA6D553D0}
 		{7C2DCF67-24CA-42F1-8203-6CF74312B40C} = {D60CD613-E4ED-471A-9827-74EAA6D553D0}
+		{BB321C69-2B67-4122-9DAE-40372E51A762} = {D60CD613-E4ED-471A-9827-74EAA6D553D0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3C56944-0BFD-4204-96AE-0EE50E12FB4D}

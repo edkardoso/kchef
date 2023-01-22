@@ -1,4 +1,6 @@
-﻿namespace edk.Fusc.Core.Events;
+﻿using edk.Fusc.Contracts;
+
+namespace edk.Fusc.Core.Events;
 
 public class EventsCollection
 {
