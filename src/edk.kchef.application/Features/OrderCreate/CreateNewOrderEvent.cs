@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using edk.Fusc.Core;
+using edk.Fusc.Contracts;
 using edk.Fusc.Core.Events;
-using edk.Fusc.Core.Mediator;
 using edk.Kchef.Domain.Ordes;
 
 namespace edk.Kchef.Application.Features.OrderCreate

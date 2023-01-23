@@ -1,4 +1,5 @@
 ﻿using edk.Fusc.Contracts;
+using edk.Fusc.Contracts.Common;
 using edk.Fusc.Core.Mediator;
 using edk.Fusc.Core.Presenters;
 using edk.Fusc.Core.Validators;
@@ -10,11 +11,11 @@ public abstract class UseCase<TInput, TOutput> :
 {
     private TInput? _input;
     private FlowUseCase<TInput, TOutput>? _flow;
-    private readonly List<Notification> _notifications = new();
+    private readonly List<INotification> _notifications = new();
 
     protected IMediatorUseCase Mediator { get; private set; }
     public IPresenter<TInput, TOutput> Presenter { get; private set; }
-    public virtual List<Notification> Notifications => _notifications ?? new();
+    public virtual List<INotification> Notifications => _notifications ?? new();
     public IUseCaseValidator<TInput> Validator { get; private set; }
     protected abstract string NameUseCase { get; }
 
@@ -72,7 +73,7 @@ public abstract class UseCase<TInput, TOutput> :
     /// Ação posterior ao OnExecute
     /// </summary>
     /// <param name="completed">Será true se OnExecute tiver sido executado completamente.</param>
-    protected virtual bool OnActionComplete(bool completed, IReadOnlyCollection<Notification> notifications) => true;
+    protected virtual bool OnActionComplete(bool completed, IReadOnlyCollection<INotification> notifications) => true;
     protected virtual bool OnActionException(Exception exception, TInput input, IUser user) => true;
     protected virtual bool OnActionBeforeStart(TInput input, IUser user) => true;
 
@@ -89,7 +90,7 @@ public abstract class UseCase<TInput, TOutput> :
     /// </summary>
     public void SetNotification(string message, SeverityType severity)
     {
-        _notifications.Add(new() { Message = message, Severity = severity });
+        _notifications.Add(new Notification() { Message = message, Severity = severity });
 
         if (Presenter.Success)
             Presenter.SetSuccess(_notifications.NoErrors());

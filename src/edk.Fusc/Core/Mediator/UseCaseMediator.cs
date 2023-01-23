@@ -1,6 +1,5 @@
 ﻿using edk.Fusc.Contracts;
 using edk.Fusc.Core.Events;
-using edk.Fusc.Core.Presenters;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace edk.Fusc.Core.Mediator;

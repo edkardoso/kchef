@@ -1,12 +1,12 @@
-﻿using edk.Fusc.Core.Validators;
+﻿using edk.Fusc.Contracts;
 
 namespace edk.Fusc.Core.Outputs
 {
     public abstract class OutputPageBase : IOutput
     {
-        protected OutputPageBase(List<Notification> messages, int totalItems, int totalPage, int currentPage = 1)
+        protected OutputPageBase(List<INotification> messages, int totalItems, int totalPage, int currentPage = 1)
         {
-            Messages = messages ?? new List<Notification>();
+            Messages = messages ?? new List<INotification>();
             TotalItems = totalItems;
             TotalPage = totalPage;
             CurrentPage = currentPage;
@@ -15,7 +15,7 @@ namespace edk.Fusc.Core.Outputs
         public int CurrentPage { get; protected set; }
         public int TotalPage { get; protected set; }
         public int TotalItems { get; protected set; }
-        public List<Notification> Messages { get; set; }
+        public List<INotification> Messages { get; set; }
 
 
     }

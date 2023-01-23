@@ -1,4 +1,4 @@
-﻿using edk.Fusc.Core.Presenters;
+﻿using edk.Fusc.Contracts;
 using edk.Fusc.Core.Validators;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,16 +12,16 @@ public class UseCaseServices : IUseCaseServices
         _services = services;
     }
 
-    public UseCaseServices AddScoped<TService>() where TService : IUseCase
+    public IUseCaseServices AddScoped<TService>() where TService : IUseCase
       => AddScoped(typeof(TService));
 
-    public UseCaseServices AddScoped<TService, TValidator, TInput, TOutput>()
+    public IUseCaseServices AddScoped<TService, TValidator, TInput, TOutput>()
         where TService : IUseCase<TInput, TOutput>
         where TValidator : IUseCaseValidator<TInput>
         => AddScoped(typeof(TService))
             .AddScoped(typeof(TValidator));
 
-    public UseCaseServices AddScoped<TService, TValidator, TPresenter>()
+    public IUseCaseServices AddScoped<TService, TValidator, TPresenter>()
        where TService : IUseCase
        where TValidator : IUseCaseValidator
        where TPresenter : IPresenter
@@ -30,7 +30,7 @@ public class UseCaseServices : IUseCaseServices
         .AddScoped(typeof(TPresenter));
 
 
-    public UseCaseServices AddScoped(Type type)
+    public IUseCaseServices AddScoped(Type type)
     {
         _services.AddScoped(type);
         return this;

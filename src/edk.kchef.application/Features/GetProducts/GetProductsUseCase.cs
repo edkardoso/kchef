@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using edk.Fusc.Contracts;
 using edk.Fusc.Core;
 using edk.Kchef.Domain.Ordes;
 using edk.Kchef.Domain.Products;
@@ -23,7 +24,7 @@ public class GetProductsUseCase : UseCase<GetProductsRequest, GetProductsRespons
             new Product("Product 2", UnitType.Litro, 10), new Product("Product 3", UnitType.Peca, 111)
         };
 
-        return Task.FromResult(new GetProductsResponse(products, new List<Fusc.Core.Validators.Notification>()));
+        return Task.FromResult(new GetProductsResponse(products, new List<INotification>()));
     }
 
    

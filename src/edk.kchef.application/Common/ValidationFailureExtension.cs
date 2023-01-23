@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using edk.Fusc.Contracts.Common;
 using edk.Fusc.Core.Validators;
 using FluentValidation.Results;
 

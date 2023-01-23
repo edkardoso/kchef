@@ -1,4 +1,4 @@
-﻿namespace edk.Fusc.Core.Outputs;
+﻿namespace edk.Fusc.Contracts;
 public interface IOption<T>
 {
     bool IsNull { get; }

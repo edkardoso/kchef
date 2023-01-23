@@ -1,6 +1,7 @@
 ﻿using edk.Fusc.Core.Mediator;
 using edk.Fusc.Core;
 using edk.Fusc.Core.Events;
+using edk.Fusc.Contracts;
 
 namespace edk.Fusc.UnitTests.Mediador
 {

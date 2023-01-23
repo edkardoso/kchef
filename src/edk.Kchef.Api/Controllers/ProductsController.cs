@@ -1,4 +1,4 @@
-﻿using edk.Fusc.Core.Mediator;
+﻿using edk.Fusc.Contracts;
 using edk.Kchef.Application.Features.GetProducts;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using edk.Fusc.Contracts;
 using edk.Fusc.Core.Validators;
 using edk.Kchef.Application.Common;
 using FluentValidation;
@@ -12,6 +13,6 @@ public class GetProductsValidator : AbstractValidator<GetProductsRequest>, IUseC
 		RuleFor(e => e.Id).NotEmpty().WithMessage("Errado");
 	}
 
-    IReadOnlyCollection<Notification> IUseCaseValidator<GetProductsRequest>.Validate(GetProductsRequest instance)
+    IReadOnlyCollection<INotification> IUseCaseValidator<GetProductsRequest>.Validate(GetProductsRequest instance)
         => Validate(instance).Errors.ToNotifications();
 }

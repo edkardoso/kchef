@@ -1,4 +1,6 @@
-﻿namespace edk.Fusc.Core.Outputs;
+﻿using edk.Fusc.Contracts;
+
+namespace edk.Fusc.Core.Outputs;
 
 public struct Option<T> : IOption<T>
 {

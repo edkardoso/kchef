@@ -1,4 +1,6 @@
-﻿namespace edk.Fusc.Core.Validators;
+﻿using edk.Fusc.Contracts;
+
+namespace edk.Fusc.Core.Validators;
 
 public class ValidadorNull<TInput> : IUseCaseValidator<TInput>
 {
@@ -9,6 +11,6 @@ public class ValidadorNull<TInput> : IUseCaseValidator<TInput>
         throw new NotImplementedException();
     }
 
-    IReadOnlyCollection<Notification> IUseCaseValidator<TInput>.Validate(TInput instance) 
-        => new List<Notification>().AsReadOnly();
+    IReadOnlyCollection<INotification> IUseCaseValidator<TInput>.Validate(TInput instance) 
+        => new List<INotification>().AsReadOnly();
 }

@@ -1,4 +1,5 @@
-﻿using edk.Fusc.Core.Mediator;
+﻿using edk.Fusc.Contracts;
+using edk.Fusc.Contracts.Common;
 using edk.Fusc.Core.Validators;
 
 namespace edk.Fusc.Core;
@@ -42,7 +43,10 @@ public class FlowUseCase<TInput, TOutput>
         if (Stop)
             return this;
 
-        _useCase.Notifications.AddRange(_useCase.Validator.Validate(_input));
+        var notifications = _useCase.Validator.Validate(_input);
+        if (notifications != null)
+            _useCase.Notifications.AddRange(notifications);
+        
         _useCase.Presenter.SetSuccess(_useCase.Notifications.NoErrors());
 
         if (_useCase.Notifications.HasError())
@@ -77,7 +81,7 @@ public class FlowUseCase<TInput, TOutput>
         }
     }
 
-    public void Complete(Func<bool, IReadOnlyCollection<Notification>, bool> onActionComplete)
+    public void Complete(Func<bool, IReadOnlyCollection<INotification>, bool> onActionComplete)
     {
         if (Continue && onActionComplete(_complete, _useCase.Notifications))
         {

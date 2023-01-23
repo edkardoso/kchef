@@ -1,4 +1,5 @@
 ﻿using System;
+using edk.Fusc.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 

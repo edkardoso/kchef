@@ -1,4 +1,5 @@
-﻿using edk.Fusc.Core.Outputs;
+﻿using edk.Fusc.Contracts;
+using edk.Fusc.Core.Outputs;
 
 namespace edk.Fusc.Core.Presenters
 {
@@ -10,7 +11,7 @@ namespace edk.Fusc.Core.Presenters
             Output = Option<TOutput>.New(output);
         }
 
-        public override void OnResult(TOutput output, IReadOnlyCollection<Validators.Notification> notifications, CancellationToken cancellationToken)
+        public override void OnResult(TOutput output, IReadOnlyCollection<INotification> notifications, CancellationToken cancellationToken)
         {}
     }
 }

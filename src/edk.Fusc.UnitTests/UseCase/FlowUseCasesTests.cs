@@ -1,4 +1,5 @@
-﻿using edk.Fusc.Core;
+﻿using edk.Fusc.Contracts;
+using edk.Fusc.Core;
 using edk.Fusc.Core.Mediator;
 using edk.Fusc.Core.Validators;
 using edk.Fusc.UnitTests.Helper;
@@ -22,7 +23,7 @@ public class FlowUseCasesTests
         // assert
         useCaseMock.Protected().Verify(ActionMethodsName.OnActionBeforeStart, Times.Once(), ItExpr.IsAny<NoValue>(), ItExpr.IsAny<IUser>());
         useCaseMock.Verify(s => s.OnExecuteAsync(It.IsAny<NoValue>(), It.IsAny<CancellationToken>()), Times.Once());
-        useCaseMock.Protected().Verify(ActionMethodsName.OnActionComplete, Times.Once(), ItExpr.IsAny<bool>(), ItExpr.IsAny<IReadOnlyCollection<Notification>>());
+        useCaseMock.Protected().Verify(ActionMethodsName.OnActionComplete, Times.Once(), ItExpr.IsAny<bool>(), ItExpr.IsAny<IReadOnlyCollection<INotification>>());
         useCaseMock.Protected().Verify(ActionMethodsName.OnActionException, Times.Never(), ItExpr.IsAny<Exception>(), ItExpr.IsAny<NoValue>(), ItExpr.IsAny<IUser>());
 
     }
@@ -62,7 +63,7 @@ public class FlowUseCasesTests
         // assert
         useCaseMock.Protected().Verify(ActionMethodsName.OnActionBeforeStart, Times.Once(), ItExpr.IsAny<NoValue>(), ItExpr.IsAny<IUser>());
         useCaseMock.Protected().Verify(ActionMethodsName.OnActionException, Times.Once(), ItExpr.IsAny<Exception>(), ItExpr.IsAny<NoValue>(), ItExpr.IsAny<IUser>());
-        useCaseMock.Protected().Verify(ActionMethodsName.OnActionComplete, Times.Once(), ItExpr.IsAny<bool>(), ItExpr.IsAny<IReadOnlyCollection<Notification>>());
+        useCaseMock.Protected().Verify(ActionMethodsName.OnActionComplete, Times.Once(), ItExpr.IsAny<bool>(), ItExpr.IsAny<IReadOnlyCollection<INotification>>());
     }
 
 }

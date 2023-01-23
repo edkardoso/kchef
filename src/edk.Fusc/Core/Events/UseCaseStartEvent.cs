@@ -1,4 +1,4 @@
-﻿using edk.Fusc.Core;
+﻿using edk.Fusc.Contracts;
 using edk.Fusc.Core.Mediator;
 
 namespace edk.Fusc.Core.Events;

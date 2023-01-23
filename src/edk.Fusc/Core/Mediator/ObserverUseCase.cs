@@ -1,4 +1,6 @@
-﻿namespace edk.Fusc.Core.Mediator;
+﻿using edk.Fusc.Contracts;
+
+namespace edk.Fusc.Core.Mediator;
 
 public struct ObserverUseCase
 {
