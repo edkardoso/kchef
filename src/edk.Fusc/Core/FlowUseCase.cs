@@ -23,16 +23,10 @@ public class FlowUseCase<TInput, TOutput>
 
     public FlowUseCase<TInput, TOutput> Start(Func<TInput, IUser, bool> onActionBeforeStart)
     {
-        Continue = onActionBeforeStart.Invoke(_input, _user) && _useCase.Notifications.NoErrors();
-
-        if (Continue)
-        {
-            //_useCaseEvents.Add(new UseCaseStartEvent(this));
-        }
-        else
-        {
-            _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications);
-        }
+        Continue = BoolExtension.And(onActionBeforeStart.Invoke(_input, _user), _useCase.Notifications.NoErrors())
+                    .If(() => { },
+                        () => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications)
+                    );
 
         return this;
 
@@ -43,14 +37,16 @@ public class FlowUseCase<TInput, TOutput>
         if (Stop)
             return this;
 
-        var notifications = _useCase.Validator.Validate(_input);
-        if (notifications != null)
-            _useCase.Notifications.AddRange(notifications);
-        
+        _useCase.Validator
+            .Validate(_input)
+            .IfNotNull((obj) => _useCase.Notifications.AddRange(obj));
+
         _useCase.Presenter.SetSuccess(_useCase.Notifications.NoErrors());
 
-        if (_useCase.Notifications.HasError())
-            _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications);
+        _useCase.Notifications
+            .HasError()
+            .IfTrue(() => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications));
+
 
         return this;
     }
@@ -66,29 +62,43 @@ public class FlowUseCase<TInput, TOutput>
         _useCase.Presenter.OnResult(result, _useCase.Notifications, Task.Factory.CancellationToken);
 
         return;
+
+
+        //  TODO: descobrir pq essa implementação quebra os testes
+        // Continue.IfTrue(async () =>
+        //{
+        //    await Task.Run(async () =>
+        //      {
+        //          var result = await onExecuteAsync.Invoke(_input, Task.Factory.CancellationToken);
+        //          _useCase.Presenter.SetOutput(result);
+        //          _complete = true;
+        //          _useCase.Presenter.OnResult(result, _useCase.Notifications, Task.Factory.CancellationToken);
+
+        //      });
+
+        //});
+
+        // return;
+
+
     }
 
     public void Error(Func<Exception, TInput, IUser, bool> onActionException, Exception exception)
-    {
-        if (onActionException(exception, _input, _user))
-        {
-            _useCase.SetNotification(exception.Message, SeverityType.Error);
-            _useCase.Presenter.OnError(exception, _input);
-        }
-        else
-        {
-            _useCase.SetNotification(exception.Message, SeverityType.Warning);
-        }
-    }
+        => onActionException(exception, _input, _user)
+            .If(() =>
+            {
+                _useCase.SetNotification(exception.Message, SeverityType.Error);
+                _useCase.Presenter.OnError(exception, _input);
+            }
+            , () => _useCase.SetNotification(exception.Message, SeverityType.Warning));
 
     public void Complete(Func<bool, IReadOnlyCollection<INotification>, bool> onActionComplete)
-    {
-        if (Continue && onActionComplete(_complete, _useCase.Notifications))
-        {
-            //_useCaseEvents.Add(new UseCaseCompleteEvent(this));
+        => BoolExtension.And(Continue, onActionComplete(_complete, _useCase.Notifications))
+            .IfTrue(() =>
+            {
+                //_useCaseEvents.Add(new UseCaseCompleteEvent(this));
+                // Notify();
 
-            // Notify();
-        }
-    }
+            });
 }
 

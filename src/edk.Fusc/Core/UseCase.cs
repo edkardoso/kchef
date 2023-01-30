@@ -5,7 +5,6 @@ using edk.Fusc.Core.Presenters;
 using edk.Fusc.Core.Validators;
 
 namespace edk.Fusc.Core;
-
 public abstract class UseCase<TInput, TOutput> :
     IUseCase<TInput, TOutput>
 {
