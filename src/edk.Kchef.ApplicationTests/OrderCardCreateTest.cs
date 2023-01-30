@@ -9,7 +9,6 @@ public class OrderCardCreateTest
     {
         //arrange
         var request = new OrderCardCreateRequest() { InternalDeskCode = "1234" };
-        var validator = new OrderCardCreateValidator();
         var useCase = new OrderCardCreateUseCase();
 
         //action 

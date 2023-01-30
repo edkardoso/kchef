@@ -23,9 +23,9 @@ public class FlowUseCase<TInput, TOutput>
 
     public FlowUseCase<TInput, TOutput> Start(Func<TInput, IUser, bool> onActionBeforeStart)
     {
-        Continue = BoolExtension.And(onActionBeforeStart.Invoke(_input, _user), _useCase.Notifications.NoErrors())
-                    .If(() => { },
-                        () => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications)
+        Continue = EvaluateLibrary.And(onActionBeforeStart.Invoke(_input, _user), _useCase.Notifications.NoErrors())
+                    .Eval(() => { },
+                          () => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications)
                     );
 
         return this;
@@ -34,58 +34,35 @@ public class FlowUseCase<TInput, TOutput>
 
     public FlowUseCase<TInput, TOutput> Validate()
     {
-        if (Stop)
-            return this;
+        Continue.WhenTrue(() => {
 
-        _useCase.Validator
-            .Validate(_input)
-            .IfNotNull((obj) => _useCase.Notifications.AddRange(obj));
+            _useCase.Validator
+             .Validate(_input)
+             .WhenNotNull((obj) => _useCase.Notifications.AddRange(obj));
 
-        _useCase.Presenter.SetSuccess(_useCase.Notifications.NoErrors());
+            _useCase.Presenter.SetSuccess(_useCase.Notifications.NoErrors());
 
-        _useCase.Notifications
-            .HasError()
-            .IfTrue(() => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications));
+            _useCase.Notifications
+                .HasError()
+                .WhenTrue(() => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications));
 
+        });
 
         return this;
     }
 
     public async Task ExecuteAsync(Func<TInput, CancellationToken, Task<TOutput>> onExecuteAsync)
-    {
-        if (Stop)
-            return;
-
-        var result = await onExecuteAsync.Invoke(_input, Task.Factory.CancellationToken);
-        _useCase.Presenter.SetOutput(result);
-        _complete = true;
-        _useCase.Presenter.OnResult(result, _useCase.Notifications, Task.Factory.CancellationToken);
-
-        return;
-
-
-        //  TODO: descobrir pq essa implementação quebra os testes
-        // Continue.IfTrue(async () =>
-        //{
-        //    await Task.Run(async () =>
-        //      {
-        //          var result = await onExecuteAsync.Invoke(_input, Task.Factory.CancellationToken);
-        //          _useCase.Presenter.SetOutput(result);
-        //          _complete = true;
-        //          _useCase.Presenter.OnResult(result, _useCase.Notifications, Task.Factory.CancellationToken);
-
-        //      });
-
-        //});
-
-        // return;
-
-
-    }
+        => await Continue.WhenTrueAsync(() =>
+            {
+                var result = onExecuteAsync(_input, Task.Factory.CancellationToken).Result;
+                _useCase.Presenter.SetOutput(result);
+                _complete = true;
+                _useCase.Presenter.OnResult(result, _useCase.Notifications, Task.Factory.CancellationToken);
+            });
 
     public void Error(Func<Exception, TInput, IUser, bool> onActionException, Exception exception)
         => onActionException(exception, _input, _user)
-            .If(() =>
+            .Eval(() =>
             {
                 _useCase.SetNotification(exception.Message, SeverityType.Error);
                 _useCase.Presenter.OnError(exception, _input);
@@ -93,8 +70,8 @@ public class FlowUseCase<TInput, TOutput>
             , () => _useCase.SetNotification(exception.Message, SeverityType.Warning));
 
     public void Complete(Func<bool, IReadOnlyCollection<INotification>, bool> onActionComplete)
-        => BoolExtension.And(Continue, onActionComplete(_complete, _useCase.Notifications))
-            .IfTrue(() =>
+        => EvaluateLibrary.And(Continue, onActionComplete(_complete, _useCase.Notifications))
+            .WhenTrue(() =>
             {
                 //_useCaseEvents.Add(new UseCaseCompleteEvent(this));
                 // Notify();
