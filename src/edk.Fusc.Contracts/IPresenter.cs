@@ -3,6 +3,7 @@
 public interface IPresenter
 {
     bool Success { get; }
+    bool Fail => !Success;
     dynamic ViewOutput { get; }
     IOption<dynamic> Output { get; }
 
