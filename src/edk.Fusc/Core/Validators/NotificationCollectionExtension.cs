@@ -17,4 +17,12 @@ public static class NotificationCollectionExtension
     public static bool HasInfo(this IEnumerable<INotification> notifications)
        => notifications.Any(n => n.Severity.Equals(SeverityType.Info));
 
+    public static void AddMany(this IEnumerable<INotification> notifications, IEnumerable<INotification> notificationsNew)
+    {
+        if (notificationsNew == null || notifications.ToList().Count==0)
+            return;
+
+        notifications.ToList().AddRange(notificationsNew);
+    }
+
 }
