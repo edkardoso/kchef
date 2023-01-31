@@ -6,6 +6,12 @@ namespace edk.Fusc.Core.Presenters
 {
     public abstract class PresenterBase<TInput, TOutput> : IPresenter<TInput, TOutput>
     {
+        protected PresenterBase()
+        {
+            Output = new Option<TOutput>();
+            ViewOutput = new Option<TOutput>();
+        }
+
 
         public bool Success { get; protected set; }
 
@@ -13,7 +19,7 @@ namespace edk.Fusc.Core.Presenters
 
         public IOption<TOutput> Output { get; protected set; }
 
-        IOption<dynamic> IPresenter.Output => Option<dynamic>.New(((Option<TOutput>) Output).Value);
+        IOption<dynamic> IPresenter.Output => Option<dynamic>.New(((Option<TOutput>)Output).Value);
 
         public virtual void OnErrorValidation(TInput input, IReadOnlyCollection<INotification> notifications) { }
 
@@ -25,6 +31,6 @@ namespace edk.Fusc.Core.Presenters
 
         public void SetOutput(TOutput output) => Output = Option<TOutput>.New(output);
 
-  
+
     }
 }

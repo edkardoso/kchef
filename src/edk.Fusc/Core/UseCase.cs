@@ -87,14 +87,16 @@ public abstract class UseCase<TInput, TOutput> :
     /// <summary>
     /// Permite adicionar Notificações
     /// </summary>
-    public void SetNotification(string message, SeverityType severity)
+    public void SetNotification(Notification notification)
     {
-        _notifications.Add(new Notification() { Message = message, Severity = severity });
+        _notifications.Add(notification);
 
         if (Presenter.Success)
             Presenter.SetSuccess(_notifications.NoErrors());
 
     }
+    public void SetNotification(string message, SeverityType severity) 
+        => SetNotification(new Notification() { Message = message, Severity = severity });
 
     /// <summary>
     /// Configura o mediator no UseCase

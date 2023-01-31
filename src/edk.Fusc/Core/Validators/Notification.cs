@@ -5,12 +5,23 @@ namespace edk.Fusc.Core.Validators;
 
 public class Notification : INotification
 {
+    public Notification() {
+    
+    }
 
+    private Notification(string code, string message, SeverityType severity)
+    {
+        Code = code;
+        Message = message;
+        Severity = severity;
+    }
+
+    public string Code { get; init; } = String.Empty;
     public string Message { get; init; } = String.Empty;
     public SeverityType Severity { get; init; }
 
-    public static Notification Error(string message) => new() { Message = message, Severity = SeverityType.Error };
-    public static Notification Warning(string message) => new() { Message = message, Severity = SeverityType.Warning };
-    public static Notification Info(string message) => new() { Message = message, Severity = SeverityType.Info };
+    public static Notification Error(string message, string code = "") => new(code, message, SeverityType.Error);
+    public static Notification Warning(string message, string code = "") => new(code, message, SeverityType.Warning);
+    public static Notification Info(string message, string code = "") => new(code, message, SeverityType.Info);
 
 }
