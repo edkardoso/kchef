@@ -3,7 +3,7 @@ using edk.Kchef.Domain.Common.Base;
 
 namespace edk.Kchef.Domain.Ordes
 {
-    public class Desk: EntityBase<Desk>
+    public class Desk: EntityBase
     {
         public Desk(string internalCode)
         {

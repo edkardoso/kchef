@@ -6,12 +6,13 @@ using FluentValidation;
 using FluentValidation.Results;
 
 namespace edk.Kchef.Domain.Common.Base;
-public abstract class EntityBase<TEntity> where TEntity : class
+
+public abstract class EntityBase : IEntity
 {
-    private readonly AbstractValidator<TEntity> _validator;
-    private readonly TEntity _entity;
+    //private readonly AbstractValidator<TEntity> _validator;
+    //private readonly TEntity _entity;
     private ValidationResult _validationResult;
-    private List<Notification> _notifications = new List<Notification>();
+    private readonly List<Notification> _notifications = new();
 
     public Guid Id { get; private set; }
     public virtual bool Deleted { get; private set; }
@@ -20,12 +21,12 @@ public abstract class EntityBase<TEntity> where TEntity : class
     public virtual DateTime? AuditDate { get; private set; }
     public List<Notification> Notifications => _notifications;
 
-    protected EntityBase(AbstractValidator<TEntity> validator, TEntity entity)
-        : this()
-    {
-        _validator = validator;
-        _entity = entity;
-    }
+    //protected EntityBase(AbstractValidator<TEntity> validator, TEntity entity)
+    //    : this()
+    //{
+    //    _validator = validator;
+    //    _entity = entity;
+    //}
 
     protected EntityBase()
     {
@@ -44,7 +45,7 @@ public abstract class EntityBase<TEntity> where TEntity : class
     {
         CheckBasicData();
 
-        RunValidatorWhenNotNull();
+       // RunValidatorWhenNotNull();
 
         RunValidatorCustom();
 
@@ -60,14 +61,14 @@ public abstract class EntityBase<TEntity> where TEntity : class
     /// </summary>
     public virtual List<Notification> ValidateCustom() => null;
 
-    private void RunValidatorWhenNotNull()
-    {
-        if (_validator != null)
-        {
-            _validationResult = _validator.Validate(_entity);
-            _notifications.AddRange(_validationResult.Errors);
-        }
-    }
+    //private void RunValidatorWhenNotNull()
+    //{
+    //    if (_validator != null)
+    //    {
+    //        _validationResult = _validator.Validate(_entity);
+    //        _notifications.AddRange(_validationResult.Errors);
+    //    }
+    //}
 
     private void RunValidatorCustom()
     {

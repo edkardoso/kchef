@@ -5,7 +5,7 @@ using edk.Kchef.Domain.Common.Base;
 
 namespace edk.Kchef.Domain.Ordes
 {
-    public class OrderCard : EntityBase<OrderCard>, IObjectNull 
+    public class OrderCard : EntityBase, IObjectNull 
     {
         private readonly OrderSetting _orderSetting;
         private bool _chargeServiceTax;

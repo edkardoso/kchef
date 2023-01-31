@@ -4,7 +4,7 @@ using edk.Kchef.Domain.Ordes;
 
 namespace edk.Kchef.Domain.Products;
 
-public class Product : EntityBase<Product>
+public class Product : EntityBase
 {
     public Product(string name, UnitType unity, float balance)
     {

@@ -5,7 +5,7 @@ using edk.Kchef.Domain.Products;
 
 namespace edk.Kchef.Domain.Ordes
 {
-    public class ItemMenu: EntityBase<ItemMenu> {
+    public class ItemMenu: EntityBase {
         public ItemMenu(string code, string description, decimal price):base()
         {
             Code = code;

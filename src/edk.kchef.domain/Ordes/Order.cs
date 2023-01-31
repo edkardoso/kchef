@@ -7,7 +7,7 @@ using edk.Kchef.Domain.Users;
 namespace edk.Kchef.Domain.Ordes
 {
 
-    public class Order : EntityBase<Order>
+    public class Order : EntityBase
     {
 
         public Order(Waiter waiter)
