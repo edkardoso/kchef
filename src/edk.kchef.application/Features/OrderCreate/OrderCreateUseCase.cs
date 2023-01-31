@@ -1,49 +1,59 @@
 ﻿using System;
+using System.Linq.Expressions;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading;
 using System.Threading.Tasks;
+using edk.Fusc.Contracts;
 using edk.Fusc.Core;
+using edk.Fusc.Core.Validators;
 using edk.Kchef.Application.Features.OrderCardCreate;
 using edk.Kchef.Domain.Ordes;
 using edk.Kchef.Domain.Users;
+using MediatR;
 
 namespace edk.Kchef.Application.Features.OrderCreate;
 
 public class OrderCreateUseCase : UseCase<OrderCreateRequest, OrderCard>
 {
+    private OrderCard _orderCard = OrderCard.InstanceNull;
+
     protected override string NameUseCase => "OrderCreateUseCase";
 
-    public override async Task<OrderCard> OnExecuteAsync(OrderCreateRequest request, CancellationToken cancellationToken)
+    protected override bool OnActionBeforeStart(OrderCreateRequest input, IUser user)
     {
-        OrderCard orderCard = null;
 
-        if (request.NoCard())
-        {
-            var presenter = await Mediator.HandleAsync<OrderCardCreateUseCase>(new OrderCardCreateRequest()
+        input.OrderCard.WhenEmpty(() => {
+
+            var presenter = Mediator.HandleAsync<OrderCardCreateUseCase>(new OrderCardCreateRequest()
             {
-                InternalDeskCode = request.DeskInternalCode
-            });
+                InternalDeskCode = input.DeskInternalCode
+            }).Result;
 
-            presenter.Output.Match(
-                (o) => orderCard = o,
-                () => throw new Exception("Comanda não gerada.")
-            );
+            _orderCard = presenter.Output.GetValueOrDefault(OrderCard.InstanceNull);
 
-        }
-        else
-        {
-            // buscar a comanda no repositório
-            var desk = new Desk(request.DeskInternalCode);
-            orderCard = new OrderCard(desk);
-        }
+            _orderCard.IsNull.WhenTrue(() => SetNotification(Notification.Error("Comanda não gerada.")));
+
+        });
+      
+        return _orderCard.IsNull.Not();
+    }
+
+
+    public override Task<OrderCard> OnExecuteAsync(OrderCreateRequest input, CancellationToken cancellationToken)
+    {
+
+        // buscar a comanda no repositório
+        var desk = new Desk(input.DeskInternalCode);
+        var orderCard = _orderCard ?? new OrderCard(desk);
 
         var order = new Order(new Waiter());
-        order.AddRange(request.Items);
+        order.AddRange(input.Items);
 
         orderCard.AddOrder(order);
 
         //Emit(new CreateNewOrderEvent(order, this));
 
-        return orderCard;
+        return Task.FromResult(orderCard);
     }
 
 

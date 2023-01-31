@@ -30,9 +30,10 @@ namespace edk.Kchef.ApplicationTests
 
             // action
             var presenter = await useCase.HandleAsync(request);
-            var orderCard = presenter.Output.GetValueOrDefault(new OrderCard(new Desk(string.Empty)));
+            var orderCard = presenter.Output.GetValueOrDefault(OrderCard.InstanceNull);
 
             // assert
+            Assert.False(orderCard.IsNull);
             Assert.Equal(request.DeskInternalCode, orderCard.Desk.InternalCode);
             Assert.Equal(1, orderCard.Orders.Count);
             Assert.NotEqual(Guid.Empty, orderCard.Orders.FirstOrDefault()?.Id);

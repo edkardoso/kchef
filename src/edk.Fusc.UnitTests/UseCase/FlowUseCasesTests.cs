@@ -30,7 +30,7 @@ public class FlowUseCasesTests
 
 
     [Fact]
-    public async Task MustStopExecutionAndNotInvokeAnotherMethodWhenOnActionBeforeStartReturFalse()
+    public async Task MustStopExecutionAndNotInvokeAnotherMethodWhenOnActionBeforeStartReturnFalse()
     {
         // arrange
         var useCaseMock = new Mock<UseCase<NoValue, bool>>() { CallBase = true };
