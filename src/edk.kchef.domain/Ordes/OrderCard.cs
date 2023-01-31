@@ -5,7 +5,7 @@ using edk.Kchef.Domain.Common.Base;
 
 namespace edk.Kchef.Domain.Ordes
 {
-    public class OrderCard : EntityBase<OrderCard>
+    public class OrderCard : EntityBase<OrderCard>, IObjectNull 
     {
         private readonly OrderSetting _orderSetting;
         private bool _chargeServiceTax;
@@ -14,6 +14,9 @@ namespace edk.Kchef.Domain.Ordes
         {
             Desk = desk;
         }
+
+        public static OrderCardNull InstanceNull => new();
+
 
         public virtual Desk Desk { get; protected set; }
 
@@ -30,6 +33,7 @@ namespace edk.Kchef.Domain.Ordes
         public decimal Balance => TotalPaid - Total;
         public decimal Tip { get; private set; }
 
+        public virtual bool IsNull => false;
 
         public OrderCard(OrderSetting orderSetting)
         {
@@ -54,7 +58,7 @@ namespace edk.Kchef.Domain.Ordes
         }
 
         public void Reopen()
-        { 
+        {
             Discount = 0;
             OtherTaxes = _orderSetting.OtherTaxes;
 
@@ -71,12 +75,14 @@ namespace edk.Kchef.Domain.Ordes
 
         public void AddOrder(Order order)
         {
-           Orders.Add(order);
+            Orders.Add(order);
         }
 
         public void RemoveOrder(Order order)
         {
-            
+
         }
+
+        
     }
 }
