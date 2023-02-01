@@ -13,10 +13,10 @@ namespace edk.Kchef.Infrastructure.Data.Repositories
             _provider = provider;
         }
 
-        public virtual object Get<T>()
+        public virtual object Get<T>() where T: IGenericRepository
           => _provider.GetRequiredService(typeof(T));
 
         public virtual object Get(Type type)
-           => _provider.GetRequiredService(type);
+           =>  _provider.GetRequiredService(type);
     }
 }

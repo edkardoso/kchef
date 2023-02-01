@@ -7,6 +7,7 @@ using edk.Kchef.Domain.Common.Base;
 using edk.Kchef.Infrastructure.Data.EF.Context;
 using Microsoft.EntityFrameworkCore;
 using edk.Kchef.Domain.Contracts.Repositories;
+using edk.Kchef.Domain.Common;
 
 namespace edk.Kchef.Infrastructure.Data.Repositories
 {
@@ -39,23 +40,23 @@ namespace edk.Kchef.Infrastructure.Data.Repositories
         {
             var entity = await GetByIdAsync(id);
 
-            if (entity != null)
+            if (!entity.IsNull)
             {
-                await DeleteAsync(entity);
+                await DeleteAsync(entity.Match(e => e, () => null));
             }
         }
 
-        public async Task<T> FirstOrDefaultAsync()
-           => await Query.FirstOrDefaultAsync().ConfigureAwait(false);
+        public async Task<Option<T>> FirstOrDefaultAsync()
+           => new Option<T>(await Query.FirstOrDefaultAsync().ConfigureAwait(false));
 
-        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> filter)
-           => await Query.FirstOrDefaultAsync(filter).ConfigureAwait(false);
+        public async Task<Option<T>> FirstOrDefaultAsync(Expression<Func<T, bool>> filter)
+           => new Option<T>(await Query.FirstOrDefaultAsync(filter).ConfigureAwait(false));
 
-        public async Task<T> GetByIdAsync(Guid id)
-           => await Query.FirstOrDefaultAsync(e => e.Id.Equals(id));
+        public async Task<Option<T>> GetByIdAsync(Guid id)
+           => new Option<T>(await Query.FirstOrDefaultAsync(e => e.Id.Equals(id)));
 
-        public Task<List<T>> SearchAsync(Expression<Func<T, bool>> filter)
-           => Task.Run(() => Query.AsNoTracking().Where(filter).ToList());
+        public Task<Option<List<T>>> SearchAsync(Expression<Func<T, bool>> filter)
+           => Task.Run(() => new Option<List<T>>(Query.AsNoTracking().Where(filter).ToList()));
 
         public async Task UpdateAsync(T entity)
         {
