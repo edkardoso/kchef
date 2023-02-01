@@ -2,7 +2,7 @@
 
 namespace edk.Fusc.Core.Mediator;
 
-public class FactoryMediatorNull : IFactoryMediator
+internal class FactoryMediatorNull : IFactoryMediator
 {
     public object Get(Type type)
     {

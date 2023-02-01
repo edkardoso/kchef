@@ -5,7 +5,14 @@ namespace edk.Fusc.Core.Mediator;
 
 public class ObserverCollection
 {
+   
+
     private readonly List<ObserverUseCase> _observers = new();
+
+    internal ObserverCollection()
+    {
+
+    }
 
     public void Add(IUseCase useCaseObserver, Type typeEvent, Type typeUseCaseSender)
     {

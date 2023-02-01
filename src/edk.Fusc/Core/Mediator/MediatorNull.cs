@@ -3,7 +3,7 @@ using edk.Fusc.Core.Events;
 
 namespace edk.Fusc.Core.Mediator;
 
-public class MediatorNull : IMediatorUseCase
+internal class MediatorNull : IMediatorUseCase
 {
     public IUseCaseServices Services => new UseCaseServicesNull();
 

@@ -5,7 +5,7 @@ namespace edk.Fusc.Core.Mediator;
 
 public class UseCaseServicesNull : IUseCaseServices
 {
-    public UseCaseServicesNull()
+    internal UseCaseServicesNull()
     {
 
     }

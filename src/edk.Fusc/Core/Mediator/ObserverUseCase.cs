@@ -4,7 +4,7 @@ namespace edk.Fusc.Core.Mediator;
 
 public struct ObserverUseCase
 {
-    public ObserverUseCase(IUseCase useCaseObserver, Type typeEvent, Type typeSender )
+    internal ObserverUseCase(IUseCase useCaseObserver, Type typeEvent, Type typeSender )
     {
         Sender = typeSender;
         Event = typeEvent;

@@ -4,6 +4,11 @@ namespace edk.Fusc.Core.Mediator;
 
 public class UserNull : IUser
 {
+    internal UserNull()
+    {
+
+    }
+
     public string Name => "Unknown";
 
     public string Id => "00000";

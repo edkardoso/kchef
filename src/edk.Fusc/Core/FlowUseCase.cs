@@ -12,7 +12,7 @@ public class FlowUseCase<TInput, TOutput>
     private readonly UseCase<TInput, TOutput> _useCase;
     private bool _complete;
 
-    public FlowUseCase(TInput input, IUser user, UseCase<TInput, TOutput> useCase)
+    internal FlowUseCase(TInput input, IUser user, UseCase<TInput, TOutput> useCase)
     {
         _input = input;
         _user = user;
@@ -20,8 +20,8 @@ public class FlowUseCase<TInput, TOutput>
     }
 
     private bool Continue { get; set; }
-  
-    public FlowUseCase<TInput, TOutput> Start(Func<TInput, IUser, bool> onActionBeforeStart)
+
+    internal FlowUseCase<TInput, TOutput> Start(Func<TInput, IUser, bool> onActionBeforeStart)
     {
         Continue = EvaluateLibrary.And(onActionBeforeStart.Invoke(_input, _user), _useCase.Notifications.NoErrors())
                     .Eval(() => { },
@@ -32,7 +32,7 @@ public class FlowUseCase<TInput, TOutput>
 
     }
 
-    public FlowUseCase<TInput, TOutput> Validate()
+    internal FlowUseCase<TInput, TOutput> Validate()
     {
         Continue.WhenTrue(() => {
 
