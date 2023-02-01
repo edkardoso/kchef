@@ -1,6 +1,7 @@
 ﻿using edk.Fusc.Contracts;
 using edk.Fusc.Contracts.Common;
 using edk.Fusc.Core.Validators;
+using edk.Tools;
 
 namespace edk.Fusc.Core;
 
@@ -19,8 +20,7 @@ public class FlowUseCase<TInput, TOutput>
     }
 
     private bool Continue { get; set; }
-    private bool Stop => !Continue;
-
+  
     public FlowUseCase<TInput, TOutput> Start(Func<TInput, IUser, bool> onActionBeforeStart)
     {
         Continue = EvaluateLibrary.And(onActionBeforeStart.Invoke(_input, _user), _useCase.Notifications.NoErrors())

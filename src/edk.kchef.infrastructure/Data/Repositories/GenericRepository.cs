@@ -7,7 +7,7 @@ using edk.Kchef.Domain.Common.Base;
 using edk.Kchef.Infrastructure.Data.EF.Context;
 using Microsoft.EntityFrameworkCore;
 using edk.Kchef.Domain.Contracts.Repositories;
-using edk.Kchef.Domain.Common;
+using edk.Tools;
 
 namespace edk.Kchef.Infrastructure.Data.Repositories
 {
@@ -38,12 +38,12 @@ namespace edk.Kchef.Infrastructure.Data.Repositories
 
         public async Task DeleteByIdAsync(Guid id)
         {
-            var entity = await GetByIdAsync(id);
+            var entityOption = await GetByIdAsync(id);
 
-            if (!entity.IsNull)
-            {
-                await DeleteAsync(entity.Match(e => e, () => null));
-            }
+            entityOption.IsNull.Not().WhenTrue(async () => {
+                await DeleteAsync(entityOption.Match(e => e, () => null));
+            });
+         
         }
 
         public async Task<Option<T>> FirstOrDefaultAsync()

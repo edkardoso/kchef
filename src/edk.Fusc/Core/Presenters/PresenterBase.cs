@@ -1,6 +1,5 @@
 ﻿using edk.Fusc.Contracts;
-using edk.Fusc.Core.Outputs;
-using edk.Fusc.Core.Validators;
+using edk.Tools;
 
 namespace edk.Fusc.Core.Presenters
 {
@@ -12,14 +11,13 @@ namespace edk.Fusc.Core.Presenters
             ViewOutput = new Option<TOutput>();
         }
 
-
         public bool Success { get; protected set; }
 
         public dynamic ViewOutput { get; protected set; }
 
         public IOption<TOutput> Output { get; protected set; }
 
-        IOption<dynamic> IPresenter.Output => Option<dynamic>.New(((Option<TOutput>)Output).Value);
+        IOption<dynamic> IPresenter.Output => Option<dynamic>.New(Output.Match(o => o, () => default(dynamic)));
 
         public virtual void OnErrorValidation(TInput input, IReadOnlyCollection<INotification> notifications) { }
 

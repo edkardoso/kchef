@@ -1,5 +1,6 @@
 ﻿using edk.Fusc.Contracts;
 using edk.Fusc.Core.Outputs;
+using edk.Tools;
 
 namespace edk.Fusc.Core.Presenters
 {

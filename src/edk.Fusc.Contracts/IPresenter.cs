@@ -1,4 +1,6 @@
-﻿namespace edk.Fusc.Contracts;
+﻿using edk.Tools;
+
+namespace edk.Fusc.Contracts;
 
 public interface IPresenter
 {
@@ -19,7 +21,7 @@ public interface IPresenter<TInput, TOutput> : IPresenter
     new IOption<TOutput> Output { get; }
     void SetOutput(TOutput output);
 
-    void SetSuccess(bool success);
+    void SetSuccess(bool value);
 
 
 }

@@ -1,4 +1,4 @@
-﻿namespace edk.Fusc.Contracts;
+﻿namespace edk.Tools;
 public interface IOption<T>
 {
     bool IsNull { get; }

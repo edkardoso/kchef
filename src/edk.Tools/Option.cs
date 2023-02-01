@@ -1,10 +1,10 @@
-﻿using edk.Fusc.Contracts;
+﻿using System;
 
-namespace edk.Fusc.Core.Outputs;
+namespace edk.Tools;
 
 public struct Option<T> : IOption<T>
 {
-    internal Option(T value)
+    public Option(T value)
     {
         Value = value;
     }
