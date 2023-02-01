@@ -4,7 +4,7 @@ namespace edk.Fusc.Core.Validators;
 
 public class ValidadorNull<TInput> : IUseCaseValidator<TInput>
 {
-    public ValidadorNull() { }
+    internal ValidadorNull() { }
 
     public IReadOnlyCollection<Notification> Validate()
     {

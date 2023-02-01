@@ -7,7 +7,7 @@ public class UseCaseServices : IUseCaseServices
 {
     private readonly IServiceCollection _services;
 
-    public UseCaseServices(IServiceCollection services)
+    internal UseCaseServices(IServiceCollection services)
     {
         _services = services;
     }

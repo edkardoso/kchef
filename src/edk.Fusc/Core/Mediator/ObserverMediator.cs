@@ -5,6 +5,11 @@ namespace edk.Fusc.Core.Mediator;
 
 public class ObserverMediator
 {
+    internal ObserverMediator()
+    {
+
+    }
+
     private ObserverCollection _observers = new();
     public void Subscribe<TEvent, TUseCaseSender>(IUseCase useCaseObserver)
       where TEvent : IUseCaseEvent
