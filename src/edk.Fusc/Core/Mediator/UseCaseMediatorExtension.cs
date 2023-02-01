@@ -1,7 +1,5 @@
-﻿using System;
-using edk.Fusc.Contracts;
+﻿using edk.Fusc.Contracts;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace edk.Fusc.Core.Mediator;
 
@@ -22,6 +20,5 @@ public static class UseCaseMediatorExtension
         return services;
     }
 
-    public static string GetNameTranslate(Type sender, Type receiver, dynamic obj)
-        => $"{sender.FullName}_{receiver.FullName}={((object)obj).GetType().FullName}";
+   
 }

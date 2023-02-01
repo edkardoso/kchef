@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using edk.Kchef.Domain.Contracts.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace edk.Kchef.Infrastructure.Data.Repositories
 {
-    public class RepositoryFactory
+    public class RepositoryFactory : IRepositoryFactory
     {
         private readonly IServiceProvider _provider;
 
