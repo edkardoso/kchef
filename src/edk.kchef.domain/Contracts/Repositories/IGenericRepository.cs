@@ -6,7 +6,8 @@ public interface IGenericRepository { }
 
 public interface IGenericRepository<TEntity> : IGenericRepository
     , IReadGenericRepository<TEntity> 
-    , IEditGenericRepository<TEntity>
+    , IAddGenericRepository<TEntity>
+    , IUpdateGenericRepository<TEntity>
     , IDeleteGenericRepository<TEntity>
     where TEntity : IEntity
 { }

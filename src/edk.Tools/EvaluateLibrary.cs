@@ -20,6 +20,7 @@ public static class EvaluateLibrary
 
     }
 
+    public static T Eval<T>(this bool condition, Func<T> ifTrue, Func<T> ifFalse) => condition ? ifTrue() : ifFalse();
     public static bool Eval(this bool condition, Action actionTrue, Action actionFalse) => Eval(() => condition, actionTrue, actionFalse);
     public static bool WhenTrue(this Func<bool> condition, Action actionTrue) => condition.Eval(actionTrue, () => { });
     public static bool WhenTrue(this bool value, Action actionTrue) => Eval(() => value, actionTrue, () => { });

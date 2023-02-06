@@ -11,5 +11,7 @@ namespace edk.Kchef.Domain.Ordes
         }
         public string InternalCode { get; protected set; }
         public ICollection<OrderCard> Cards { get; protected set; }
+
+        public bool Available { get;  }
     }
 }

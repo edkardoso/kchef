@@ -73,7 +73,12 @@ public abstract class UseCase<TInput, TOutput> :
     /// </summary>
     /// <param name="completed">Será true se OnExecute tiver sido executado completamente.</param>
     protected virtual bool OnActionComplete(bool completed, IReadOnlyCollection<INotification> notifications) => true;
-    protected virtual bool OnActionException(Exception exception, TInput input, IUser user) => true;
+    protected virtual bool OnActionException(Exception exception, TInput input, IUser user)
+    {
+        SetNotification(Notification.Error(exception.Message));
+        return true;
+    }
+
     protected virtual bool OnActionBeforeStart(TInput input, IUser user) => true;
 
     protected void Emit(IUseCaseEvent useCaseEvent) 
@@ -87,7 +92,7 @@ public abstract class UseCase<TInput, TOutput> :
     /// <summary>
     /// Permite adicionar Notificações
     /// </summary>
-    public void SetNotification(Notification notification)
+    protected  void SetNotification(Notification notification)
     {
         _notifications.Add(notification);
 
