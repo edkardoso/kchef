@@ -1,4 +1,5 @@
 ﻿using edk.Kchef.Domain.Products;
+using edk.Kchef.Domain.Users;
 using edk.Kchef.Infrastructure.Data.EF.Configuration;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,12 +12,17 @@ namespace edk.Kchef.Infrastructure.Data.EF.Context
         { }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            new ProductConfiguration().Configure(modelBuilder.Entity<Product>());
 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+
+
         }
     }
 }
