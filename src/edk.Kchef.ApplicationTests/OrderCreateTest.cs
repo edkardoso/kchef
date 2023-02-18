@@ -1,6 +1,7 @@
 ﻿using edk.Fusc.Core.Mediator;
 using edk.Kchef.Application.Features.OrderCardCreate;
 using edk.Kchef.Application.Features.OrderCreate;
+using edk.Kchef.Domain.Contracts.Repositories;
 using edk.Kchef.Domain.Ordes;
 using Moq;
 
@@ -22,8 +23,15 @@ namespace edk.Kchef.ApplicationTests
                     new(produto2)
                 }
             };
+            var orderCardRepositoryMock = new Mock<IOrderCardRepository>();
+            var deskRepository = new Mock<IDeskRepository>();
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+
+            var useCaseOrderCardCreate = new OrderCardCreateUseCase(orderCardRepositoryMock.Object, deskRepository.Object, unitOfWorkMock.Object);
+
+
             var factoryMock = new Mock<FactoryMediator>();
-            factoryMock.Setup(s => s.Get<OrderCardCreateUseCase>()).Returns(new OrderCardCreateUseCase());
+            factoryMock.Setup(s => s.Get<OrderCardCreateUseCase>()).Returns(useCaseOrderCardCreate);
             var mediatorFake = new UseCaseMediator(factory: factoryMock.Object);
             var useCase = new OrderCreateUseCase();
             useCase.SetMediator(mediatorFake);
