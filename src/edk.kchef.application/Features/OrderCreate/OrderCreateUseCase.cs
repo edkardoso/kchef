@@ -4,8 +4,8 @@ using edk.Fusc.Contracts;
 using edk.Fusc.Core;
 using edk.Fusc.Core.Validators;
 using edk.Kchef.Application.Features.OrderCardCreate;
+using edk.Kchef.Domain.Entities.Users;
 using edk.Kchef.Domain.Ordes;
-using edk.Kchef.Domain.Users;
 using edk.Tools;
 
 namespace edk.Kchef.Application.Features.OrderCreate;

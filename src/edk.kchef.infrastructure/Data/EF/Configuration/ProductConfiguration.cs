@@ -11,11 +11,11 @@ public class ProductConfiguration : EntityBaseConfiguration<Product>
         base.Configure("Products", builder);
 
         builder.Property(e => e.Name)
-            .HasMaxLength(SizeFields.LARGE)
+            .HasMaxLength(SizeFields.SIZE_5)
             .IsRequired();
 
         builder.Property(e => e.Description)
-            .HasMaxLength(SizeFields.EXTRA_LARGE);
+            .HasMaxLength(SizeFields.SIZE_6);
         builder.Property(e => e.Unity)
             .IsRequired();
 

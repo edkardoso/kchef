@@ -1,5 +1,5 @@
 ﻿using edk.Kchef.Application.Features.Users.Create;
-using edk.Kchef.Domain.Users;
+using edk.Kchef.Domain.Entities.Users;
 
 namespace edk.Kchef.Application.Common;
 

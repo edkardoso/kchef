@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using edk.Kchef.Domain.Common.Base;
-using edk.Kchef.Domain.Users;
+using edk.Kchef.Domain.Entities.Users;
 
 namespace edk.Kchef.Domain.Ordes
 {

@@ -1,12 +1,13 @@
 ﻿using System;
 using edk.Kchef.Domain.Common.Base;
+using edk.Kchef.Domain.Common.ValueObjects;
 
-namespace edk.Kchef.Domain.Users
+namespace edk.Kchef.Domain.Entities.Users
 {
-    public class User: EntityBase
+
+    public class User : EntityBase
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public FullNameVO FullName { get; set; }
         public string Login { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }

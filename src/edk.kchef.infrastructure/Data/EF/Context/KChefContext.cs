@@ -1,5 +1,5 @@
-﻿using edk.Kchef.Domain.Products;
-using edk.Kchef.Domain.Users;
+﻿using edk.Kchef.Domain.Entities.Users;
+using edk.Kchef.Domain.Products;
 using edk.Kchef.Infrastructure.Data.EF.Configuration;
 using Microsoft.EntityFrameworkCore;
 
