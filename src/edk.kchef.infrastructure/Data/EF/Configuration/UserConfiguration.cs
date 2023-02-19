@@ -1,5 +1,5 @@
 ﻿using edk.Kchef.Domain.Common;
-using edk.Kchef.Domain.Users;
+using edk.Kchef.Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace edk.Kchef.Infrastructure.Data.EF.Configuration;
@@ -11,24 +11,23 @@ public class UserConfiguration : EntityBaseConfiguration<User>
         base.Configure("Users", builder);
 
         builder.Property(e => e.Login)
-                 .HasMaxLength(SizeFields.LARGE)
+                 .HasMaxLength(SizeFields.SIZE_4)
                  .IsRequired();
 
-        builder.Property(e => e.FirstName)
-            .HasMaxLength(SizeFields.LARGE);
-
-        builder.Property(e => e.LastName)
-            .HasMaxLength(SizeFields.EXTRA_LARGE);
+        builder.OwnsOne(e => e.FullName, setup =>
+        {
+            setup.Property(vo => vo.FirstName).HasMaxLength(SizeFields.SIZE_3).IsRequired();
+            setup.Property(vo => vo.LastName).HasMaxLength(SizeFields.SIZE_4);
+        });
 
         builder.Property(e => e.Email)
-            .HasMaxLength(SizeFields.EXTRA_LARGE)
+            .HasMaxLength(SizeFields.SIZE_4)
             .IsRequired();
 
         builder.Property(e => e.Password)
-         .HasMaxLength(SizeFields.BIG)
+         .HasMaxLength(SizeFields.SIZE_6)
          .IsRequired();
 
-    
 
         builder.Property(e => e.ExpirationDate)
             .IsRequired();
