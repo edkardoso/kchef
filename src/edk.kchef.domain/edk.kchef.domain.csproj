@@ -14,8 +14,4 @@
     <ProjectReference Include="..\edk.Tools\edk.Tools.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>
