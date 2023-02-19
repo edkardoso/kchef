@@ -1,43 +1,35 @@
-﻿using edk.Kchef.Domain.Users;
+﻿using edk.Kchef.Domain.Entities.Users;
 using Microsoft.AspNetCore.Identity;
+using System.Diagnostics.CodeAnalysis;
 
 namespace edk.Kchef.Domain.Services;
 
 internal class PasswordService
 {
-    private readonly OptionsPassword _options;
+    private readonly IPasswordHasher<User> _passwordHasher;
+    private readonly OptionsPasswordRule _options;
     private readonly PasswordRule _rules;
 
-    public PasswordService(OptionsPassword options = null)
+    public PasswordService(IPasswordHasher<User> passwordHasher, OptionsPasswordRule options = null)
     {
-        _options = options ?? new OptionsPassword();
+        _passwordHasher = passwordHasher ?? throw new System.ArgumentNullException(nameof(passwordHasher));
+        _options = options ?? new();
         _rules = new(options);
 
     }
 
-    public bool CheckForce(string passwordPlainText)
-        => passwordPlainText != null
-            && _rules.MinLength(passwordPlainText)
-            && _rules.MinLength(passwordPlainText)
+    public bool CheckForce([NotNull] string passwordPlainText)
+        => _rules.MinLength(passwordPlainText)
+            && _rules.MaxLength(passwordPlainText)
             && _rules.HasLowerCharacter(passwordPlainText)
             && _rules.HasUpperCharacter(passwordPlainText)
             && _rules.HasDigit(passwordPlainText)
             && _rules.HasSpecialCharacter(passwordPlainText);
- 
 
-    public string GenerateHash(User user, string passwordPlainText)
-    {
-        var _passwordHasher = new PasswordHasher<User>();
+    public string GenerateHash([NotNull] User user, [NotNull] string passwordPlainText) 
+        => _passwordHasher.HashPassword(user, passwordPlainText);
 
-        return _passwordHasher.HashPassword(user, passwordPlainText);
-    }
-
-    public bool VerifyPassword(User user, string passwordPlainText)
-    {
-        var password = GenerateHash(user, passwordPlainText);
-
-        return password.Equals(user.Password);
-
-    }
+    public bool VerifyPassword([NotNull] User user, [NotNull] string passwordPlainText) 
+        => _passwordHasher.VerifyHashedPassword(user, user.Password, passwordPlainText) != PasswordVerificationResult.Failed;
 
 }
