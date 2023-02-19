@@ -36,9 +36,15 @@ public static class EvaluateLibrary
     public static bool WhenGreaterThan(this int value, int valueTarget, Action action) => (value > valueTarget).WhenTrue(action);
     public static bool WhenGreaterThanOrEqual(this int value, int valueTarget, Action action) => (value >= valueTarget).WhenTrue(action);
     public static bool WhenLessThan(this int value, int valueTarget, Action action) => (value < valueTarget).WhenTrue(action);
+    public static bool IsLessThan(this int value, int valueTarget) => value < valueTarget;
+    public static bool IsLessThanOrEqual(this int value, int valueTarget) => value <= valueTarget;
+    public static bool IsGreaterThan(this int value, int valueTarget) => value > valueTarget;
+    public static bool IsGreaterThanOrEqual(this int value, int valueTarget) => value >= valueTarget;
     public static bool WhenLessThanOrEqual(this int value, int valueTarget, Action action) => (value <= valueTarget).WhenTrue(action);
     public static bool WhenEqual(this object obj, object objTarget, Action action) => (obj == objTarget).WhenTrue(action);
     public static bool And(params bool[] values) => values.All(element => element);
     public static bool Or(params bool[] values) => values.Contains(true);
     public static bool Not(this bool value) => !value;
+
+   
 }
