@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using edk.Fusc.Contracts;
@@ -33,14 +34,14 @@ public class OrderCardCreateUseCase : UseCase<OrderCardCreateRequest, OrderCard>
 
         return desk.Match(
            some: obj => obj.Available.Eval(
-               ifTrue: () =>
+               whenTrue: () =>
                {
                    var orderCard = new OrderCard(obj);
                    _orderCardRepository.UpdateAsync(orderCard);
                    _uoW.CommitAsync();
                    return orderCard;
                },
-                ifFalse: () =>
+                whenFalse: () =>
                 {
                     SetNotification(Notification.Error($"A mesa {input.InternalDeskCode} está ocupada."));
                     return new OrderCardNull();
@@ -52,16 +53,16 @@ public class OrderCardCreateUseCase : UseCase<OrderCardCreateRequest, OrderCard>
         });
     }
 
-    protected override bool OnActionException(Exception exception, OrderCardCreateRequest input, IUser user)
+    protected override bool OnActionException(List<Exception> exceptions, OrderCardCreateRequest input, IUser user)
     {
-        exception.WhenIsTypeEqual<ArgumentException>(() =>
-        {
+        //exception.WhenIsTypeEqual<ArgumentException>(() =>
+        //{
 
-        });
+        //});
 
         SetNotification(Notification.Error($"Existe um erro no cadastro de mesas. Há mais de uma mesa com o código {input.InternalDeskCode}."));
 
-        return base.OnActionException(exception, input, user);
+        return base.OnActionException(exceptions, input, user);
     }
 
 }

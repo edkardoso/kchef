@@ -20,8 +20,8 @@ public static class EvaluateLibrary
 
     }
 
-    public static T Eval<T>(this bool condition, Func<T> ifTrue, Func<T> ifFalse) => condition ? ifTrue() : ifFalse();
-    public static bool Eval(this bool condition, Action actionTrue, Action actionFalse) => Eval(() => condition, actionTrue, actionFalse);
+    public static T Eval<T>(this bool condition, Func<T> whenTrue, Func<T> whenFalse) => condition ? whenTrue() : whenFalse();
+    public static bool Eval(this bool condition, Action whenTrue, Action whenFalse) => Eval(() => condition, whenTrue, whenFalse);
     public static bool WhenTrue(this Func<bool> condition, Action actionTrue) => condition.Eval(actionTrue, () => { });
     public static bool WhenTrue(this bool value, Action actionTrue) => Eval(() => value, actionTrue, () => { });
     public static bool WhenIsTypeEqual<T>(this object obj, Action actionTrue) => (obj.GetType() == typeof(T)).WhenTrue(actionTrue);
