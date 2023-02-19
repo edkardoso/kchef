@@ -21,7 +21,7 @@ namespace edk.Fusc.Core.Presenters
 
         public virtual void OnErrorValidation(TInput input, IReadOnlyCollection<INotification> notifications) { }
 
-        public virtual void OnError(Exception exception, TInput input) { }
+        public virtual void OnError(List<Exception> exceptions, TInput input) { }
 
         public virtual void OnResult(TOutput output, IReadOnlyCollection<INotification> notifications, CancellationToken cancellationToken) { }
 

@@ -3,6 +3,9 @@ using edk.Fusc.Contracts.Common;
 using edk.Fusc.Core.Mediator;
 using edk.Fusc.Core.Presenters;
 using edk.Fusc.Core.Validators;
+using System;
+using System.Linq;
+using System.Text;
 
 namespace edk.Fusc.Core;
 public abstract class UseCase<TInput, TOutput> :
@@ -49,9 +52,20 @@ public abstract class UseCase<TInput, TOutput> :
                        .Validate()
                        .ExecuteAsync(OnExecuteAsync);
         }
+        catch (AggregateException ex)
+        {
+            List<Exception> exceptions = new();
+      
+            foreach (Exception exception in ex.InnerExceptions)
+            {
+                exceptions.Add(exception);
+            }
+
+            _flow.Error(OnActionException, exceptions);
+        }
         catch (Exception ex)
         {
-            _flow.Error(OnActionException, ex);
+            _flow.Error(OnActionException, new() { ex });
         }
         finally
         {
@@ -73,15 +87,16 @@ public abstract class UseCase<TInput, TOutput> :
     /// </summary>
     /// <param name="completed">Será true se OnExecute tiver sido executado completamente.</param>
     protected virtual bool OnActionComplete(bool completed, IReadOnlyCollection<INotification> notifications) => true;
-    protected virtual bool OnActionException(Exception exception, TInput input, IUser user)
+    protected virtual bool OnActionException(List<Exception> exceptions, TInput input, IUser user)
     {
-        SetNotification(Notification.Error(exception.Message));
-        return true;
+        exceptions.ForEach(e => SetNotification(Notification.Error(e.Message)));
+
+         return true;
     }
 
     protected virtual bool OnActionBeforeStart(TInput input, IUser user) => true;
 
-    protected void Emit(IUseCaseEvent useCaseEvent) 
+    protected void Emit(IUseCaseEvent useCaseEvent)
         => Mediator.Publish(useCaseEvent);
 
     protected void Register<TEvent, TUseCaseSender>()
@@ -92,7 +107,7 @@ public abstract class UseCase<TInput, TOutput> :
     /// <summary>
     /// Permite adicionar Notificações
     /// </summary>
-    protected  void SetNotification(Notification notification)
+    protected void SetNotification(Notification notification)
     {
         _notifications.Add(notification);
 
@@ -100,7 +115,7 @@ public abstract class UseCase<TInput, TOutput> :
             Presenter.SetSuccess(_notifications.NoErrors());
 
     }
-    public void SetNotification(string message, SeverityType severity) 
+    public void SetNotification(string message, SeverityType severity)
         => SetNotification(new Notification() { Message = message, Severity = severity });
 
     /// <summary>

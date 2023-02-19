@@ -14,7 +14,7 @@ public interface IPresenter<TInput, TOutput> : IPresenter
 {
     void OnErrorValidation(TInput input, IReadOnlyCollection<INotification> notifications);
 
-    void OnError(Exception exception, TInput input);
+    void OnError(List<Exception> exceptions, TInput input);
 
     void OnResult(TOutput output, IReadOnlyCollection<INotification> notifications, CancellationToken cancellationToken);
 

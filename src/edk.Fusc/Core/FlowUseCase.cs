@@ -34,7 +34,8 @@ public class FlowUseCase<TInput, TOutput>
 
     internal FlowUseCase<TInput, TOutput> Validate()
     {
-        Continue.WhenTrue(() => {
+        Continue.WhenTrue(() =>
+        {
 
             _useCase.Validator
              .Validate(_input)
@@ -60,14 +61,21 @@ public class FlowUseCase<TInput, TOutput>
                 _useCase.Presenter.OnResult(result, _useCase.Notifications, Task.Factory.CancellationToken);
             });
 
-    public void Error(Func<Exception, TInput, IUser, bool> onActionException, Exception exception)
-        => onActionException(exception, _input, _user)
-            .Eval(() =>
-            {
-                _useCase.SetNotification(exception.Message, SeverityType.Error);
-                _useCase.Presenter.OnError(exception, _input);
-            }
-            , () => _useCase.SetNotification(exception.Message, SeverityType.Warning));
+    public void Error(Func<List<Exception>, TInput, IUser, bool> onActionException, List<Exception> exceptions)
+       => onActionException(exceptions, _input, _user)
+           .Eval(
+               whenTrue: () =>
+               {
+                   exceptions.ForEach(e => _useCase.SetNotification(e.Message, SeverityType.Warning));
+
+                   _useCase.Presenter.OnError(exceptions, _input);
+               }
+               , whenFalse: () =>
+               {
+                   exceptions.ForEach(e => _useCase.SetNotification(e.Message, SeverityType.Warning));
+
+               }
+           );
 
     public void Complete(Func<bool, IReadOnlyCollection<INotification>, bool> onActionComplete)
         => EvaluateLibrary.And(Continue, onActionComplete(_complete, _useCase.Notifications))
