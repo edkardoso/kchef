@@ -11,14 +11,14 @@ using edk.Tools;
 
 namespace edk.Kchef.Infrastructure.Data.Repositories;
 
-public class GenericRepository<T> : IGenericRepository<T> where T : class, IEntity, IAggregateRoot
+public class GenericRepository<T> : IGenericRepository<T> where T : class, IEntity
 {
     private readonly KChefContext _dbContext;
 
     protected DbSet<T> DbSet { get; private set; }
     protected IQueryable<T> Query { get; private set; }
 
-    public GenericRepository(KChefContext dbContext)
+    protected GenericRepository(KChefContext dbContext)
     {
         _dbContext = dbContext;
         DbSet = dbContext.Set<T>();
@@ -40,10 +40,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IEnti
     {
         var entityOption = await GetByIdAsync(id);
 
-        entityOption.IsNull.Not().WhenTrue(async () => {
+        entityOption.IsNull.Not().WhenTrue(async () =>
+        {
             await DeleteAsync(entityOption.Match(e => e, () => null));
         });
-     
+
     }
 
     public async Task<Option<T>> FirstOrDefaultAsync()
@@ -64,6 +65,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IEnti
         await Task.CompletedTask.ConfigureAwait(false);
     }
 
-    public async Task<Option<T>> SingleAsync(Expression<Func<T, bool>> filter) 
-        => new Option<T>(await Query.SingleAsync(filter));
+    public async Task<Option<T>> SingleAsync(Expression<Func<T, bool>> filter)
+    {
+        if (Query.Count() == 0)
+        {
+            return default(Option<T>);
+        }
+
+        var result = await Query.SingleAsync(filter);
+        return new Option<T>(result);
+    }
 }
