@@ -13,7 +13,7 @@ namespace edk.Kchef.Infrastructure.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<bool> CommitAsync() => await _dbContext.SaveChangesAsync() > 0;
+        public async Task<bool> CommitAsync() => await _dbContext.SaveChangesAsync().ConfigureAwait(false) > 0;
 
         public async Task RollbackAsync() => await Task.CompletedTask.ConfigureAwait(false);
 
