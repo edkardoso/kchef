@@ -1,0 +1,7 @@
+
+- Indicar o ambiente no Fusc
+- Gravar logs no Mongo
+- API para gerar ID exclusivo
+- Implementar OTP
+	- Link de alteração de senha
+- Indicar a propriedade causadora do erro	
