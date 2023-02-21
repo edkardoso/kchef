@@ -2,6 +2,7 @@
 
 public enum SeverityType
 {
+    Exception,
     Error,
     Warning,
     Info

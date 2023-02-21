@@ -20,6 +20,7 @@ public class Notification : INotification
     public string Message { get; init; } = String.Empty;
     public SeverityType Severity { get; init; }
 
+    public static Notification ErrorException(string message, string code = "") => new(code, message, SeverityType.Exception);
     public static Notification Error(string message, string code = "") => new(code, message, SeverityType.Error);
     public static Notification Warning(string message, string code = "") => new(code, message, SeverityType.Warning);
     public static Notification Info(string message, string code = "") => new(code, message, SeverityType.Info);

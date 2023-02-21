@@ -44,11 +44,13 @@ public abstract class UseCase<TInput, TOutput> :
         if (_input == null)
             throw new ArgumentNullException(nameof(_input));
 
+        Notifications.Clear();
+      
         _flow = new(_input, Mediator.User, this);
 
         try
         {
-            await _flow.Start(OnActionBeforeStart)
+            await _flow.Start(OnActionBeforeStartAsync)
                        .Validate()
                        .ExecuteAsync(OnExecuteAsync);
         }
@@ -89,12 +91,12 @@ public abstract class UseCase<TInput, TOutput> :
     protected virtual bool OnActionComplete(bool completed, IReadOnlyCollection<INotification> notifications) => true;
     protected virtual bool OnActionException(List<Exception> exceptions, TInput input, IUser user)
     {
-        exceptions.ForEach(e => SetNotification(Notification.Error(e.Message)));
+        exceptions.ForEach(e => SetNotification(Notification.ErrorException(e.ToString())));
 
          return true;
     }
 
-    protected virtual bool OnActionBeforeStart(TInput input, IUser user) => true;
+    protected virtual Task<bool> OnActionBeforeStartAsync(TInput input, IUser user) => Task.FromResult(true);
 
     protected void Emit(IUseCaseEvent useCaseEvent)
         => Mediator.Publish(useCaseEvent);
@@ -110,9 +112,6 @@ public abstract class UseCase<TInput, TOutput> :
     protected void SetNotification(Notification notification)
     {
         _notifications.Add(notification);
-
-        if (Presenter.Success)
-            Presenter.SetSuccess(_notifications.NoErrors());
 
     }
     public void SetNotification(string message, SeverityType severity)

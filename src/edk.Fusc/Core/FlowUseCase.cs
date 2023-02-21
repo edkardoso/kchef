@@ -21,12 +21,14 @@ public class FlowUseCase<TInput, TOutput>
 
     private bool Continue { get; set; }
 
-    internal FlowUseCase<TInput, TOutput> Start(Func<TInput, IUser, bool> onActionBeforeStart)
+    internal FlowUseCase<TInput, TOutput> Start(Func<TInput, IUser, Task<bool>> onActionBeforeStart)
     {
-        Continue = EvaluateLibrary.And(onActionBeforeStart.Invoke(_input, _user), _useCase.Notifications.NoErrors())
-                    .Eval(() => { },
-                          () => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications)
-                    );
+
+        var beforeResult = onActionBeforeStart.Invoke(_input, _user).Result;
+
+        Continue = EvaluateLibrary
+                    .And(beforeResult, _useCase.Notifications.NoErrors())
+                    .WhenFalse(() => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications));
 
         return this;
 
@@ -36,12 +38,9 @@ public class FlowUseCase<TInput, TOutput>
     {
         Continue.WhenTrue(() =>
         {
-
             _useCase.Validator
-             .Validate(_input)
-             .WhenNotNull((obj) => _useCase.Notifications.AddRange(obj));
-
-            _useCase.Presenter.SetSuccess(_useCase.Notifications.NoErrors());
+                 .Validate(_input)
+                 .WhenNotNull((obj) => _useCase.Notifications.AddRange(obj));
 
             _useCase.Notifications
                 .HasError()
@@ -66,15 +65,10 @@ public class FlowUseCase<TInput, TOutput>
            .Eval(
                whenTrue: () =>
                {
-                   exceptions.ForEach(e => _useCase.SetNotification(e.Message, SeverityType.Warning));
-
+                   exceptions.ForEach(ex => _useCase.SetNotification(ex.ToString(), SeverityType.Exception));
                    _useCase.Presenter.OnError(exceptions, _input);
-               }
-               , whenFalse: () =>
-               {
-                   exceptions.ForEach(e => _useCase.SetNotification(e.Message, SeverityType.Warning));
-
-               }
+               },
+               whenFalse: () => exceptions.ForEach(ex => _useCase.SetNotification(ex.ToString(), SeverityType.Warning))
            );
 
     public void Complete(Func<bool, IReadOnlyCollection<INotification>, bool> onActionComplete)

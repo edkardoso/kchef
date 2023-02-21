@@ -9,7 +9,10 @@ public static class NotificationCollectionExtension
         => !notifications.HasError();
 
     public static bool HasError(this IEnumerable<INotification> notifications)
-        => notifications.Any(n => n.Severity.Equals(SeverityType.Error));
+        => notifications.Any(n => n.Severity.Equals(SeverityType.Error)) || notifications.HasException();
+
+    public static bool HasException(this IEnumerable<INotification> notifications)
+       => notifications.Any(n => n.Severity.Equals(SeverityType.Exception));
 
     public static bool HasWarning(this IEnumerable<INotification> notifications)
         => notifications.Any(n => n.Severity.Equals(SeverityType.Warning));

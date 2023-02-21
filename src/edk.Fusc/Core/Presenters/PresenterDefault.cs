@@ -14,5 +14,7 @@ namespace edk.Fusc.Core.Presenters
 
         public override void OnResult(TOutput output, IReadOnlyCollection<INotification> notifications, CancellationToken cancellationToken)
         {}
+
+       
     }
 }
