@@ -1,5 +1,6 @@
 ﻿using edk.Fusc.Contracts;
 using edk.Fusc.Core.Events;
+using edk.Tools;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace edk.Fusc.Core.Mediator;
@@ -10,6 +11,9 @@ public class UseCaseMediator : IMediatorUseCase
     public IUseCaseServices Services { get; private set; }
     public IUser User { get; private set; }
     internal ObserverMediator Observer { get; private set; } = new();
+
+    public bool IsProduction { get; private set; }
+    public bool IsDevelopment => IsProduction.Not();
 
     public UseCaseMediator() : this(new UseCaseServicesNull(), new FactoryMediatorNull())
     { }
