@@ -7,7 +7,11 @@ public interface IPresenter
     bool Success { get; }
     bool Fail => !Success;
     dynamic ViewOutput { get; }
+    IReadOnlyCollection<INotification> Notifications { get; }
+   
     IOption<dynamic> Output { get; }
+
+    bool HasExceptions { get; }
 
 }
 public interface IPresenter<TInput, TOutput> : IPresenter
@@ -21,7 +25,7 @@ public interface IPresenter<TInput, TOutput> : IPresenter
     new IOption<TOutput> Output { get; }
     void SetOutput(TOutput output);
 
-    void SetSuccess(bool value);
+  
 
 
 }
