@@ -1,0 +1,7 @@
+
+
+docker run --name mysql-container -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -e MYSQL_DATABASE=kchef -d mysql
+
+Configurando propriedades para o Dbeaver:
+https://cursos.alura.com.br/forum/topico-erro-public-key-retrieval-is-not-allowed-ao-fazer-test-connection-no-dbeaver-como-resolver-137427
+
