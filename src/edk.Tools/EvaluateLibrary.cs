@@ -44,7 +44,23 @@ public static class EvaluateLibrary
     public static bool WhenEqual(this object obj, object objTarget, Action action) => (obj == objTarget).WhenTrue(action);
     public static bool And(params bool[] values) => values.All(element => element);
     public static bool Or(params bool[] values) => values.Contains(true);
-    public static bool Not(this bool value) => !value;
+    public static bool Or(params Func<bool>[] funcs)
+    {
+        if (funcs is null)
+        {
+            throw new ArgumentNullException(nameof(funcs));
+        }
 
-   
+        foreach (var func in funcs)
+        {
+            if (func.Invoke())
+                return true;
+        }
+
+        return false;
+    }
+    public static bool Not(this bool value) => !value;
+    public static bool IsFalse(this bool value) => !value;
+
+
 }
