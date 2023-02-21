@@ -8,5 +8,6 @@ namespace edk.Kchef.Domain.Contracts.Services
         bool CheckForce([NotNull] string passwordPlainText);
         string GenerateHash([NotNull] User user, [NotNull] string passwordPlainText);
         bool VerifyPassword([NotNull] User user, [NotNull] string passwordPlainText);
+        string GenerateRandomPassword();
     }
 }

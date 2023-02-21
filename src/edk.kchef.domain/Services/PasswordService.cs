@@ -30,6 +30,11 @@ public class PasswordService : IPasswordService
     public string GenerateHash([NotNull] User user, [NotNull] string passwordPlainText)
         => _passwordHasher.HashPassword(user, passwordPlainText);
 
+    public string GenerateRandomPassword()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public bool VerifyPassword([NotNull] User user, [NotNull] string passwordPlainText)
         => _passwordHasher.VerifyHashedPassword(user, user.Password, passwordPlainText) != PasswordVerificationResult.Failed;
 
