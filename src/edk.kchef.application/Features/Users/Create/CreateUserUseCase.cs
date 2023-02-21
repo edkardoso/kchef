@@ -33,6 +33,9 @@ public class CreateUserUseCase : UseCase<CreateUserInput, UserOutput>
 
     protected override async Task<bool> OnActionBeforeStartAsync(CreateUserInput input, IUser user)
     {
+       
+        // Gera uma senha forte quando input.Password = empty
+        
         VerifyPasswordStrength(input);
 
         await CheckLoginAvailability(input);
@@ -55,6 +58,13 @@ public class CreateUserUseCase : UseCase<CreateUserInput, UserOutput>
 
         (await _unitOfWork.CommitAsync())
             .WhenFalse(() => SetNotification(Notification.Error("Não foi possível cadastrar o usuário.")));
+
+
+        // gerar o link para troca de senha
+
+        // enviar o link no email
+
+        // novo endpoint para fazer a troca da senha no primeiro acesso
 
         return userNew.ToOutput();
 
