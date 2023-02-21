@@ -3,8 +3,14 @@ using System.Collections.Generic;
 
 namespace edk.Kchef.Domain.Common.ValueObjects
 {
+
     public class FullNameVO : ValueObject
     {
+        protected FullNameVO()
+        {
+
+        }
+
         public string FirstName { get; }
         public string MiddleName { get; }
         public string LastName { get; }
