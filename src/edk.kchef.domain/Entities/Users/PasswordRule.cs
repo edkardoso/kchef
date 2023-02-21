@@ -7,7 +7,7 @@ namespace edk.Kchef.Domain.Entities.Users
         private readonly OptionsPasswordRule _options;
         public PasswordRule(OptionsPasswordRule options)
         {
-            _options = options;
+            _options = options ?? new OptionsPasswordRule();
         }
         public bool MaxLength(string passwordPlainText)
             => _options.MaxSize < _options.MinSize || passwordPlainText.Length.IsLessThanOrEqual(_options.MaxSize);

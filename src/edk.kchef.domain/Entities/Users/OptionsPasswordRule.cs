@@ -1,6 +1,6 @@
 ﻿namespace edk.Kchef.Domain.Entities.Users;
 
-internal record OptionsPasswordRule(
+public  record OptionsPasswordRule(
     int MinSize = 8
     , int MaxSize = 20
     , bool SpecialCharacter = true
