@@ -5,15 +5,11 @@ using edk.Kchef.IoC.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddContext(builder.Configuration.GetConnectionString("DefaultConnection"));
-builder.Services.AddMediatorUseCase((mediator) =>
-{
-    mediator.Services.AddScoped<GetProductsUseCase, GetProductsValidator, GetProductsPresenter>();
-    mediator.Builder();
-
-});
-
+// IoC Layer
+builder.Services.AddContext(builder.Configuration.GetConnectionString("DefaultConnection"))
+                .AddRepository()
+                .AddDomainServices()
+                .AddUseCases();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

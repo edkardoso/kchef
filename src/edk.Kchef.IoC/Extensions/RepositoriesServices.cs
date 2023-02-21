@@ -10,6 +10,7 @@ public static class RepositoriesServices
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IRepositoryFactory, RepositoryFactory>();
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
         return services;
