@@ -7,15 +7,16 @@ public struct Option<T> : IOption<T>
     public Option(T value)
     {
         Value = value;
+        Message = "This object is a container. Uses the method 'GetValueOrDefault' or 'Match' to repair your value.";
     }
-
+    public string Message { get;  }
     internal T Value { get; }
 
     public bool IsNull => Value == null;
-    public bool NotIsNull => !IsNull;
+    public bool NotNull => !IsNull;
 
     public TR Match<TR>(Func<T, TR> some, Func<TR> none)
-        => NotIsNull ? some(Value) : none();
+        => NotNull ? some(Value) : none();
 
     public static readonly Option<T> Null = new();
 
