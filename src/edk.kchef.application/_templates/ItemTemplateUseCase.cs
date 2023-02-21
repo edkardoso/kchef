@@ -8,9 +8,11 @@
 //{
 //    protected override string NameUseCase => "$safeitemname$";
 
-//    public override Task<$safeitemname$Output> OnExecuteAsync($safeitemname$Input input, CancellationToken cancellationToken)
-//    {
-//       throw new NotImplementedException(); 
-//    }
+//public override Task<$safeitemname$Output> OnExecuteAsync($safeitemname$Input input, CancellationToken cancellationToken)
+//{
+//    throw new NotImplementedException();
 //}
+//}
+
+
 
