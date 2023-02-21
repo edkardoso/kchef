@@ -16,7 +16,7 @@ public class OrderCreateUseCase : UseCase<OrderCreateRequest, OrderCard>
 
     protected override string NameUseCase => "OrderCreateUseCase";
 
-    protected override bool OnActionBeforeStart(OrderCreateRequest input, IUser user)
+    protected override Task<bool> OnActionBeforeStartAsync(OrderCreateRequest input, IUser user)
     {
 
         input.OrderCard.WhenEmpty(() => {
@@ -32,7 +32,7 @@ public class OrderCreateUseCase : UseCase<OrderCreateRequest, OrderCard>
 
         });
       
-        return _orderCard.IsNull.Not();
+        return Task.FromResult(_orderCard.IsNull.Not());
     }
 
 
