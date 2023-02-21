@@ -7,7 +7,6 @@ using edk.Fusc.Core;
 using edk.Fusc.Core.Validators;
 using edk.Kchef.Application.Common;
 using edk.Kchef.Domain.Common;
-using edk.Kchef.Domain.Common.ValueObjects;
 using edk.Kchef.Domain.Contracts.Repositories;
 using edk.Kchef.Domain.Contracts.Services;
 using edk.Kchef.Domain.Entities.Users;
@@ -34,22 +33,12 @@ public class CreateUserUseCase : UseCase<CreateUserInput, UserOutput>
 
     protected override async Task<bool> OnActionBeforeStartAsync(CreateUserInput input, IUser user)
     {
-        if (_passwordService.CheckForce(input.Password).IsFalse())
-        {
-            SetNotification(Notification.Error("Senha fora dos padrões de segurança."));
-            return false;
-        }
+        VerifyPasswordStrength(input);
 
-        Expression<Func<User,bool>> condition = (u) => u.Login.Equals(input.Login);
-        var userOption = await _userRepository.FirstOrDefaultAsync(condition);
+        await CheckLoginAvailability(input);
 
-        if (userOption.NotNull)
-        {
-            SetNotification(Notification.Error("Login indisponível."));
-            return false;
-        }
-
-        return true;
+        return Notifications.NoErrors();
+       
     }
 
 
@@ -69,5 +58,24 @@ public class CreateUserUseCase : UseCase<CreateUserInput, UserOutput>
 
         return userNew.ToOutput();
 
+    }
+
+    private void VerifyPasswordStrength(CreateUserInput input)
+    {
+        if (_passwordService.CheckForce(input.Password).IsFalse())
+        {
+            SetNotification(Notification.Error("Senha fora dos padrões de segurança."));
+        }
+    }
+
+    private async Task CheckLoginAvailability(CreateUserInput input)
+    {
+        Expression<Func<User, bool>> condition = (u) => u.Login.Equals(input.Login);
+        var userOption = await _userRepository.FirstOrDefaultAsync(condition);
+
+        if (userOption.NotNull)
+        {
+            SetNotification(Notification.Error("Login indisponível."));
+        }
     }
 }
