@@ -11,7 +11,7 @@ public static class UseCaseServices
     {
         services.AddMediatorUseCase((mediator) =>
         {
-            mediator.Services.AddScoped<CreateUserUseCase>();
+            mediator.Services.AddScoped<CreateUserUseCase, CreateUseCaseValidator, CreateUserInput, UserOutput>();
             mediator.Services.AddScoped<GetProductsUseCase, GetProductsValidator, GetProductsPresenter>();
             mediator.Builder();
 
@@ -20,5 +20,5 @@ public static class UseCaseServices
         return services;
     }
 
-    
+
 }

@@ -1,6 +1,6 @@
 ﻿namespace edk.Kchef.Application.Features.OrderCardCreate
 {
-    public class OrderCardCreateRequest
+    public record OrderCardCreateRequest
     {
         public string InternalDeskCode { get; set; }
     }

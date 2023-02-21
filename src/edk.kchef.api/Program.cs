@@ -1,5 +1,3 @@
-using edk.Fusc.Core.Mediator;
-using edk.Kchef.Application.Features.GetProducts;
 using edk.Kchef.IoC.Extensions;
 
 
@@ -23,6 +21,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
 }
 
 app.UseHttpsRedirection();

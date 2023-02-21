@@ -18,7 +18,9 @@ namespace edk.Kchef.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Post([FromBody] CreateUserInput input)
         {
+            
             var presenter = await _mediator.HandleAsync<CreateUserUseCase>(input);
+            
             var result = presenter.Output.GetValueOrDefault(new UserOutput(null, "Nenhum", "Nenhum"));
 
             if (presenter.Success)
