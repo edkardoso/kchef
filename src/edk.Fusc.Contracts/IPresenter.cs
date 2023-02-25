@@ -1,8 +1,9 @@
-﻿using edk.Tools;
+﻿using edk.Fusc.Contracts.Common;
+using edk.Tools;
 
 namespace edk.Fusc.Contracts;
 
-public interface IPresenter
+public interface IPresenter : IFuscObject
 {
     bool Success { get; }
     bool Fail => !Success;

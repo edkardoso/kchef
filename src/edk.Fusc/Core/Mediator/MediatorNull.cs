@@ -11,6 +11,11 @@ internal class MediatorNull : IMediatorUseCase
 
     public IUser User => new UserNull();
 
+    public TUseCase GetInstance<TUseCase>()
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<IPresenter> HandleAsync<TReceiver>(dynamic obj, IUseCase sender) where TReceiver : IUseCase
     {
         throw new NotImplementedException();
