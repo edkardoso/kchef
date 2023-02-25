@@ -13,9 +13,10 @@ public class UserConfiguration : EntityBaseConfiguration<User>
     {
         base.Configure("Users", builder);
 
+        builder.HasIndex(e => e.Login).IsUnique();
         builder.Property(e => e.Login)
                  .HasMaxLength(SizeFields.SIZE_4)
-                 .IsRequired(); // TODO: Garantir que o login seja único
+                 .IsRequired(); 
 
         builder.OwnsOne(e => e.Name, setup =>
         {
@@ -24,9 +25,10 @@ public class UserConfiguration : EntityBaseConfiguration<User>
             setup.Property(vo => vo.LastName).HasMaxLength(SizeFields.SIZE_3);
         });
 
+        builder.HasIndex(e => e.Email).IsUnique();
         builder.Property(e => e.Email)
             .HasMaxLength(SizeFields.SIZE_4)
-            .IsRequired(); // TODO: Garantir que o email seja único
+            .IsRequired(); 
 
         builder.Property(e => e.Password)
          .HasMaxLength(SizeFields.SIZE_6)
