@@ -23,11 +23,12 @@ public class FlowUseCase<TInput, TOutput>
 
     internal FlowUseCase<TInput, TOutput> Start(Func<TInput, IUser, Task<bool>> onActionBeforeStart)
     {
+        if (Continue.IsFalse())
+            return this;
 
-        var beforeResult = onActionBeforeStart.Invoke(_input, _user).Result;
 
         Continue = EvaluateLibrary
-                    .And(beforeResult, _useCase.Notifications.NoErrors())
+                    .And(onActionBeforeStart.Invoke(_input, _user).Result, _useCase.Notifications.NoErrors())
                     .WhenFalse(() => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications));
 
         return this;
@@ -36,17 +37,17 @@ public class FlowUseCase<TInput, TOutput>
 
     internal FlowUseCase<TInput, TOutput> Validate()
     {
-        Continue.WhenTrue(() =>
-        {
-            _useCase.Validator
-                 .Validate(_input)
-                 .WhenNotNull((obj) => _useCase.Notifications.AddRange(obj));
 
-            _useCase.Notifications
-                .HasError()
-                .WhenTrue(() => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications));
+        _useCase.Validator
+             .Validate(_input)
+             .WhenNotNull((obj) => _useCase.Notifications.AddRange(obj));
 
-        });
+        _useCase.Notifications
+            .HasError()
+            .WhenTrue(() => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications));
+
+        Continue = _useCase.Notifications.NoErrors();
+
 
         return this;
     }
