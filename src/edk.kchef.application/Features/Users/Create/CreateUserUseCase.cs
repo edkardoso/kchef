@@ -33,15 +33,15 @@ public class CreateUserUseCase : UseCase<CreateUserInput, UserOutput>
 
     protected override async Task<bool> OnActionBeforeStartAsync(CreateUserInput input, IUser user)
     {
-       
+
         // Gera uma senha forte quando input.Password = empty
-        
+
         VerifyPasswordStrength(input);
 
         await CheckLoginAvailability(input);
 
         return Notifications.NoErrors();
-       
+
     }
 
 
