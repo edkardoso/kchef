@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddContext(builder.Configuration.GetConnectionString("DefaultConnection"))
                 .AddRepository()
                 .AddDomainServices()
-                .AddUseCases();
+                .AddFusc();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

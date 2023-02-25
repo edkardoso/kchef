@@ -1,5 +1,7 @@
 ﻿using edk.Fusc.Contracts;
 using edk.Fusc.Core.Events;
+using edk.Fusc.Core.Presenters;
+using edk.Fusc.Core.Validators;
 using edk.Tools;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -46,10 +48,59 @@ public class UseCaseMediator : IMediatorUseCase
     {
         var useCase = (TUseCase)Factory.Get<TUseCase>();
 
-        useCase.SetMediator(this);
+        if (useCase.HasMediator.IsFalse())
+            useCase.SetMediator(this);
+
+        if (useCase.HasValidator.IsFalse())
+            SetValidatorInUseCase(useCase);
+
+        if (useCase.HasPresenter.IsFalse())
+            SetPresenterInUseCase(useCase);
 
         return await useCase.HandleAsync(input);
     }
+
+    private void SetValidatorInUseCase<TUseCase>(TUseCase useCase) where TUseCase : IUseCase
+    {
+
+        var validatorType = GetTypeOfValidatorTable(typeof(TUseCase).Name);
+
+        if (validatorType != null)
+        {
+            var validator = (IUseCaseValidator)Factory.Get(validatorType);
+            if (validator != null)
+            {
+                useCase.SetValidator(validator);
+
+            }
+        }
+    }
+
+    private void SetPresenterInUseCase<TUseCase>(TUseCase useCase) where TUseCase : IUseCase
+    {
+
+
+        var presenterType = GetTypeOfPresenterTable(typeof(TUseCase).Name);
+
+        if (presenterType != null)
+        {
+            var presenter = (IPresenter)Factory.Get(presenterType);
+            if (presenter != null)
+            {
+                useCase.SetPresenter(presenter);
+
+            }
+        }
+    }
+
+    private Type? GetTypeOfValidatorTable(string nameUseCase)
+        => ((UseCaseServices)Services).ValidatorsTable[nameUseCase] as Type;
+
+    private Type? GetTypeOfPresenterTable(string nameUseCase)
+       => ((UseCaseServices)Services).PresentersTable[nameUseCase] as Type;
+
+
+
 
     /// <summary>
     /// Permite que um UseCase chame outro UseCase mesmo sem conhecê-lo

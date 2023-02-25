@@ -3,12 +3,15 @@ using edk.Fusc.Contracts.Common;
 using edk.Fusc.Core.Mediator;
 using edk.Fusc.Core.Presenters;
 using edk.Fusc.Core.Validators;
+using edk.Tools;
 using System;
 using System.Linq;
 using System.Text;
 
 namespace edk.Fusc.Core;
-public abstract class UseCase<TInput, TOutput> :
+
+
+public abstract class UseCase<TInput, TOutput> : 
     IUseCase<TInput, TOutput>
 {
     private TInput? _input;
@@ -21,8 +24,20 @@ public abstract class UseCase<TInput, TOutput> :
     public IUseCaseValidator<TInput> Validator { get; private set; }
     protected abstract string NameUseCase { get; }
 
+    public bool HasMediator { get; private set; }
+
+    public bool HasValidator { get; private set; }
+
+    public bool HasPresenter { get; private set; }
+
+
+
     // Requerid for Test
-    protected UseCase() : this(null, null, null)
+    //protected UseCase() : this(null, null, null)
+    //{ }
+
+    protected UseCase(IUseCaseValidator<TInput>? validator, IPresenter<TInput, TOutput>? presenter)
+        : this(null, presenter, validator)
     { }
 
     protected UseCase(IMediatorUseCase? mediator = default, IPresenter<TInput, TOutput>? presenter = default, IUseCaseValidator<TInput>? validator = default)
@@ -45,19 +60,19 @@ public abstract class UseCase<TInput, TOutput> :
             throw new ArgumentNullException(nameof(_input));
 
         Notifications.Clear();
-      
+
         _flow = new(_input, Mediator.User, this);
 
         try
         {
-            await _flow.Start(OnActionBeforeStartAsync)
-                       .Validate()
-                       .ExecuteAsync(OnExecuteAsync);
+            await _flow.Validate()
+                        .Start(OnActionBeforeStartAsync)
+                        .ExecuteAsync(OnExecuteAsync);
         }
         catch (AggregateException ex)
         {
             List<Exception> exceptions = new();
-      
+
             foreach (Exception exception in ex.InnerExceptions)
             {
                 exceptions.Add(exception);
@@ -93,7 +108,7 @@ public abstract class UseCase<TInput, TOutput> :
     {
         exceptions.ForEach(e => SetNotification(Notification.ErrorException(e.ToString())));
 
-         return true;
+        return true;
     }
 
     protected virtual Task<bool> OnActionBeforeStartAsync(TInput input, IUser user) => Task.FromResult(true);
@@ -120,7 +135,24 @@ public abstract class UseCase<TInput, TOutput> :
     /// <summary>
     /// Configura o mediator no UseCase
     /// </summary>
-    public void SetMediator(IMediatorUseCase mediator) => Mediator = mediator;
+    public void SetMediator(IMediatorUseCase mediator)
+    {
+        Mediator = mediator;
+        HasMediator = Mediator.IsNull().Not();
+        
+    }
+
     protected async Task<NoValue> NoValueTask() => await Task.FromResult(NoValue.Create);
 
+    public void SetValidator(IUseCaseValidator validator)
+    {
+        Validator = (IUseCaseValidator<TInput>)validator;
+        HasValidator = Validator.IsNull().Not();
+    }
+
+    public void SetPresenter(IPresenter presenter)
+    {
+        Presenter = (IPresenter<TInput, TOutput>)presenter;
+        HasPresenter = Presenter.IsNull().Not();
+    }
 }

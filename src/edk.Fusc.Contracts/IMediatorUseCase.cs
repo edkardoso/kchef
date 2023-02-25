@@ -1,6 +1,8 @@
-﻿namespace edk.Fusc.Contracts;
+﻿using edk.Fusc.Contracts.Common;
 
-public interface IMediatorUseCase
+namespace edk.Fusc.Contracts;
+
+public interface IMediatorUseCase : IFuscObject
 {
     Task<IPresenter> HandleAsync<TReceiver>(dynamic obj, IUseCase sender)
         where TReceiver : IUseCase;
@@ -16,4 +18,5 @@ public interface IMediatorUseCase
         where TEvent : IUseCaseEvent
         where TUseCaseSender : IUseCase;
     void Publish(IUseCaseEvent @event);
+    
 }

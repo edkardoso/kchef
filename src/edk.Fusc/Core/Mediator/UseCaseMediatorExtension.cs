@@ -5,7 +5,7 @@ namespace edk.Fusc.Core.Mediator;
 
 public static class UseCaseMediatorExtension
 {
-    public static IServiceCollection AddMediatorUseCase(this IServiceCollection services, Action<UseCaseMediator> mediator)
+    public static IServiceCollection AddFusc(this IServiceCollection services, Action<UseCaseMediator> mediator)
     {
        
         var instance = new UseCaseMediator(services);

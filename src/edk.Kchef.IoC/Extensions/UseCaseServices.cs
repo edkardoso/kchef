@@ -7,11 +7,11 @@ namespace edk.Kchef.IoC.Extensions;
 
 public static class UseCaseServices
 {
-    public static IServiceCollection AddUseCases(this IServiceCollection services)
+    public static IServiceCollection AddFusc(this IServiceCollection services)
     {
-        services.AddMediatorUseCase((mediator) =>
+        services.AddFusc((mediator) =>
         {
-            mediator.Services.AddScoped<CreateUserUseCase, CreateUseCaseValidator, CreateUserInput, UserOutput>();
+            mediator.Services.AddScoped<CreateUserUseCase, CreateUseCaseValidator>();
             mediator.Services.AddScoped<GetProductsUseCase, GetProductsValidator, GetProductsPresenter>();
             mediator.Builder();
 

@@ -35,6 +35,13 @@ public class UseCaseServicesNull : IUseCaseServices
         throw new NotImplementedException();
     }
 
+    public IUseCaseServices AddScoped<TService, TValidator>()
+        where TService : IUseCase
+        where TValidator : IUseCaseValidator
+    {
+        throw new NotImplementedException();
+    }
+
     public IServiceProvider BuildServiceProvider()
     {
         throw new NotImplementedException();
