@@ -17,13 +17,13 @@ namespace edk.Kchef.Application.Features.Users.Create
         {
             RuleFor(e => e.Login)
                 .NotEmpty().WithMessage(string.Format(UserResource.PropertyRequired, Setup.TAG_PROPERTY))
-                .MinimumLength(MINIMUM_LENGTH).WithMessage(string.Format(UserResource.PropertyRangeLength, Setup.TAG_PROPERTY, MINIMUM_LENGTH, SizeFields.SIZE_4))
-                .MaximumLength(SizeFields.SIZE_4).WithMessage(string.Format(UserResource.PropertyRangeLength, Setup.TAG_PROPERTY, MINIMUM_LENGTH, SizeFields.SIZE_4));
+                .MinimumLength(MINIMUM_LENGTH).WithMessage(string.Format(UserResource.PropertyRangeLength, Setup.TAG_PROPERTY, MINIMUM_LENGTH, SizeFields.LARGE))
+                .MaximumLength(SizeFields.LARGE).WithMessage(string.Format(UserResource.PropertyRangeLength, Setup.TAG_PROPERTY, MINIMUM_LENGTH, SizeFields.LARGE));
 
             RuleFor(e => e.FirstName)
                 .NotEmpty().WithMessage(string.Format(UserResource.PropertyRequired, Setup.TAG_PROPERTY))
-                .MinimumLength(MINIMUM_LENGTH).WithMessage(string.Format(UserResource.PropertyRangeLength, Setup.TAG_PROPERTY, MINIMUM_LENGTH, SizeFields.SIZE_3))
-                .MaximumLength(SizeFields.SIZE_3).WithMessage(string.Format(UserResource.PropertyRangeLength, Setup.TAG_PROPERTY, MINIMUM_LENGTH, SizeFields.SIZE_3));
+                .MinimumLength(MINIMUM_LENGTH).WithMessage(string.Format(UserResource.PropertyRangeLength, Setup.TAG_PROPERTY, MINIMUM_LENGTH, SizeFields.NORMAL))
+                .MaximumLength(SizeFields.NORMAL).WithMessage(string.Format(UserResource.PropertyRangeLength, Setup.TAG_PROPERTY, MINIMUM_LENGTH, SizeFields.NORMAL));
 
             RuleFor(e => e.Password)
                 .NotEmpty().WithMessage(string.Format(UserResource.PropertyRequired, Setup.TAG_PROPERTY));
@@ -31,7 +31,7 @@ namespace edk.Kchef.Application.Features.Users.Create
             RuleFor(e => e.Email)
                 .NotEmpty().WithMessage(string.Format(UserResource.PropertyRequired, Setup.TAG_PROPERTY))
                 .EmailAddress().WithMessage(UserResource.InvalidEmail)
-                .MaximumLength(SizeFields.SIZE_6).WithMessage(string.Format(UserResource.PropertyMaxSize, Setup.TAG_PROPERTY, SizeFields.SIZE_6));
+                .MaximumLength(SizeFields.BIG).WithMessage(string.Format(UserResource.PropertyMaxSize, Setup.TAG_PROPERTY, SizeFields.BIG));
 
         }
 

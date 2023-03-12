@@ -2,12 +2,12 @@
 {
     public static class SizeFields
     {
-        public const int SIZE_1 = 10;
-        public const int SIZE_2 = 25;
-        public const int SIZE_3 = 50;
-        public const int SIZE_4 = 100;
-        public const int SIZE_5 = 150;
-        public const int SIZE_6 = 255;
-        public const int SIZE_7 = 500;
+        public const int VERY_SMALL = 10;
+        public const int SMALL = 25;
+        public const int NORMAL = 50;
+        public const int LARGE = 100;
+        public const int EXTRA_LARGE = 150;
+        public const int BIG = 255;
+        public const int DOUBLE_BIG = 500;
     }
 }

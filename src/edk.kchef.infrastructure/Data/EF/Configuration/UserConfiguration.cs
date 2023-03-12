@@ -15,23 +15,23 @@ public class UserConfiguration : EntityBaseConfiguration<User>
 
         builder.HasIndex(e => e.Login).IsUnique();
         builder.Property(e => e.Login)
-                 .HasMaxLength(SizeFields.SIZE_4)
+                 .HasMaxLength(SizeFields.LARGE)
                  .IsRequired(); 
 
         builder.OwnsOne(e => e.Name, setup =>
         {
-            setup.Property(vo => vo.FirstName).HasMaxLength(SizeFields.SIZE_3).IsRequired();
-            setup.Property(vo => vo.MiddleName).HasMaxLength(SizeFields.SIZE_3);
-            setup.Property(vo => vo.LastName).HasMaxLength(SizeFields.SIZE_3);
+            setup.Property(vo => vo.FirstName).HasMaxLength(SizeFields.NORMAL).IsRequired();
+            setup.Property(vo => vo.MiddleName).HasMaxLength(SizeFields.NORMAL);
+            setup.Property(vo => vo.LastName).HasMaxLength(SizeFields.NORMAL);
         });
 
         builder.HasIndex(e => e.Email).IsUnique();
         builder.Property(e => e.Email)
-            .HasMaxLength(SizeFields.SIZE_4)
+            .HasMaxLength(SizeFields.LARGE)
             .IsRequired(); 
 
         builder.Property(e => e.Password)
-         .HasMaxLength(SizeFields.SIZE_6)
+         .HasMaxLength(SizeFields.BIG)
          .IsRequired();
 
         builder.Property(e => e.ExpirationDate)
