@@ -1,7 +1,11 @@
+<<<<<<< HEAD
 ﻿using edk.Fusc.Contracts;
 using edk.Kchef.Application.Features.Users.Create;
 using edk.Kchef.Domain.Common.Base;
 using edk.Kchef.Domain.Ordes;
+=======
+﻿using edk.Kchef.Domain.Ordes;
+>>>>>>> 462cb2ab5d0975cb9fe50e0785c04f5966d1a327
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,6 +24,7 @@ namespace edk.Kchef.Application.Common
             Notifications = notifications;
         }
 
+<<<<<<< HEAD
         public ResultApi(object value, IReadOnlyCollection<INotification> notifications)
             :this(value, notifications.ToStringList()){}
 
@@ -28,6 +33,8 @@ namespace edk.Kchef.Application.Common
 
        
 
+=======
+>>>>>>> 462cb2ab5d0975cb9fe50e0785c04f5966d1a327
         [JsonProperty(Order = 1)]
         public Guid Id { get;  }
 
