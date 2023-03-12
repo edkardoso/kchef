@@ -1,5 +1,7 @@
 ﻿using edk.Fusc.Contracts;
 using edk.Fusc.Core.Presenters;
+using edk.Kchef.Application.Common;
+using edk.Kchef.Domain.Common.Base;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,16 +14,26 @@ public class CreateUserPresenter : PresenterBase<CreateUserInput, UserOutput>
 {
     public override void OnResult(UserOutput output, IReadOnlyCollection<INotification> notifications, CancellationToken cancellationToken)
     {
-        SetViewOutput(new ObjectResult(output) { StatusCode = StatusCodes.Status201Created });
+        var result = new ResultApi(output, notifications.ToStringList());
+
+        result.AddLink("self", $"https://localhost:7005/api/Users/{output.Id}");
+
+        SetViewOutput(new ObjectResult(result) { StatusCode = StatusCodes.Status201Created });
     }
 
     public override void OnErrorValidation(CreateUserInput input, IReadOnlyCollection<INotification> notifications)
     {
-        SetViewOutput(new ObjectResult(notifications) { StatusCode = StatusCodes.Status400BadRequest });
+        var newInput = new CreateUserInput(input.Login, input.Email, input.FirstName, "********");
+
+        var result = new ResultApi(newInput, notifications.ToStringList());
+
+        SetViewOutput(new ObjectResult(result) { StatusCode = StatusCodes.Status400BadRequest });
     }
 
     public override void OnError(List<Exception> exceptions, CreateUserInput input)
     {
-        SetViewOutput(new ObjectResult(exceptions) { StatusCode = StatusCodes.Status500InternalServerError });
+        var result = new ResultApi(input, exceptions.ToStringList());
+
+        SetViewOutput(new ObjectResult(result) { StatusCode = StatusCodes.Status500InternalServerError });
     }
 }

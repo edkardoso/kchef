@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using edk.Fusc.Contracts;
 using FluentValidation.Results;
 
 namespace edk.Kchef.Domain.Common.Base;
@@ -21,5 +23,13 @@ public static class NotificationCollectionExtension
             return;
 
         notifications.AddRange(Notification.ConvertFrom(failures));
+    }
+
+    public static IEnumerable<string> ToStringList(this IReadOnlyCollection<INotification> notifications)
+    {
+        foreach (var notification in notifications)
+        {
+            yield return $"[{notification.Severity}] {notification.Message}";
+        }
     }
 }

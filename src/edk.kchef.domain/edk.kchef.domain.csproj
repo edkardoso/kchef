@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\edk.Fusc.Contracts\edk.Fusc.Contracts.csproj" />
     <ProjectReference Include="..\edk.Tools\edk.Tools.csproj" />
   </ItemGroup>
 
