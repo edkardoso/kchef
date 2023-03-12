@@ -11,7 +11,7 @@ public static class UseCaseServices
     {
         services.AddFusc((mediator) =>
         {
-            mediator.Services.AddScoped<CreateUserUseCase, CreateUseCaseValidator>();
+            mediator.Services.AddScoped<CreateUserUseCase, CreateUseCaseValidator, CreateUserPresenter>();
             mediator.Services.AddScoped<GetProductsUseCase, GetProductsValidator, GetProductsPresenter>();
             mediator.Builder();
 
