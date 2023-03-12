@@ -17,7 +17,7 @@ namespace edk.Fusc.Core.Presenters
 
         public bool HasExceptions => Notifications.HasException();
 
-        public dynamic ViewOutput { get; protected set; }
+        public dynamic ViewOutput { get; private set; }
 
         public IOption<TOutput> Output { get; protected set; }
 
@@ -39,6 +39,7 @@ namespace edk.Fusc.Core.Presenters
         public virtual void OnResult(TOutput output, IReadOnlyCollection<INotification> notifications, CancellationToken cancellationToken) { }
 
         public void SetOutput(TOutput output) => Output = Option<TOutput>.New(output);
+        public void SetViewOutput(dynamic viewOutput) => ViewOutput = viewOutput;
 
 
 

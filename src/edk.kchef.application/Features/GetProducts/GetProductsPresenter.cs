@@ -14,12 +14,12 @@ public class GetProductsPresenter : PresenterBase<GetProductsRequest, GetProduct
 
         if (output == null || !output.Products.Any())
         {
-            ViewOutput = new NotFoundResult();
+            SetViewOutput(new NotFoundResult());
         }
         else
         {
 
-            ViewOutput = new OkObjectResult(output);
+            SetViewOutput(new OkObjectResult(output));
         }
     }
 }
