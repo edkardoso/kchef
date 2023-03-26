@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using edk.Kchef.Domain.Common.Base;
-using edk.Tools;
+using edk.Tools.Common;
 
 namespace edk.Kchef.Domain.Contracts.Repositories;
 public interface IReadGenericRepository<TEntity> where TEntity : IEntity

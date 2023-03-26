@@ -1,6 +1,7 @@
 ﻿using edk.Fusc.Contracts;
 using edk.Fusc.Core.Validators;
-using edk.Tools;
+using edk.Tools.Common;
+using edk.Tools.NoIf.Miscellaneous;
 
 namespace edk.Fusc.Core.Presenters
 {

@@ -7,7 +7,7 @@ using edk.Fusc.Core;
 using edk.Fusc.Core.Validators;
 using edk.Kchef.Domain.Contracts.Repositories;
 using edk.Kchef.Domain.Ordes;
-using edk.Tools;
+using edk.Tools.NoIf;
 
 namespace edk.Kchef.Application.Features.OrderCardCreate;
 
@@ -33,7 +33,7 @@ public class OrderCardCreateUseCase : UseCase<OrderCardCreateRequest, OrderCard>
         var desk = await _deskRepository.SingleByCodeAsync(input.InternalDeskCode);
 
         return desk.Match(
-           some: obj => obj.Available.Eval(
+           some: obj => obj.Available.If(
                whenTrue: () =>
                {
                    var orderCard = new OrderCard(obj);

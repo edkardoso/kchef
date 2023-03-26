@@ -1,5 +1,5 @@
 ﻿using edk.Fusc.Contracts.Common;
-using edk.Tools;
+using edk.Tools.Common;
 
 namespace edk.Fusc.Contracts;
 

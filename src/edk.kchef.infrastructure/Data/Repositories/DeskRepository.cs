@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using edk.Kchef.Domain.Contracts.Repositories;
-using edk.Tools;
 using edk.Kchef.Domain.Ordes;
+using edk.Tools.Common;
 
 namespace edk.Kchef.Infrastructure.Data.Repositories;
 

@@ -14,7 +14,7 @@ public class CreateUserPresenter : PresenterBase<CreateUserInput, UserOutput>
 {
     public override void OnResult(UserOutput output, IReadOnlyCollection<INotification> notifications, CancellationToken cancellationToken)
     {
-        var result = new ResultApi(output, notifications);
+        var result = new ResultApi(output, notifications.ToStringList());
 
         result.AddLink(HateoasContants.SELF, $"https://localhost:7005/api/Users/{output.Id}");
 
@@ -25,14 +25,14 @@ public class CreateUserPresenter : PresenterBase<CreateUserInput, UserOutput>
     {
         var newInput = new CreateUserInput(input.Login, input.Email, input.FirstName, "********");
 
-        var result = new ResultApi(newInput, notifications);
+        var result = new ResultApi(newInput, notifications.ToStringList());
 
         SetViewOutput(new ObjectResult(result) { StatusCode = StatusCodes.Status400BadRequest });
     }
 
     public override void OnError(List<Exception> exceptions, CreateUserInput input)
     {
-        var result = new ResultApi(input, exceptions);
+        var result = new ResultApi(input, exceptions.ToStringList());
 
         SetViewOutput(new ObjectResult(result) { StatusCode = StatusCodes.Status500InternalServerError });
     }

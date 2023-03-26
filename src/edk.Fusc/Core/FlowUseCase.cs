@@ -1,7 +1,10 @@
 ﻿using edk.Fusc.Contracts;
 using edk.Fusc.Contracts.Common;
 using edk.Fusc.Core.Validators;
-using edk.Tools;
+using edk.Tools.NoIf;
+using edk.Tools.NoIf.Boolean;
+using edk.Tools.NoIf.Comparer;
+using edk.Tools.NoIf.Miscellaneous;
 
 namespace edk.Fusc.Core;
 
@@ -27,9 +30,9 @@ public class FlowUseCase<TInput, TOutput>
             return this;
 
 
-        Continue = EvaluateLibrary
-                    .And(onActionBeforeStart.Invoke(_input, _user).Result, _useCase.Notifications.NoErrors())
-                    .WhenFalse(() => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications));
+        Continue = NoIfMiscellaneous
+                    .IfAllTrue(onActionBeforeStart.Invoke(_input, _user).Result, _useCase.Notifications.NoErrors())
+                    .IfFalse(() => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications));
 
         return this;
 
@@ -40,11 +43,11 @@ public class FlowUseCase<TInput, TOutput>
 
         _useCase.Validator
              .Validate(_input)
-             .WhenNotNull((obj) => _useCase.Notifications.AddRange(obj));
+             .IfNotNull((obj) => _useCase.Notifications.AddRange(obj));
 
         _useCase.Notifications
             .HasError()
-            .WhenTrue(() => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications));
+            .IfTrue(() => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications));
 
         Continue = _useCase.Notifications.NoErrors();
 
@@ -53,7 +56,7 @@ public class FlowUseCase<TInput, TOutput>
     }
 
     public async Task ExecuteAsync(Func<TInput, CancellationToken, Task<TOutput>> onExecuteAsync)
-        => await Continue.WhenTrueAsync(() =>
+        => await Continue.IfTrueAsync(() =>
             {
                 var result = onExecuteAsync(_input, Task.Factory.CancellationToken).Result;
                 _useCase.Presenter.SetOutput(result);
@@ -63,7 +66,7 @@ public class FlowUseCase<TInput, TOutput>
 
     public void Error(Func<List<Exception>, TInput, IUser, bool> onActionException, List<Exception> exceptions)
        => onActionException(exceptions, _input, _user)
-           .Eval(
+           .If(
                whenTrue: () =>
                {
                    exceptions.ForEach(ex => _useCase.SetNotification(ex.ToString(), SeverityType.Exception));
@@ -73,8 +76,8 @@ public class FlowUseCase<TInput, TOutput>
            );
 
     public void Complete(Func<bool, IReadOnlyCollection<INotification>, bool> onActionComplete)
-        => EvaluateLibrary.And(Continue, onActionComplete(_complete, _useCase.Notifications))
-            .WhenTrue(() =>
+        => NoIfMiscellaneous.IfAllTrue(Continue, onActionComplete(_complete, _useCase.Notifications))
+            .IfTrue(() =>
             {
                 //_useCaseEvents.Add(new UseCaseCompleteEvent(this));
                 // Notify();

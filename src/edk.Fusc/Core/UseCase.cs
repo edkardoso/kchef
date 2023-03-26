@@ -3,11 +3,7 @@ using edk.Fusc.Contracts.Common;
 using edk.Fusc.Core.Mediator;
 using edk.Fusc.Core.Presenters;
 using edk.Fusc.Core.Validators;
-using edk.Tools;
-using System;
-using System.Linq;
-using System.Text;
-
+using edk.Tools.NoIf.Miscellaneous;
 namespace edk.Fusc.Core;
 
 

@@ -25,11 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Fusc.UnitTests", "edk.F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Fusc.Contracts", "edk.Fusc.Contracts\edk.Fusc.Contracts.csproj", "{BB321C69-2B67-4122-9DAE-40372E51A762}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "edk.Tools", "edk.Tools\edk.Tools.csproj", "{A74A6E53-1F9B-4AA4-9747-556FEA456A6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Tools", "edk.Tools\edk.Tools.csproj", "{A74A6E53-1F9B-4AA4-9747-556FEA456A6C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fusc", "Fusc", "{8075E691-7079-43F8-ADF4-E02E0201BAD6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{3CC69594-350C-4E07-9F10-AAD1A4A7DC59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "edk.ToolsTest", "edk.ToolsTest\edk.ToolsTest.csproj", "{80EA7044-E8F2-4059-A2E4-88BFE3703F5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{A74A6E53-1F9B-4AA4-9747-556FEA456A6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A74A6E53-1F9B-4AA4-9747-556FEA456A6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A74A6E53-1F9B-4AA4-9747-556FEA456A6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80EA7044-E8F2-4059-A2E4-88BFE3703F5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80EA7044-E8F2-4059-A2E4-88BFE3703F5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80EA7044-E8F2-4059-A2E4-88BFE3703F5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80EA7044-E8F2-4059-A2E4-88BFE3703F5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{A74A6E53-1F9B-4AA4-9747-556FEA456A6C} = {3CC69594-350C-4E07-9F10-AAD1A4A7DC59}
 		{8075E691-7079-43F8-ADF4-E02E0201BAD6} = {D60CD613-E4ED-471A-9827-74EAA6D553D0}
 		{3CC69594-350C-4E07-9F10-AAD1A4A7DC59} = {D60CD613-E4ED-471A-9827-74EAA6D553D0}
+		{80EA7044-E8F2-4059-A2E4-88BFE3703F5E} = {3CC69594-350C-4E07-9F10-AAD1A4A7DC59}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3C56944-0BFD-4204-96AE-0EE50E12FB4D}

@@ -6,7 +6,9 @@ using edk.Fusc.Core.Validators;
 using edk.Kchef.Application.Features.OrderCardCreate;
 using edk.Kchef.Domain.Entities.Users;
 using edk.Kchef.Domain.Ordes;
-using edk.Tools;
+using edk.Tools.NoIf.Boolean;
+using edk.Tools.NoIf.Comparer;
+using edk.Tools.NoIf.Miscellaneous;
 
 namespace edk.Kchef.Application.Features.OrderCreate;
 
@@ -19,7 +21,7 @@ public class OrderCreateUseCase : UseCase<OrderCreateRequest, OrderCard>
     protected override Task<bool> OnActionBeforeStartAsync(OrderCreateRequest input, IUser user)
     {
 
-        input.OrderCard.WhenEmpty(() => {
+        input.OrderCard.IfEmpty(() => {
 
             var presenter = Mediator.HandleAsync<OrderCardCreateUseCase>(new OrderCardCreateRequest()
             {
@@ -28,7 +30,7 @@ public class OrderCreateUseCase : UseCase<OrderCreateRequest, OrderCard>
 
             _orderCard = presenter.Output.GetValueOrDefault(OrderCard.InstanceNull);
 
-            _orderCard.IsNull.WhenTrue(() => SetNotification(Notification.Error("Comanda não gerada.")));
+            _orderCard.IsNull.IfTrue(() => SetNotification(Notification.Error("Comanda não gerada.")));
 
         });
       

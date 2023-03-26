@@ -7,7 +7,10 @@ using edk.Kchef.Domain.Common.Base;
 using edk.Kchef.Infrastructure.Data.EF.Context;
 using Microsoft.EntityFrameworkCore;
 using edk.Kchef.Domain.Contracts.Repositories;
-using edk.Tools;
+using edk.Tools.NoIf;
+using edk.Tools.NoIf.Boolean;
+using edk.Tools.Common;
+using edk.Tools.NoIf.Miscellaneous;
 
 namespace edk.Kchef.Infrastructure.Data.Repositories;
 
@@ -40,7 +43,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IEnti
     {
         var entityOption = await GetByIdAsync(id);
 
-        entityOption.IsNull.Not().WhenTrue(async () =>
+        entityOption.IsNull.Not().IfTrue(async () =>
         {
             await DeleteAsync(entityOption.Match(e => e, () => null));
         });

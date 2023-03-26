@@ -10,7 +10,9 @@ using edk.Kchef.Domain.Common;
 using edk.Kchef.Domain.Contracts.Repositories;
 using edk.Kchef.Domain.Contracts.Services;
 using edk.Kchef.Domain.Entities.Users;
-using edk.Tools;
+using edk.Tools.NoIf;
+using edk.Tools.NoIf.Boolean;
+using edk.Tools.NoIf.Miscellaneous;
 
 namespace edk.Kchef.Application.Features.Users.Create;
 
@@ -57,7 +59,7 @@ public class CreateUserUseCase : UseCase<CreateUserInput, UserOutput>
         await _userRepository.AddAsync(userNew).ConfigureAwait(false);
 
         (await _unitOfWork.CommitAsync())
-            .WhenFalse(() => SetNotification(Notification.Error("Não foi possível cadastrar o usuário.")));
+            .IfFalse(() => SetNotification(Notification.Error("Não foi possível cadastrar o usuário.")));
 
 
         // gerar o link para troca de senha

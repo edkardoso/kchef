@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using edk.Tools;
 using edk.Kchef.Domain.Ordes;
+using edk.Tools.Common;
 
 namespace edk.Kchef.Domain.Contracts.Repositories;
 
