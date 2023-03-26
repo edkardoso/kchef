@@ -4,6 +4,14 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>Fluent Use Case</Description>
+    <Copyright>2023 edkardoso</Copyright>
+    <FileVersion>2.0.0.0</FileVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <Company>edkardoso</Company>
+    <Authors>edkardoso</Authors>
+    <Title>Fluent Use Case</Title>
   </PropertyGroup>
 
   <ItemGroup>
