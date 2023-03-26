@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace edk.Tools;
+namespace edk.Tools.Common;
 
 public struct Option<T> : IOption<T>
 {
@@ -9,7 +9,7 @@ public struct Option<T> : IOption<T>
         Value = value;
         Message = "This object is a container. Uses the method 'GetValueOrDefault' or 'Match' to repair your value.";
     }
-    public string Message { get;  }
+    public string Message { get; }
     internal T Value { get; }
 
     public bool IsNull => Value == null;

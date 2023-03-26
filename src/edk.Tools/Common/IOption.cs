@@ -1,4 +1,4 @@
-﻿namespace edk.Tools;
+﻿namespace edk.Tools.Common;
 
 public interface IOption<T>
 {
