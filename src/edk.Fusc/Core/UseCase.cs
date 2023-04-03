@@ -39,7 +39,7 @@ public abstract class UseCase<TInput, TOutput> :
 
     protected UseCase(IMediatorUseCase? mediator = default, IPresenter<TInput, TOutput>? presenter = default, IUseCaseValidator<TInput>? validator = default)
     {
-        Mediator = mediator ?? new MediatorNull();
+        Mediator = mediator ?? new UseCaseMediatorNull();
         Presenter = presenter ?? new PresenterDefault<TInput, TOutput>();
         Validator = validator ?? new ValidadorNull<TInput>();
         _pubSubMediator = Mediator.PubSub;

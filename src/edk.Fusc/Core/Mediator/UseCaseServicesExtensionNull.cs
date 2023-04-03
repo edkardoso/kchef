@@ -3,9 +3,9 @@ using edk.Fusc.Core.Validators;
 
 namespace edk.Fusc.Core.Mediator;
 
-public class UseCaseServicesNull : IUseCaseServices
+public class UseCaseServicesExtensionNull : IUseCaseServices
 {
-    internal UseCaseServicesNull()
+    internal UseCaseServicesExtensionNull()
     {
 
     }

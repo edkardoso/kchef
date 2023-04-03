@@ -10,5 +10,5 @@ public class UseCaseFailureEvent : UseCaseEventBase
         Category = UseCaseEventCategory.Failure;
     }
 
-    public List<Exception> Exceptions { get; internal set; }
+    public List<Exception> Exceptions { get; internal set; } = new List<Exception> { };
 }

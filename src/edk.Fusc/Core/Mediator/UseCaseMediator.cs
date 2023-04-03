@@ -18,7 +18,7 @@ public class UseCaseMediator : IMediatorUseCase
     public bool IsProduction { get; private set; }
     public bool IsDevelopment => IsProduction.Not();
 
-    public UseCaseMediator(IFactoryMediator factory) : this(new UseCaseServicesNull(), factory)
+    public UseCaseMediator(IFactoryMediator factory) : this(new UseCaseServicesExtensionNull(), factory)
     { }
 
     public UseCaseMediator(IUseCaseServices services, IFactoryMediator factory)

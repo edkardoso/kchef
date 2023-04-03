@@ -2,9 +2,9 @@
 
 namespace edk.Fusc.Core.Mediator;
 
-internal class MediatorNull : IMediatorUseCase
+internal class UseCaseMediatorNull : IMediatorUseCase
 {
-    public IUseCaseServices Services => new UseCaseServicesNull();
+    public IUseCaseServices Services => new UseCaseServicesExtensionNull();
 
     public IFactoryMediator Factory => new FactoryMediatorNull();
 
