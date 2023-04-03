@@ -5,11 +5,12 @@ namespace edk.Fusc.Core.Events;
 
 public class UseCaseStartEvent : UseCaseEventBase
 {
-    public UseCaseStartEvent(IUseCase useCase) 
+    public UseCaseStartEvent(IUseCase useCase, object? input) 
         : base(useCase)
     {
         Category = UseCaseEventCategory.Start;
+        Input = input;
     }
 
-    public dynamic Input { get; set; }
+    public object? Input { get;  }
 }

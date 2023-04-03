@@ -134,7 +134,7 @@ public abstract class UseCase<TInput, TOutput> :
     /// </summary>
     /// <param name="completed">Será true se OnExecuteAsync tiver sido executado completamente.</param>
     protected virtual bool OnActionComplete(bool completed, IReadOnlyCollection<INotification> notifications) => true;
-    
+
     /// <summary>
     /// Evento disparado quando ocorre uma exceção no processo de validação ou de execução do UseCase
     /// </summary>
@@ -150,16 +150,16 @@ public abstract class UseCase<TInput, TOutput> :
     /// </summary>
     protected virtual Task<bool> OnActionBeforeStartAsync(TInput? input, IUser user)
     {
-        PublishEventStart(input);
+        _pubSubMediator.PublishAsync(new UseCaseStartEvent(this, input));
 
         return Task.FromResult(true);
     }
-  
+
 
     /// <summary>
     /// Permite adicionar Notificações
     /// </summary>
-    protected void SetNotification(Notification notification) 
+    protected void SetNotification(Notification notification)
         => _notifications.Add(notification);
 
     /// <summary>
@@ -209,18 +209,8 @@ public abstract class UseCase<TInput, TOutput> :
         _pubSubMediator.SubscribeTo<TRecipient, TEvent>(this);
     }
 
-    public IReadOnlyCollection<INotification> Validate(TInput? input) 
+    public IReadOnlyCollection<INotification> Validate(TInput? input)
         => Validator.Validate(input);
 
 
-    private void PublishEventStart(TInput? input)
-    {
-        var @event = new UseCaseStartEvent(this);
-        if (input != null)
-        {
-            @event.Input = input;
-        }
-
-        _pubSubMediator.PublishAsync(@event);
-    }
 }
