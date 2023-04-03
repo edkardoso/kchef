@@ -49,7 +49,15 @@ public class UseCaseServices : IUseCaseServices
 
     public IUseCaseServices AddScoped(Type type)
     {
-        _services.AddScoped(type);
+        _services.Add(new ServiceDescriptor(
+            type,
+            serviceProvider =>
+            {
+               var obj = ActivatorUtilities.CreateInstance(serviceProvider, type);
+                return obj;
+            }, ServiceLifetime.Scoped));
+
+       // _services.AddScoped(type);
         return this;
     }
 

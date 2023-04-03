@@ -58,7 +58,7 @@ namespace edk.Kchef.ApplicationTests
             Assert.Equal(String.Format(UserResource.PropertyRequired, nameof(input.Login)), notifications.FirstOrDefault()?.Message);
 
         }
-
+        []
         [Theory]
         [InlineData("")]
         [InlineData(null)]

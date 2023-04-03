@@ -1,6 +1,13 @@
-﻿namespace edk.Fusc.Contracts.Common;
+﻿using System.Data.SqlTypes;
 
-public interface IFuscObject
+namespace edk.Fusc.Contracts.Common;
+
+public interface INullableObject
 {
-    public bool IsNull() => false;
+    public bool IsNull() => true;
+}
+
+public interface IFuscObject 
+{
+    
 }

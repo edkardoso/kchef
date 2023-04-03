@@ -2,11 +2,11 @@
 
 public struct NoValue
 {
-    public NoValue(bool isNull = false) => IsNull = isNull;
+   
+    public NoValue(){}
 
-    public static NoValue Create => new();
+    public static NoValue Instance => new();
 
-    public static NoValue Null => new(true);
+    public bool IsNull => true;
 
-    public bool IsNull { get; }
 }

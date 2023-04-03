@@ -1,11 +1,12 @@
-﻿namespace edk.Fusc.Contracts;
+﻿using edk.Fusc.Contracts.Common;
+
+namespace edk.Fusc.Contracts;
 
 public interface IUseCaseEvent
 {
-    Type Sender { get; }
+    Type SenderType { get; }
     DateTime? StartDate { get; }
-
-
+    UseCaseEventCategory Category { get; }
 }
 
 

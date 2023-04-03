@@ -1,19 +1,19 @@
 ﻿using edk.Fusc.Contracts;
-using edk.Fusc.Core.Events;
-using edk.Fusc.Core.Presenters;
 using edk.Fusc.Core.Validators;
-using edk.Tools.NoIf;
 using edk.Tools.NoIf.Miscellaneous;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace edk.Fusc.Core.Mediator;
+
 public class UseCaseMediator : IMediatorUseCase
 {
-    private readonly Dictionary<string, Type> _translateDictionary = new();
+
     public virtual IFactoryMediator Factory { get; private set; }
+
+    public IPubSubMediator PubSub { get; private set; }
+
     public IUseCaseServices Services { get; private set; }
     public IUser User { get; private set; }
-    internal ObserverMediator Observer { get; private set; } = new();
 
     public bool IsProduction { get; private set; }
     public bool IsDevelopment => IsProduction.Not();
@@ -29,6 +29,7 @@ public class UseCaseMediator : IMediatorUseCase
         Services = services;
         Factory = factory;
         User = new UserNull();
+        PubSub = new PubSubMediator(Factory);
     }
 
     public UseCaseMediator(IServiceCollection services)
@@ -36,6 +37,7 @@ public class UseCaseMediator : IMediatorUseCase
         Factory = new FactoryMediatorNull();
         Services = new UseCaseServices(services);
         User = new UserNull();
+        PubSub = new PubSubMediator(Factory);
     }
 
     public void Builder()
@@ -79,8 +81,6 @@ public class UseCaseMediator : IMediatorUseCase
 
     private void SetPresenterInUseCase<TUseCase>(TUseCase useCase) where TUseCase : IUseCase
     {
-
-
         var presenterType = GetTypeOfPresenterTable(typeof(TUseCase).Name);
 
         if (presenterType != null)
@@ -124,11 +124,5 @@ public class UseCaseMediator : IMediatorUseCase
 
     public void SetUser(IUser user) => User = user;
 
-    public void Subscribe<TEvent, TUseCaseSender>(IUseCase useCaseObserver)
-        where TEvent : IUseCaseEvent
-        where TUseCaseSender : IUseCase
-        => Observer.Subscribe<TEvent, TUseCaseSender>(useCaseObserver);
 
-    public void Publish(IUseCaseEvent @event)
-        => Observer.Publish(@event);
 }

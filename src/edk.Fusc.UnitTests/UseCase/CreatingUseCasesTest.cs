@@ -1,10 +1,16 @@
+using edk.Fusc.Contracts;
 using edk.Fusc.Core;
+using edk.Fusc.Core.Validators;
 using edk.Fusc.UnitTests.Helper.Passwords;
+using edk.Tools.NoIf.Comparer;
+using Microsoft.VisualStudio.TestPlatform.Utilities;
 
 namespace edk.Fusc.UnitTests.UseCase;
 
 public class CreatingUseCasesTest
 {
+
+
     // UseCase com Input e Output definidos
 
     [Fact]
@@ -47,7 +53,7 @@ public class CreatingUseCasesTest
         var presenter = await useCase.HandleAsync(passwordSize);
 
         // assert
-        Assert.IsType<NoValue>(presenter.Output.GetValueOrDefault(NoValue.Create));
+        Assert.IsType<NoValue>(presenter.Output.GetValueOrDefault(NoValue.Instance));
         Assert.Equal(passwordSize, useCase.Value?.Length);
 
     }

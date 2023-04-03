@@ -8,6 +8,10 @@ public static class NoIfComparer
         , Action actionTrue)
         => (obj.GetType() == typeof(T)).IfTrue(actionTrue);
 
+    public static TResult IfIsTypeEqual<T, TResult>(this object obj
+       , Func<TResult> whenTrue) 
+        => (obj.GetType() == typeof(T)).If(whenTrue, () => default);
+
     public static bool IfIsTypeNotEqual<T>(this object obj
         , Action actionTrue)
         => (obj.GetType() != typeof(T)).IfTrue(actionTrue);

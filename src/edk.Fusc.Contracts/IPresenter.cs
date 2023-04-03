@@ -3,7 +3,7 @@ using edk.Tools.Common;
 
 namespace edk.Fusc.Contracts;
 
-public interface IPresenter : IFuscObject
+public interface IPresenter : IFuscObject, INullableObject
 {
     bool Success { get; }
     bool Fail => !Success;
@@ -17,9 +17,9 @@ public interface IPresenter : IFuscObject
 }
 public interface IPresenter<TInput, TOutput> : IPresenter
 {
-    void OnErrorValidation(TInput input, IReadOnlyCollection<INotification> notifications);
+    void OnErrorValidation(TInput? input, IReadOnlyCollection<INotification> notifications);
 
-    void OnError(List<Exception> exceptions, TInput input);
+    void OnError(List<Exception> exceptions, TInput? input);
 
     void OnResult(TOutput output, IReadOnlyCollection<INotification> notifications, CancellationToken cancellationToken);
 

@@ -11,6 +11,7 @@ public static class NoIfBoolean
         , Action actionTrue)
         => NoIf.If(() => value, actionTrue, () => { });
 
+
     public static bool IfFalse(this Func<bool> condition
         , Action actionFalse)
         => condition.If(() => { }, actionFalse);

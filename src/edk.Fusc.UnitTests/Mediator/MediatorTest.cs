@@ -3,7 +3,7 @@ using edk.Fusc.Core;
 using edk.Fusc.Contracts;
 using Moq;
 
-namespace edk.Fusc.UnitTests.Mediador
+namespace edk.Fusc.UnitTests.Mediator
 {
 
     public class MediatorTest
@@ -18,7 +18,7 @@ namespace edk.Fusc.UnitTests.Mediador
                             .Returns(new MyUseCase(mediator));
             // act
             var useCase = mediator.Factory.Get<MyUseCase>();
-            
+
             // assert
             Assert.NotNull(useCase);
 

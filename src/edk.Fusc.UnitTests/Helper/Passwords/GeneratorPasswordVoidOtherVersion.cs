@@ -12,7 +12,7 @@ namespace edk.Fusc.UnitTests.Helper.Passwords
         {
             Value = await Password.Generate(6);
 
-            return await NoValueTask();
+            return NoValue.Instance;
         }
     }
 }

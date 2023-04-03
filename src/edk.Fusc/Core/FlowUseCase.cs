@@ -10,12 +10,12 @@ namespace edk.Fusc.Core;
 
 public class FlowUseCase<TInput, TOutput>
 {
-    private readonly TInput _input;
+    private readonly TInput? _input;
     private readonly IUser _user;
     private readonly UseCase<TInput, TOutput> _useCase;
     private bool _complete;
 
-    internal FlowUseCase(TInput input, IUser user, UseCase<TInput, TOutput> useCase)
+    internal FlowUseCase(TInput? input, IUser user, UseCase<TInput, TOutput> useCase)
     {
         _input = input;
         _user = user;
@@ -24,7 +24,7 @@ public class FlowUseCase<TInput, TOutput>
 
     private bool Continue { get; set; }
 
-    internal FlowUseCase<TInput, TOutput> Start(Func<TInput, IUser, Task<bool>> onActionBeforeStart)
+    internal FlowUseCase<TInput, TOutput> Start(Func<TInput?, IUser, Task<bool>> onActionBeforeStart)
     {
         if (Continue.IsFalse())
             return this;
@@ -34,6 +34,7 @@ public class FlowUseCase<TInput, TOutput>
                     .IfAllTrue(onActionBeforeStart.Invoke(_input, _user).Result, _useCase.Notifications.NoErrors())
                     .IfFalse(() => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications));
 
+
         return this;
 
     }
@@ -41,8 +42,7 @@ public class FlowUseCase<TInput, TOutput>
     internal FlowUseCase<TInput, TOutput> Validate()
     {
 
-        _useCase.Validator
-             .Validate(_input)
+        _useCase.Validate(_input)
              .IfNotNull((obj) => _useCase.Notifications.AddRange(obj));
 
         _useCase.Notifications
@@ -55,7 +55,7 @@ public class FlowUseCase<TInput, TOutput>
         return this;
     }
 
-    public async Task ExecuteAsync(Func<TInput, CancellationToken, Task<TOutput>> onExecuteAsync)
+    public async Task ExecuteAsync(Func<TInput?, CancellationToken, Task<TOutput>> onExecuteAsync)
         => await Continue.IfTrueAsync(() =>
             {
                 var result = onExecuteAsync(_input, Task.Factory.CancellationToken).Result;
@@ -64,7 +64,7 @@ public class FlowUseCase<TInput, TOutput>
                 _useCase.Presenter.OnResult(result, _useCase.Notifications, Task.Factory.CancellationToken);
             });
 
-    public void Error(Func<List<Exception>, TInput, IUser, bool> onActionException, List<Exception> exceptions)
+    public void Error(Func<List<Exception>, TInput?, IUser, bool> onActionException, List<Exception> exceptions)
        => onActionException(exceptions, _input, _user)
            .If(
                whenTrue: () =>
@@ -79,9 +79,7 @@ public class FlowUseCase<TInput, TOutput>
         => NoIfMiscellaneous.IfAllTrue(Continue, onActionComplete(_complete, _useCase.Notifications))
             .IfTrue(() =>
             {
-                //_useCaseEvents.Add(new UseCaseCompleteEvent(this));
-                // Notify();
-
+               
             });
 }
 

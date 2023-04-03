@@ -1,5 +1,4 @@
 ﻿using edk.Fusc.Contracts;
-using edk.Fusc.Core.Events;
 
 namespace edk.Fusc.Core.Mediator;
 
@@ -8,6 +7,8 @@ internal class MediatorNull : IMediatorUseCase
     public IUseCaseServices Services => new UseCaseServicesNull();
 
     public IFactoryMediator Factory => new FactoryMediatorNull();
+
+    public IPubSubMediator PubSub => new PubSubMediator(Factory);
 
     public IUser User => new UserNull();
 
@@ -26,20 +27,11 @@ internal class MediatorNull : IMediatorUseCase
         throw new NotImplementedException();
     }
 
-    public void Publish(IUseCaseEvent @event)
-    {
-        throw new NotImplementedException();
-    }
-
+   
     public void SetUser(IUser user)
     {
         throw new NotImplementedException();
     }
 
-    public void Subscribe<TEvent, TUseCaseSender>(IUseCase useCaseObserver)
-        where TEvent : IUseCaseEvent
-        where TUseCaseSender : IUseCase
-    {
-        throw new NotImplementedException();
-    }
+  
 }

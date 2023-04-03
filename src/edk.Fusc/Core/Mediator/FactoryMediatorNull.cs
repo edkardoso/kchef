@@ -1,4 +1,5 @@
 ﻿using edk.Fusc.Contracts;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace edk.Fusc.Core.Mediator;
 

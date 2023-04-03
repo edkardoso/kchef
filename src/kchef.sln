@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Kchef.Infrastructure", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B5C5ECE0-A43B-47F8-9AC0-8AED37F5FB94}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Kchef.ApplicationTests", "edk.Kchef.ApplicationTests\edk.Kchef.ApplicationTests.csproj", "{86A27DC9-37ED-4765-B0F1-929B44646B56}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Kchef.IoC", "edk.Kchef.IoC\edk.Kchef.IoC.csproj", "{1C205CB7-B4A1-4B37-ACDE-3C40850534E6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.Kchef.Api", "edk.Kchef.Api\edk.Kchef.Api.csproj", "{DA24EC79-C80A-464A-924D-1E49BB7ABB2E}"
@@ -31,7 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fusc", "Fusc", "{8075E691-7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{3CC69594-350C-4E07-9F10-AAD1A4A7DC59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "edk.ToolsTest", "edk.ToolsTest\edk.ToolsTest.csproj", "{80EA7044-E8F2-4059-A2E4-88BFE3703F5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "edk.ToolsTest", "edk.ToolsTest\edk.ToolsTest.csproj", "{80EA7044-E8F2-4059-A2E4-88BFE3703F5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,10 +49,6 @@ Global
 		{F88DFF7A-3786-430A-A341-62646177CA80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F88DFF7A-3786-430A-A341-62646177CA80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F88DFF7A-3786-430A-A341-62646177CA80}.Release|Any CPU.Build.0 = Release|Any CPU
-		{86A27DC9-37ED-4765-B0F1-929B44646B56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{86A27DC9-37ED-4765-B0F1-929B44646B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{86A27DC9-37ED-4765-B0F1-929B44646B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{86A27DC9-37ED-4765-B0F1-929B44646B56}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1C205CB7-B4A1-4B37-ACDE-3C40850534E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C205CB7-B4A1-4B37-ACDE-3C40850534E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C205CB7-B4A1-4B37-ACDE-3C40850534E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -88,7 +82,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{86A27DC9-37ED-4765-B0F1-929B44646B56} = {B5C5ECE0-A43B-47F8-9AC0-8AED37F5FB94}
 		{D31F4BEB-5B7F-4537-9A33-48A3944CC30E} = {8075E691-7079-43F8-ADF4-E02E0201BAD6}
 		{7C2DCF67-24CA-42F1-8203-6CF74312B40C} = {8075E691-7079-43F8-ADF4-E02E0201BAD6}
 		{BB321C69-2B67-4122-9DAE-40372E51A762} = {8075E691-7079-43F8-ADF4-E02E0201BAD6}

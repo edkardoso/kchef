@@ -3,7 +3,7 @@ using edk.Fusc.Contracts.Common;
 
 namespace edk.Fusc.Core.Validators;
 
-public class ValidadorNull<TInput> : IUseCaseValidator<TInput>
+public class ValidadorNull<TInput> : IUseCaseValidator<TInput>, INullableObject
 {
     internal ValidadorNull() { }
 

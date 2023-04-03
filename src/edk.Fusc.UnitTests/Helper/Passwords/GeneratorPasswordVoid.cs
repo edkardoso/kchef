@@ -12,7 +12,7 @@ internal class GeneratorPasswordVoid : UseCase<int, NoValue>
     {
         Value = await Password.Generate(input);
 
-        return await NoValueTask();
+        return NoValue.Instance;
     }
 
 
