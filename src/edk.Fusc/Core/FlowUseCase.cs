@@ -29,11 +29,9 @@ public class FlowUseCase<TInput, TOutput>
         if (Continue.IsFalse())
             return this;
 
-
         Continue = NoIfMiscellaneous
                     .IfAllTrue(onActionBeforeStart.Invoke(_input, _user).Result, _useCase.Notifications.NoErrors())
                     .IfFalse(() => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications));
-
 
         return this;
 
@@ -41,7 +39,6 @@ public class FlowUseCase<TInput, TOutput>
 
     internal FlowUseCase<TInput, TOutput> Validate()
     {
-
         _useCase.Validate(_input)
              .IfNotNull((obj) => _useCase.Notifications.AddRange(obj));
 
@@ -50,7 +47,6 @@ public class FlowUseCase<TInput, TOutput>
             .IfTrue(() => _useCase.Presenter.OnErrorValidation(_input, _useCase.Notifications));
 
         Continue = _useCase.Notifications.NoErrors();
-
 
         return this;
     }
@@ -76,10 +72,7 @@ public class FlowUseCase<TInput, TOutput>
            );
 
     public void Complete(Func<bool, IReadOnlyCollection<INotification>, bool> onActionComplete)
-        => NoIfMiscellaneous.IfAllTrue(Continue, onActionComplete(_complete, _useCase.Notifications))
-            .IfTrue(() =>
-            {
-               
-            });
+        => Continue.IfTrue(() => onActionComplete(_complete, _useCase.Notifications));
+
 }
 
