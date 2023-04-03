@@ -25,10 +25,10 @@ public abstract class PresenterBase<TInput, TOutput> : IPresenter<TInput, TOutpu
 
     IOption<dynamic> IPresenter.Output => Option<dynamic>.New(Output.Match(o => o, () => default(dynamic)));
 
-    public virtual void OnErrorValidation(TInput input, IReadOnlyCollection<INotification> notifications)
+    public virtual void OnErrorValidation(TInput? input, IReadOnlyCollection<INotification> notifications)
         => Notifications = notifications;
 
-    public virtual void OnError(List<Exception> exceptions, TInput input) {}
+    public virtual void OnError(List<Exception> exceptions, TInput? input) {}
 
     public virtual void OnResult(TOutput output, IReadOnlyCollection<INotification> notifications, CancellationToken cancellationToken) { }
 

@@ -16,30 +16,22 @@ public class EventsTests
     #region Class for Tests
     public class EventCreatorUseCase : UseCaseInput<string>
     {
-        public EventCreatorUseCase()
-        {
-            
-        }
-
-        public EventCreatorUseCase(IMediatorUseCase mediator):base(mediator)
-        { }
+        public EventCreatorUseCase(IMediatorUseCase mediator)
+            :base(mediator){ }
 
         protected override string NameUseCase => "EventCreatorUseCase";
 
-        
-
-        public override Task<NoValue> OnExecuteAsync(string input, CancellationToken cancellationToken)
+        public override Task<NoValue> OnExecuteAsync(string? input, CancellationToken cancellationToken)
         {
             if (input == "error")
             {
-                Console.WriteLine("erro lançado");
                 throw new ArgumentException("error");
             }
 
             return Task.FromResult(NoValue.Instance);
         }
 
-       
+
     }
 
     public class EventRecipientUseCase : UseCaseOutput<string>

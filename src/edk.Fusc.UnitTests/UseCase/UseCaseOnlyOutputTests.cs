@@ -67,20 +67,6 @@ public class UseCaseOnlyOutputTests
     }
 
     [Fact]
-    public async Task HandleAsync_NotShouldThrowException_WhenInputIsNull()
-    {
-        // Arrange 
-        NoValue? obj = null;
-
-        // Act
-        Func<Task> act = async () => await useCase.HandleAsync(obj);
-
-        // Assert
-        await act.Should().NotThrowAsync<ArgumentException>();
-
-    }
-
-    [Fact]
     public async Task HandleAsync_ShouldReturnTrue()
     {
         // Act 

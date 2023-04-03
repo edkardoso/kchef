@@ -14,6 +14,6 @@ public class ValidadorNull<TInput> : IUseCaseValidator<TInput>, INullableObject
         throw new NotImplementedException();
     }
 
-    IReadOnlyCollection<INotification> IUseCaseValidator<TInput>.Validate(TInput instance) 
+    IReadOnlyCollection<INotification> IUseCaseValidator<TInput>.Validate(TInput? instance) 
         => new List<INotification>().AsReadOnly();
 }

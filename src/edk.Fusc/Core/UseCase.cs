@@ -122,7 +122,7 @@ public abstract class UseCase<TInput, TOutput> :
     /// Evento executado no método de Handler do UseCase. Se houer um Validator, esse evento
     /// somente será carregado após a validação com sucesso do mesmo.
     /// </summary>
-    public abstract Task<TOutput> OnExecuteAsync(TInput input, CancellationToken cancellationToken);
+    public abstract Task<TOutput> OnExecuteAsync(TInput? input, CancellationToken cancellationToken);
 
     /// <summary>
     /// Evento disparado quando é publicado um Evento de UseCase
