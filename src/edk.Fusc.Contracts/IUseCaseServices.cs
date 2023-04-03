@@ -1,8 +1,5 @@
 ﻿using edk.Fusc.Core.Validators;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace edk.Fusc.Contracts;
-
 public interface IUseCaseServices
 {
     IUseCaseServices AddScopedWithValidator<TUseCase, TValidator>()

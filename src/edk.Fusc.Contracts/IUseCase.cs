@@ -1,11 +1,9 @@
 ﻿using edk.Fusc.Core.Validators;
 
 namespace edk.Fusc.Contracts;
-
 public interface IUseCase
 {
     Task<IPresenter> HandleAsync(dynamic input);
-
     void SetMediator(IMediatorUseCase mediator);
     void SetValidator(IUseCaseValidator validator);
     void SetPresenter(IPresenter presenter);

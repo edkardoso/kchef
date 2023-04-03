@@ -1,7 +1,6 @@
 ﻿using edk.Fusc.Contracts.Common;
 
 namespace edk.Fusc.Contracts;
-
 public interface IMediatorUseCase : IFuscObject, INullableObject
 {
     Task<IPresenter> HandleAsync<TReceiver>(dynamic obj, IUseCase sender)
@@ -16,7 +15,4 @@ public interface IMediatorUseCase : IFuscObject, INullableObject
     IUser User { get; }
 
     void SetUser(IUser user);
-
-
-   
 }

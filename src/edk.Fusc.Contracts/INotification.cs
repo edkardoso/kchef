@@ -1,7 +1,6 @@
 ﻿using edk.Fusc.Contracts.Common;
 
 namespace edk.Fusc.Contracts;
-
 public interface INotification
 {
     string Message {  get; init; }
