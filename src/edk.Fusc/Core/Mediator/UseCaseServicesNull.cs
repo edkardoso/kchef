@@ -10,7 +10,7 @@ public class UseCaseServicesNull : IUseCaseServices
 
     }
 
-    public IUseCaseServices AddScoped(Type type)
+    public IUseCaseServices AddLifeTime(Type type)
     {
         throw new NotImplementedException();
     }
@@ -22,7 +22,7 @@ public class UseCaseServicesNull : IUseCaseServices
         throw new NotImplementedException();
     }
 
-    public IUseCaseServices AddScoped<TService, TValidator, TPresenter>()
+    public IUseCaseServices AddScopedAll<TService, TValidator, TPresenter>()
         where TService : IUseCase
         where TValidator : IUseCaseValidator
         where TPresenter : IPresenter
@@ -30,12 +30,12 @@ public class UseCaseServicesNull : IUseCaseServices
         throw new NotImplementedException();
     }
 
-    public IUseCaseServices AddScoped<TService>() where TService : IUseCase
+    public IUseCaseServices AddScopedUseCase<TService>() where TService : IUseCase
     {
         throw new NotImplementedException();
     }
 
-    public IUseCaseServices AddScoped<TService, TValidator>()
+    public IUseCaseServices AddScopedWithValidator<TService, TValidator>()
         where TService : IUseCase
         where TValidator : IUseCaseValidator
     {

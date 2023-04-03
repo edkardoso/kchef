@@ -1,19 +1,19 @@
 ﻿using edk.Fusc.Core.Validators;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace edk.Fusc.Contracts;
 
 public interface IUseCaseServices
 {
-    IUseCaseServices AddScoped(Type type);
-
-    IUseCaseServices AddScoped<TUseCase, TValidator>()
+    IUseCaseServices AddScopedWithValidator<TUseCase, TValidator>()
      where TUseCase : IUseCase
      where TValidator : IUseCaseValidator;
 
-    IUseCaseServices AddScoped<TUseCase, TValidator, TPresenter>()
+    IUseCaseServices AddScopedAll<TUseCase, TValidator, TPresenter>()
         where TUseCase : IUseCase
         where TValidator : IUseCaseValidator
         where TPresenter : IPresenter;
-    IUseCaseServices AddScoped<TUseCase>() where TUseCase : IUseCase;
+    IUseCaseServices AddScopedUseCase<TUseCase>() where TUseCase : IUseCase;
+
     IServiceProvider BuildServiceProvider();
 }

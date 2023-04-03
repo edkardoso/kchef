@@ -18,9 +18,6 @@ public class UseCaseMediator : IMediatorUseCase
     public bool IsProduction { get; private set; }
     public bool IsDevelopment => IsProduction.Not();
 
-    public UseCaseMediator() : this(new UseCaseServicesNull(), new FactoryMediatorNull())
-    { }
-
     public UseCaseMediator(IFactoryMediator factory) : this(new UseCaseServicesNull(), factory)
     { }
 
@@ -35,7 +32,7 @@ public class UseCaseMediator : IMediatorUseCase
     public UseCaseMediator(IServiceCollection services)
     {
         Factory = new FactoryMediatorNull();
-        Services = new UseCaseServices(services);
+        Services = new UseCaseServicesExtension(services);
         User = new UserNull();
         PubSub = new PubSubMediator(Factory);
     }
@@ -95,10 +92,10 @@ public class UseCaseMediator : IMediatorUseCase
     }
 
     private Type? GetTypeOfValidatorTable(string nameUseCase)
-        => ((UseCaseServices)Services).ValidatorsTable[nameUseCase] as Type;
+        => ((UseCaseServicesExtension)Services).ValidatorsTable[nameUseCase] as Type;
 
     private Type? GetTypeOfPresenterTable(string nameUseCase)
-       => ((UseCaseServices)Services).PresentersTable[nameUseCase] as Type;
+       => ((UseCaseServicesExtension)Services).PresentersTable[nameUseCase] as Type;
 
 
 

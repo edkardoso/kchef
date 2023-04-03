@@ -8,7 +8,7 @@ using edk.Tools.NoIf.Miscellaneous;
 
 namespace edk.Fusc.Core;
 
-public class FlowUseCase<TInput, TOutput>
+internal class FlowUseCase<TInput, TOutput>
 {
     private readonly TInput? _input;
     private readonly IUser _user;
