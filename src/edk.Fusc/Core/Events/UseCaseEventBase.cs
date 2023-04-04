@@ -16,4 +16,6 @@ public abstract class UseCaseEventBase : IUseCaseEvent
     public DateTime? StartDate { get;  }
 
     public UseCaseEventCategory Category { get; protected set; }
+
+    public bool WaitingCompletion { get; protected set; }
 }

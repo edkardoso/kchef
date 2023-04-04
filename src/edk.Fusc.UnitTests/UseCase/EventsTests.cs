@@ -79,6 +79,7 @@ public class EventsTests
     {
        // arrange
         evtUsecase.Subscription<EventRecipientUseCase, UseCaseStartEvent>();
+        evtUsecase.ChangeSetupUseCase(evtUsecase.Setup with { WaitingCompleteStartEvent = true });
 
         // act
         await evtUsecase.HandleAsync();
@@ -94,6 +95,7 @@ public class EventsTests
     {
         // arrange
         evtUsecase.Subscription<EventRecipientUseCase, UseCaseSuccessEvent>();
+        evtUsecase.ChangeSetupUseCase(evtUsecase.Setup with { WaitingCompleteSuccessEvent = true });
 
         // act
         await evtUsecase.HandleAsync();
@@ -107,8 +109,10 @@ public class EventsTests
     [Fact]
     public async Task OnEventAsync_ShouldBeCalled_WhenUseCaseSubscriptionForEventFailure()
     {
+
         // arrange
         evtUsecase.Subscription<EventRecipientUseCase, UseCaseFailureEvent>();
+        evtUsecase.ChangeSetupUseCase(evtUsecase.Setup with { WaitingCompleteFailureEvent = true });
 
         // act
         await evtUsecase.HandleAsync("error");

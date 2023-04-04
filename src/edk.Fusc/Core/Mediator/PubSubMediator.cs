@@ -1,7 +1,25 @@
 ﻿using edk.Fusc.Contracts;
+using edk.Fusc.Core.Events;
 using edk.Tools.NoIf.Miscellaneous;
 
 namespace edk.Fusc.Core.Mediator;
+
+public static class PubSubMediatorExtension
+{
+    public static void PublishEventStart(this IMediatorUseCase @this, IUseCase useCase, object? input, bool waitComplete)
+         => _ = @this.PubSub.PublishAsync(new UseCaseStartEvent(useCase, input, waitComplete));
+
+    public static void PublishEventSuccess(this IMediatorUseCase @this, IUseCase useCase, object? input, object? output, List<INotification> notifications, bool waitComplete)
+         => _ = @this.PubSub.PublishAsync(new UseCaseSuccessEvent(useCase, input, output, notifications, waitComplete));
+
+    public static void PublishEventFailureAsync(this IMediatorUseCase @this, IUseCase useCase, object? input, List<Exception> exceptions, bool waitComplete )
+         => _ = @this.PubSub.PublishAsync(new UseCaseFailureEvent(useCase, input, exceptions, waitComplete) );
+
+    public static void PublishEventCustom(this IMediatorUseCase @this, IUseCaseEvent @event)
+         => _ = @this.PubSub.PublishAsync(@event);
+}
+
+
 internal class PubSubMediator : IPubSubMediator
 {
     private readonly IFactoryMediator _factory;
@@ -33,7 +51,7 @@ internal class PubSubMediator : IPubSubMediator
 
     private void AddSubscriptions(string key, Type recipientType)
     {
-        List<Type> collectionOfRecipients =  Subscriptions.ContainsKey(key) ? Subscriptions[key]: new();
+        List<Type> collectionOfRecipients = Subscriptions.ContainsKey(key) ? Subscriptions[key] : new();
 
         collectionOfRecipients.Add(recipientType);
 
@@ -52,7 +70,8 @@ internal class PubSubMediator : IPubSubMediator
 
         var notifyTask = NotifyAsync(@event, collectionOfRecipients);
 
-        await Task.WhenAll(notifyTask);
+        if (@event.WaitingCompletion)
+            await Task.WhenAll(notifyTask);
     }
 
     private IEnumerable<Task> NotifyAsync(IUseCaseEvent @event, List<Type> recipients)
