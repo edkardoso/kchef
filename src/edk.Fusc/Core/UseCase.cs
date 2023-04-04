@@ -4,9 +4,7 @@ using edk.Fusc.Core.Events;
 using edk.Fusc.Core.Mediator;
 using edk.Fusc.Core.Presenters;
 using edk.Fusc.Core.Validators;
-using edk.Tools.NoIf.Comparer;
 using edk.Tools.NoIf.Miscellaneous;
-using System;
 
 namespace edk.Fusc.Core;
 
@@ -16,22 +14,17 @@ public abstract class UseCase<TInput, TOutput> :
     private TInput? _input;
     private FlowUseCase<TInput, TOutput>? _flow;
     private readonly List<INotification> _notifications = new();
-    private readonly IPubSubMediator _pubSubMediator;
 
+    public SetupUseCase Setup { get; private set; }
     protected IMediatorUseCase Mediator { get; private set; }
     public IPresenter<TInput, TOutput> Presenter { get; private set; }
     public virtual List<INotification> Notifications => _notifications ?? new();
     protected IUseCaseValidator<TInput> Validator { get; private set; }
-
-
     protected abstract string NameUseCase { get; }
-
     public bool HasMediator { get; private set; }
-
     public bool HasValidator { get; private set; }
 
     public bool HasPresenter { get; private set; }
-
 
     protected UseCase(IUseCaseValidator<TInput>? validator, IPresenter<TInput, TOutput>? presenter)
         : this(null, presenter, validator)
@@ -42,7 +35,7 @@ public abstract class UseCase<TInput, TOutput> :
         Mediator = mediator ?? new UseCaseMediatorNull();
         Presenter = presenter ?? new PresenterDefault<TInput, TOutput>();
         Validator = validator ?? new ValidadorNull<TInput>();
-        _pubSubMediator = Mediator.PubSub;
+        Setup = new SetupUseCase();
     }
     public async Task<IPresenter> HandleAsync(dynamic input)
     {
@@ -62,8 +55,6 @@ public abstract class UseCase<TInput, TOutput> :
 
     public async Task<IPresenter<TInput, TOutput>> HandleAsync()
     {
-
-
         Notifications.Clear();
 
         _flow = new(_input, Mediator.User, this);
@@ -72,6 +63,9 @@ public abstract class UseCase<TInput, TOutput> :
 
         try
         {
+            if (Setup.PublishStartEvent)
+                Mediator.PublishEventStart(this, _input, Setup.WaitingCompleteStartEvent);
+
             await _flow.Validate()
                         .Start(OnActionBeforeStartAsync)
                         .ExecuteAsync(OnExecuteAsync);
@@ -89,8 +83,8 @@ public abstract class UseCase<TInput, TOutput> :
 
             _flow.Error(OnActionException, exceptions);
 
-            await _pubSubMediator.PublishAsync(new UseCaseFailureEvent(this) { Exceptions = exceptions });
-
+            if (Setup.PublishFailureEvent)
+                Mediator.PublishEventFailureAsync(this, _input, exceptions, Setup.WaitingCompleteFailureEvent);
 
         }
         catch (Exception ex)
@@ -98,15 +92,17 @@ public abstract class UseCase<TInput, TOutput> :
             var exceptions = new List<Exception>() { ex };
             _flow.Error(OnActionException, exceptions);
 
-            await _pubSubMediator.PublishAsync(new UseCaseFailureEvent(this) { Exceptions = exceptions });
+            if (Setup.PublishFailureEvent)
+                Mediator.PublishEventFailureAsync(this, _input, exceptions, Setup.WaitingCompleteFailureEvent);
+
         }
         finally
         {
             _flow.Complete(OnActionComplete);
 
-            if (success)
+            if (Setup.PublishSuccessEvent && success)
             {
-                await _pubSubMediator.PublishAsync(new UseCaseSuccessEvent(this));
+                Mediator.PublishEventSuccess(this, _input, Presenter.Output, Notifications, Setup.WaitingCompleteSuccessEvent);
             }
         }
 
@@ -150,8 +146,6 @@ public abstract class UseCase<TInput, TOutput> :
     /// </summary>
     protected virtual Task<bool> OnActionBeforeStartAsync(TInput? input, IUser user)
     {
-        _pubSubMediator.PublishAsync(new UseCaseStartEvent(this, input));
-
         return Task.FromResult(true);
     }
 
@@ -206,11 +200,14 @@ public abstract class UseCase<TInput, TOutput> :
           where TRecipient : IUseCase
          where TEvent : IUseCaseEvent
     {
-        _pubSubMediator.SubscribeTo<TRecipient, TEvent>(this);
+        Mediator.PubSub.SubscribeTo<TRecipient, TEvent>(this);
     }
 
     public IReadOnlyCollection<INotification> Validate(TInput? input)
         => Validator.Validate(input);
 
+
+    public void ChangeSetupUseCase(SetupUseCase setup)
+        => Setup = setup;
 
 }

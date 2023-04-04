@@ -7,6 +7,7 @@ public interface IUseCaseServices
      where TValidator : IUseCaseValidator;
 
     IUseCaseServices AddScopedAll<TUseCase, TValidator, TPresenter>()
+
         where TUseCase : IUseCase
         where TValidator : IUseCaseValidator
         where TPresenter : IPresenter;

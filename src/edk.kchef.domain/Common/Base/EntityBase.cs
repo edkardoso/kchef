@@ -9,9 +9,6 @@ namespace edk.Kchef.Domain.Common.Base;
 
 public abstract class EntityBase : IEntity
 {
-    //private readonly AbstractValidator<TEntity> _validator;
-    //private readonly TEntity _entity;
-    private ValidationResult _validationResult;
     private readonly List<Notification> _notifications = new();
 
     public Guid Id { get; private set; }
@@ -21,14 +18,7 @@ public abstract class EntityBase : IEntity
     public virtual DateTime? AuditDate { get; private set; }
     public List<Notification> Notifications => _notifications;
 
-    //protected EntityBase(AbstractValidator<TEntity> validator, TEntity entity)
-    //    : this()
-    //{
-    //    _validator = validator;
-    //    _entity = entity;
-    //}
-
-    protected EntityBase()
+     protected EntityBase()
     {
         if (Id == Guid.Empty)
         {
@@ -45,8 +35,6 @@ public abstract class EntityBase : IEntity
     {
         CheckBasicData();
 
-       // RunValidatorWhenNotNull();
-
         RunValidatorCustom();
 
         if (Notifications.HasError())
@@ -60,15 +48,6 @@ public abstract class EntityBase : IEntity
     /// Permite adicionar outras validações 
     /// </summary>
     public virtual List<Notification> ValidateCustom() => null;
-
-    //private void RunValidatorWhenNotNull()
-    //{
-    //    if (_validator != null)
-    //    {
-    //        _validationResult = _validator.Validate(_entity);
-    //        _notifications.AddRange(_validationResult.Errors);
-    //    }
-    //}
 
     private void RunValidatorCustom()
     {

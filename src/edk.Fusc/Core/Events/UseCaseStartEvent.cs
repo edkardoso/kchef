@@ -5,12 +5,13 @@ namespace edk.Fusc.Core.Events;
 
 public class UseCaseStartEvent : UseCaseEventBase
 {
-    public UseCaseStartEvent(IUseCase useCase, object? input) 
+    public object? Input { get;  }
+
+    public UseCaseStartEvent(IUseCase useCase, object? input, bool waitComplete) 
         : base(useCase)
     {
         Category = UseCaseEventCategory.Start;
         Input = input;
+        WaitingCompletion = waitComplete;
     }
-
-    public object? Input { get;  }
 }
