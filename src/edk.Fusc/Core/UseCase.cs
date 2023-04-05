@@ -1,6 +1,5 @@
 ﻿using edk.Fusc.Contracts;
 using edk.Fusc.Contracts.Common;
-using edk.Fusc.Core.Events;
 using edk.Fusc.Core.Mediator;
 using edk.Fusc.Core.Presenters;
 using edk.Fusc.Core.Validators;
@@ -23,7 +22,6 @@ public abstract class UseCase<TInput, TOutput> :
     protected abstract string NameUseCase { get; }
     public bool HasMediator { get; private set; }
     public bool HasValidator { get; private set; }
-
     public bool HasPresenter { get; private set; }
 
     protected UseCase(IUseCaseValidator<TInput>? validator, IPresenter<TInput, TOutput>? presenter)
@@ -59,8 +57,6 @@ public abstract class UseCase<TInput, TOutput> :
 
         _flow = new(_input, Mediator.User, this);
 
-        var success = false;
-
         try
         {
             if (Setup.PublishStartEvent)
@@ -70,7 +66,6 @@ public abstract class UseCase<TInput, TOutput> :
                         .Start(OnActionBeforeStartAsync)
                         .ExecuteAsync(OnExecuteAsync);
 
-            success = true;
         }
         catch (AggregateException ex)
         {
@@ -100,7 +95,7 @@ public abstract class UseCase<TInput, TOutput> :
         {
             _flow.Complete(OnActionComplete);
 
-            if (Setup.PublishSuccessEvent && success)
+            if (Setup.PublishSuccessEvent && _flow.Completed)
             {
                 Mediator.PublishEventSuccess(this, _input, Presenter.Output, Notifications, Setup.WaitingCompleteSuccessEvent);
             }
