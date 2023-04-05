@@ -13,7 +13,10 @@ internal class FlowUseCase<TInput, TOutput>
     private readonly TInput? _input;
     private readonly IUser _user;
     private readonly UseCase<TInput, TOutput> _useCase;
-    private bool _complete;
+
+    private bool Continue { get; set; }
+    public bool Completed { get; set; }
+
 
     internal FlowUseCase(TInput? input, IUser user, UseCase<TInput, TOutput> useCase)
     {
@@ -22,8 +25,7 @@ internal class FlowUseCase<TInput, TOutput>
         _useCase = useCase;
     }
 
-    private bool Continue { get; set; }
-
+  
     internal FlowUseCase<TInput, TOutput> Start(Func<TInput?, IUser, Task<bool>> onActionBeforeStart)
     {
         if (Continue.IsFalse())
@@ -56,7 +58,7 @@ internal class FlowUseCase<TInput, TOutput>
             {
                 var result = onExecuteAsync(_input, Task.Factory.CancellationToken).Result;
                 _useCase.Presenter.SetOutput(result);
-                _complete = true;
+                Completed = true;
                 _useCase.Presenter.OnResult(result, _useCase.Notifications, Task.Factory.CancellationToken);
             });
 
@@ -72,7 +74,7 @@ internal class FlowUseCase<TInput, TOutput>
            );
 
     public void Complete(Func<bool, IReadOnlyCollection<INotification>, bool> onActionComplete)
-        => Continue.IfTrue(() => onActionComplete(_complete, _useCase.Notifications));
+        => Continue.IfTrue(() => onActionComplete(Completed, _useCase.Notifications));
 
 }
 
