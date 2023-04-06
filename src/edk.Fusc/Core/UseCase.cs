@@ -11,11 +11,10 @@ public abstract class UseCase<TInput, TOutput> :
     IUseCase<TInput, TOutput>
 {
     private TInput? _input;
-    private FlowUseCase<TInput, TOutput>? _flow;
-    private readonly List<INotification> _notifications = new();
+        private readonly List<INotification> _notifications = new();
 
     public SetupUseCase Setup { get; private set; }
-    protected IMediatorUseCase Mediator { get; private set; }
+    protected internal IMediatorUseCase Mediator { get; private set; }
     public IPresenter<TInput, TOutput> Presenter { get; private set; }
     public virtual List<INotification> Notifications => _notifications ?? new();
     protected IUseCaseValidator<TInput> Validator { get; private set; }
@@ -55,51 +54,7 @@ public abstract class UseCase<TInput, TOutput> :
     {
         Notifications.Clear();
 
-        _flow = new(_input, Mediator.User, this);
-
-        try
-        {
-            if (Setup.PublishStartEvent)
-                Mediator.PublishEventStart(this, _input, Setup.WaitingCompleteStartEvent);
-
-            await _flow.Validate()
-                        .Start(OnActionBeforeStartAsync)
-                        .ExecuteAsync(OnExecuteAsync);
-
-        }
-        catch (AggregateException ex)
-        {
-            List<Exception> exceptions = new();
-
-            foreach (Exception exception in ex.InnerExceptions)
-            {
-                exceptions.Add(exception);
-            }
-
-            _flow.Error(OnActionException, exceptions);
-
-            if (Setup.PublishFailureEvent)
-                Mediator.PublishEventFailureAsync(this, _input, exceptions, Setup.WaitingCompleteFailureEvent);
-
-        }
-        catch (Exception ex)
-        {
-            var exceptions = new List<Exception>() { ex };
-            _flow.Error(OnActionException, exceptions);
-
-            if (Setup.PublishFailureEvent)
-                Mediator.PublishEventFailureAsync(this, _input, exceptions, Setup.WaitingCompleteFailureEvent);
-
-        }
-        finally
-        {
-            _flow.Complete(OnActionComplete);
-
-            if (Setup.PublishSuccessEvent && _flow.Completed)
-            {
-                Mediator.PublishEventSuccess(this, _input, Presenter.Output, Notifications, Setup.WaitingCompleteSuccessEvent);
-            }
-        }
+        await new FlowUseCase<TInput, TOutput>(this, _input).Execute(OnActionBeforeStartAsync, OnExecuteAsync, OnActionException, OnActionComplete);
 
         return Presenter;
     }
